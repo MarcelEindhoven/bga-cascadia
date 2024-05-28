@@ -1,1 +1,41 @@
-{}
+{
+    "100": {
+        "name": "AI",
+        "values": {
+            "0": {
+                "name": "No AI players"
+            },
+            "1": {
+                "name": "1 AI player",
+                "firstgameonly": true
+            },
+            "2": {
+                "name": "2 AI players"
+            },
+            "3": {
+                "name": "3 AI players",
+                "nobeginner": true
+            },
+            "4": {
+                "name": "4 AI players"
+            }
+        },
+        "default": 1
+    },
+    "101": {
+        "name": "Variant",
+        "values": {
+            "1": {
+                "name": "Family",
+                "firstgameonly": true
+            },
+            "2": {
+                "name": "Default"
+            },
+            "3": {
+                "name": "Solo"
+            }
+        },
+        "default": 1
+    }
+}
