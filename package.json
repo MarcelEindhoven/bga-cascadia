@@ -1,0 +1,8 @@
+{
+  "devDependencies": {
+    "amd-loader": "^0.0.8",
+    "dojo": "^1.17.3",
+    "mocha": "^10.4.0",
+    "sinon": "^18.0.0"
+  }
+}
