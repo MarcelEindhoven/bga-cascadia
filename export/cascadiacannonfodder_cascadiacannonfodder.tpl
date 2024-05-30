@@ -25,8 +25,41 @@
     Please REMOVE this comment before publishing your game on BGA
 -->
 
+<div id="Game">
+<div id = "Market" style="display: inline-block">
+    <table>
+    <!-- BEGIN market_row -->
+        <tr>
+            <!-- BEGIN market_element -->
+                <td style = "width: 100px">
+                <div id = "{ROW}_{PLACE}" style="display: inline-block" class=".single_card">
+                .
+                </div>
+                </td>
+            <!-- END market_element -->
+        </tr>
+    <!-- END market_row -->
+    </table>
+</div>
+<div id = "ScoringCards" style="display: inline-block;width: 200px;">
+    <table>
+        <tr>
+        .
+            <!-- BEGIN scoring_card -->
+                <td>
+                <div id = "scoring_card_{PLACE}" style="display: inline-block" class=".single_card">
+                </div>
+                </td>
+            <!-- END scoring_card -->
+        </tr>
+    </table>
+</div>
 
+<div style="display: inline-block; position: relative; background-color: #EBEBEB; width: 600px; height: 400px" id="obtained_item">
 This is your game interface. You can edit this HTML in your ".tpl" file.
+</div>
+
+</div>
 
 
 <script type="text/javascript">
