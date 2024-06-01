@@ -62,7 +62,20 @@ function (dojo, declare) {
             // Setup game notifications to handle (see "setupNotifications" method below)
             this.setupNotifications();
 
+            this.prototyping();
+
             console.log( "Ending game setup" );
+        },
+        prototyping: function() {
+            dojo.place( this.format_block( 'jstpl_token0', {
+                id: 'abcd',
+            } ) , 'tokens' );
+            this.slideToObjectPos( 'abcd', '12345', 50, 50).play();
+            dojo.place( this.format_block( 'upper_half', {
+                id: 'abcd_upper_half',
+            } ) , 'tokens' );
+            this.slideToObjectPos( 'abcd_upper_half', '12345', 50, 50).play();
+
         },
        
 

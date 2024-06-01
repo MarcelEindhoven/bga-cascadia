@@ -27,6 +27,10 @@
 
 <div id="Game">
 <div id = "Market" style="display: inline-block">
+<!--
+Draw 4 Wildlife Tokens from the Cloth Bag and pair them, in order, with each of the 4 Habitat Tiles to
+form 4 combinations of 1 tile and 1 token.
+-->
     <table>
     <!-- BEGIN market_row -->
         <tr>
@@ -41,7 +45,30 @@
     <!-- END market_row -->
     </table>
 </div>
+
+<div style="display: inline-block; position: relative; background-color: #EBEBEB; width: 600px; height: 400px" id="12345">
+<!--
+Randomly distribute one Starter Habitat Tile to each player, placing it face-up in front of them. Place the
+others back into the box, they will not be used this game.
+-->
+</div>
+
+<!-- BEGIN territory -->
+<div style="display: inline-block; position: relative; background-color: #EBEBEB; width: 200px; height: 100px" id="{ID}">
+<!--
+Randomly distribute one Starter Habitat Tile to each player, placing it face-up in front of them. Place the
+others back into the box, they will not be used this game.
+-->
+</div>
+<!-- END territory -->
+
 <div id = "ScoringCards" style="display: inline-block;width: 200px;">
+<!-- 
+Randomly select 1 Wildlife Scoring Card for each of the five wildlife, then place those five cards in the
+center of the play area within easy view of all players. Put the other Wildlife Scoring Cards back in the
+box. (For your first game we recommend using the Wildlife Scoring Cards shown - these are the cards
+with ‘A’ in the bottom right corner).
+-->
     <table>
         <tr>
         .
@@ -55,14 +82,15 @@
     </table>
 </div>
 
-<div style="display: inline-block; position: relative; background-color: #EBEBEB; width: 600px; height: 400px" id="obtained_item">
-This is your game interface. You can edit this HTML in your ".tpl" file.
+<div id="tokens">
 </div>
 
 </div>
 
 
 <script type="text/javascript">
+var jstpl_token0='<div class="field" id="${id}"></div>';
+var upper_half='<div class="upper_half" id="${id}"></div>';
 
 // Javascript HTML templates
 
