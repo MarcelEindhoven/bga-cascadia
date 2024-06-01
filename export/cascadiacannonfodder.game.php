@@ -2,7 +2,7 @@
  /**
   *------
   * BGA framework: Gregory Isabelli & Emmanuel Colin & BoardGameArena
-  * CascadiaCannonFodder implementation : © <Your name here> <Your email address here>
+  * Cascadia implementation : © Marcel van Nieuwenhoven marcel.eindhoven@hotmail.com
   * 
   * This code has been produced on the BGA studio platform for use on http://boardgamearena.com.
   * See http://en.boardgamearena.com/#!doc/Studio for more information.
@@ -35,11 +35,9 @@ class CascadiaCannonFodder extends Table
         $this->initGameStateLabels( array( 
             //    "my_first_global_variable" => 10,
             //    "my_second_global_variable" => 11,
-            //      ...
-            //    "my_first_game_variant" => 100,
-            //    "my_second_game_variant" => 101,
-            //      ...
-        ) );        
+                "number_ai_players" => 100,
+                "game_variant" => 101,
+        ) );
 	}
 	
     protected function getGameName( )

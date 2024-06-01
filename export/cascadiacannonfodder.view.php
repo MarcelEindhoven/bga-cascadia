@@ -2,7 +2,7 @@
 /**
  *------
  * BGA framework: Gregory Isabelli & Emmanuel Colin & BoardGameArena
- * CascadiaCannonFodder implementation : © <Your name here> <Your email address here>
+ * Cascadia implementation : © Marcel van Nieuwenhoven marcel.eindhoven@hotmail.com
  *
  * This code has been produced on the BGA studio platform for use on http://boardgamearena.com.
  * See http://en.boardgamearena.com/#!doc/Studio for more information.
@@ -34,6 +34,27 @@ class view_cascadiacannonfodder_cascadiacannonfodder extends game_view
         return "cascadiacannonfodder";
     }
     
+    function getPlayersInOrder() {
+        $result = array();
+    
+        $players = self::loadPlayersBasicInfos();
+        $next_player = self::getNextPlayerTable();
+        $player_id = self::getCurrentPlayerId();
+    
+        // Check for spectator
+        if (!key_exists($player_id, $players)) {
+            $player_id = $next_player[0];
+        }
+    
+        // Build array starting with current player
+        for ($i=0; $i<count($players); $i++) {
+            $result[] = $player_id;
+            $player_id = $next_player[$player_id];
+        }
+    
+        return $result;
+    }
+    
   	function build_page( $viewArgs )
   	{		
   	    // Get players & players number
@@ -41,7 +62,8 @@ class view_cascadiacannonfodder_cascadiacannonfodder extends game_view
         $players_nbr = count( $players );
 
         /*********** Place your code below:  ************/
-
+        $next_player = $this->game->getNextPlayerTable();
+        // $player_id = $this->game->getCurrentPlayerId();
 
         /*
         
