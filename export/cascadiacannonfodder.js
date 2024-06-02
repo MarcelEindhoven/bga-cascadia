@@ -67,14 +67,23 @@ function (dojo, declare) {
             console.log( "Ending game setup" );
         },
         prototyping: function() {
+            console.log('prototyping ' + this.player_id);
             dojo.place( this.format_block( 'jstpl_token0', {
-                id: 'abcd',
+                token_id: 'abcd',
             } ) , 'tokens' );
-            this.slideToObjectPos( 'abcd', '12345', 50, 50).play();
+            this.slideToObjectPos( 'abcd', '' + this.player_id, 50, 50).play();
             dojo.place( this.format_block( 'upper_half', {
-                id: 'abcd_upper_half',
+                token_id: 'abcd_upper_half',
             } ) , 'tokens' );
-            this.slideToObjectPos( 'abcd_upper_half', '12345', 50, 50).play();
+            this.slideToObjectPos( 'abcd_upper_half', '' + this.player_id, 50, 50).play();
+            dojo.place( this.format_block( 'field_wildlife', {
+                token_id: 'bird',
+            } ) , 'tokens' );
+            this.slideToObjectPos( 'bird', '' + this.player_id, 50+15, 50+5).play();
+            dojo.place( this.format_block( 'field_wildlife', {
+                token_id: 'bird2',
+            } ) , 'tokens' );
+            this.slideToObjectPos( 'bird2', 'abcd', 15, 35).play();
 
         },
        
