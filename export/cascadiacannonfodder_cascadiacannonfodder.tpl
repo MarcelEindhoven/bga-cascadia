@@ -36,7 +36,7 @@ form 4 combinations of 1 tile and 1 token.
         <tr>
             <!-- BEGIN market_element -->
                 <td style = "width: 100px">
-                <div id = "{ROW}_{PLACE}" style="display: inline-block" class=".single_card">
+                <div id = "{ROW}_{PLACE}" style="display: inline-block; width: 60px; height: 60px" >
                 .
                 </div>
                 </td>
@@ -54,11 +54,14 @@ others back into the box, they will not be used this game.
 </div>
 
 <!-- BEGIN player_board -->
+<div style="display: inline-block; position: relative;">
+{PLAYER_NAME}
 <div style="display: inline-block; position: relative; background-color: #EBEBEB; width: 200px; height: 100px" id="{PLAYER_ID}">
 <!--
 Randomly distribute one Starter Habitat Tile to each player, placing it face-up in front of them. Place the
 others back into the box, they will not be used this game.
 -->
+</div>
 </div>
 <!-- END player_board -->
 
