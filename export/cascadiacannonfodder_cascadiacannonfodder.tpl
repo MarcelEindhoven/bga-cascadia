@@ -53,14 +53,14 @@ others back into the box, they will not be used this game.
 -->
 </div>
 
-<!-- BEGIN territory -->
-<div style="display: inline-block; position: relative; background-color: #EBEBEB; width: 200px; height: 100px" id="{ID}">
+<!-- BEGIN player_board -->
+<div style="display: inline-block; position: relative; background-color: #EBEBEB; width: 200px; height: 100px" id="{PLAYER_ID}">
 <!--
 Randomly distribute one Starter Habitat Tile to each player, placing it face-up in front of them. Place the
 others back into the box, they will not be used this game.
 -->
 </div>
-<!-- END territory -->
+<!-- END player_board -->
 
 <div id = "ScoringCards" style="display: inline-block;width: 200px;">
 <!-- 

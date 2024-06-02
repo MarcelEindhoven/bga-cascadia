@@ -37,9 +37,10 @@ class view_cascadiacannonfodder_cascadiacannonfodder extends game_view
     function getPlayersInOrder() {
         $result = array();
     
-        $players = self::loadPlayersBasicInfos();
-        $next_player = self::getNextPlayerTable();
-        $player_id = self::getCurrentPlayerId();
+        $players = $this->game->loadPlayersBasicInfos();
+        $next_player = $this->game->getNextPlayerTable();
+        global $g_user;
+        $player_id = $g_user->get_id();
     
         // Check for spectator
         if (!key_exists($player_id, $players)) {
@@ -48,7 +49,7 @@ class view_cascadiacannonfodder_cascadiacannonfodder extends game_view
     
         // Build array starting with current player
         for ($i=0; $i<count($players); $i++) {
-            $result[] = $player_id;
+            $result[] = $players[$player_id];
             $player_id = $next_player[$player_id];
         }
     
@@ -58,12 +59,16 @@ class view_cascadiacannonfodder_cascadiacannonfodder extends game_view
   	function build_page( $viewArgs )
   	{		
   	    // Get players & players number
-        $players = $this->game->loadPlayersBasicInfos();
+        $players = $this->getPlayersInOrder();
         $players_nbr = count( $players );
 
         /*********** Place your code below:  ************/
-        $next_player = $this->game->getNextPlayerTable();
-        // $player_id = $this->game->getCurrentPlayerId();
+        $this->page->begin_block( "cascadiacannonfodder_cascadiacannonfodder", "player_board" );
+        foreach( $players as $player ) {
+            $this->page->insert_block( "player_board", array( 
+                "PLAYER_ID" => $player['player_id'],
+                 ) );
+        }
 
         /*
         
