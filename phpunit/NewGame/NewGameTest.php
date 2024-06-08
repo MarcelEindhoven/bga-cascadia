@@ -21,7 +21,8 @@ class NewGameTest extends TestCase{
         $this->mock_wildlife_factory = $this->createMock(WildlifeFactory::class);
         $this->sut = new NewGame();
         $this->sut->setWildlifeFactory($this->mock_wildlife_factory);
-        $this->mock_wildlife_factory->expects($this->exactly(100))->method('create');
+        $this->mock_wildlife_factory->expects($this->exactly(100))->method('add');
+        $this->mock_wildlife_factory->expects($this->exactly(1))->method('flush');
         // Act
         $this->sut->setup();
         // Assert

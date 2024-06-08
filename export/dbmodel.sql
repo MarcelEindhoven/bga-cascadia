@@ -61,10 +61,10 @@ CREATE TABLE IF NOT EXISTS `tile` (
 -- type: 0 = no wildlife, 1 = bear, 2 = elk, 3 = salmon, 4 = hawk, 5 = fox
 -- location and location argument: see tile table
 CREATE TABLE IF NOT EXISTS `wildlife` (
-  `wildlife_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `wildlife_type` varchar(16) NOT NULL,
-  `wildlife_type_arg` int(11) NOT NULL,
-  `wildlife_location` varchar(16) NOT NULL,
-  `wildlife_location_arg` int(11) NOT NULL,
-  PRIMARY KEY (`wildlife_id`)
+  `card_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `card_type` varchar(16) NOT NULL,
+  `card_type_arg` int(11) NOT NULL,
+  `card_location` varchar(16) NOT NULL,
+  `card_location_arg` int(11) NOT NULL,
+  PRIMARY KEY (`card_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
