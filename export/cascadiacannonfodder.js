@@ -83,7 +83,7 @@ function (dojo, declare) {
             dojo.place( this.format_block( 'field_wildlife', {
                 token_id: 'bird2',
             } ) , 'tokens' );
-            this.slideToObjectPos( 'bird2', 'abcd', 15, 35).play();
+            this.slideToObjectPos( 'bird2', '' + this.player_id, 50+15, 50+25).play();
 
         },
        
