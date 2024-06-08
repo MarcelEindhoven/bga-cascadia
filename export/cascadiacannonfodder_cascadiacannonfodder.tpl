@@ -26,6 +26,9 @@
 -->
 
 <div id="Game">
+<div style="display: inline-block; position: relative; width: 20px; height: 100px" id="Filler">
+</div>
+
 <div id = "Market" style="display: inline-block">
 <!--
 Draw 4 Wildlife Tokens from the Cloth Bag and pair them, in order, with each of the 4 Habitat Tiles to
@@ -35,8 +38,8 @@ form 4 combinations of 1 tile and 1 token.
     <!-- BEGIN market_row -->
         <tr>
             <!-- BEGIN market_element -->
-                <td style = "width: 100px">
-                <div id = "{ROW}_{PLACE}" style="display: inline-block; width: 60px; height: 60px" >
+                <td style = "width: 60px ; height: 60px">
+                <div id = "{ROW}_{PLACE}" style="display: inline-block" >
                 .
                 </div>
                 </td>

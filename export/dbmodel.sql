@@ -33,6 +33,8 @@
 -- Example 2: add a custom field to the standard "player" table
 -- ALTER TABLE `player` ADD `player_my_custom_field` INT UNSIGNED NOT NULL DEFAULT '0';
 
+ALTER TABLE `player` ADD `player_coins` INT UNSIGNED NOT NULL DEFAULT '0';
+
 -- Each tile is in the game is stored in the database.
 -- Tiles that are removed from the game at game creation are not in the database.
 -- The starter habitat tile is modelled as 3 tiles.
