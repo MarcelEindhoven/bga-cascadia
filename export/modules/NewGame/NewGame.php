@@ -6,8 +6,20 @@ namespace NieuwenhovenGames\Cascadia;
  *
  */
 
-namespace NieuwenhovenGames\Cascadia;
-class NewGame {
+ include_once(__DIR__.'/../Gateway/Wildlife.php');
+ 
+ class NewGame {
+    static public function create($decks): NewGame {
+        $object = new NewGame();
+        $wildlife_factory = WildlifeFactory::create($decks['wildlife']);
+        $object->setWildlifeFactory($wildlife_factory);
+        return $object;
+    }
+
+    public function setWildlifeFactory($wildlife_factory) {
+        $this->wildlife_factory = $wildlife_factory;
+    }
+
     public function setup() {
         for ($type = 1; $type <= 5; $type ++) {
             for ($number = 0; $number <20; $number ++) {
@@ -15,9 +27,6 @@ class NewGame {
             }
         }
         $this->wildlife_factory->flush();
-    }
-    public function setWildlifeFactory($wildlife_factory) {
-        $this->wildlife_factory = $wildlife_factory;
     }
 }
 ?>

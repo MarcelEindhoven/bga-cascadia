@@ -19,10 +19,13 @@
 
 require_once( APP_GAMEMODULE_PATH.'module/table/table.game.php' );
 
+include_once(__DIR__.'/modules/NewGame/NewGame.php');
 
 class CascadiaCannonFodder extends Table
 {
-	function __construct( )
+    protected array $decks = [];
+
+    function __construct( )
 	{
         // Your global variables labels:
         //  Here, you can assign labels to global variables you are using for this game.
@@ -38,6 +41,10 @@ class CascadiaCannonFodder extends Table
                 "number_ai_players" => 100,
                 "game_variant" => 101,
         ) );
+
+        $this->decks = [];
+        $this->decks['wildlife'] = self::getNew('module.common.deck');
+        $this->decks['wildlife']->init('wildlife');
 	}
 	
     protected function getGameName( )
@@ -86,6 +93,7 @@ class CascadiaCannonFodder extends Table
         //$this->initStat( 'player', 'player_teststat1', 0 );  // Init a player statistics (for all players)
 
         // TODO: setup the initial game situation here
+        \NieuwenhovenGames\Cascadia\NewGame::create($this->decks)->setup();
        
 
         // Activate first player (which is in general a good idea :) )
