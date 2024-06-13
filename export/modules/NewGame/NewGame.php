@@ -9,6 +9,98 @@ namespace NieuwenhovenGames\Cascadia;
  include_once(__DIR__.'/../Gateway/Wildlife.php');
  
  class NewGame {
+    const STARTER_HABITAT_TILES = [
+        [[[1], [3]], [[3, 4], [1, 2, 3]], [[2, 5], [4, 5]]],
+        [[[2], [4]], [[3, 1], [2, 3, 4]], [[5, 4], [1, 5]]],
+        [[[3], [2]], [[1, 5], [1, 2, 4]], [[4, 2], [3, 5]]],
+        [[[4], [5]], [[1, 2], [3, 4, 5]], [[5, 3], [1, 2]]],
+        [[[5], [1]], [[2, 3], [2, 4, 5]], [[4, 1], [1, 3]]]
+    ];
+    const HABITAT_TILES = [
+        [[1], [1]],
+        [[1], [1]],
+        [[1], [3]],
+        [[1], [4]],
+        [[1], [4]],
+        [[2], [3]],
+        [[2], [3]],
+        [[2], [4]],
+        [[2], [5]],
+        [[2], [5]],
+        [[3], [1]],
+        [[3], [1]],
+        [[3], [2]],
+        [[3], [5]],
+        [[3], [5]],
+        [[4], [2]],
+        [[4], [2]],
+        [[4], [3]],
+        [[4], [3]],
+        [[4], [5]],
+        [[5], [1]],
+        [[5], [2]],
+        [[5], [2]],
+        [[5], [4]],
+        [[5], [4]],
+        [[1, 2], [1, 3]],
+        [[1, 2], [1, 4]],
+        [[1, 2], [3, 4]],
+        [[1, 2], [3, 5]],
+        [[1, 2], [4, 5]],
+        [[1, 3], [1, 2]],
+        [[1, 3], [1, 3]],
+        [[1, 3], [1, 5]],
+        [[1, 3], [2, 4]],
+        [[1, 3], [3, 5]],
+        [[1, 4], [1, 5]],
+        [[1, 4], [2, 3]],
+        [[1, 4], [2, 4]],
+        [[1, 4], [4, 5]],
+        [[1, 5], [1, 2]],
+        [[1, 5], [1, 3]],
+        [[1, 5], [1, 4]],
+        [[1, 5], [2, 4]],
+        [[1, 5], [3, 4]],
+        [[2, 3], [1, 3]],
+        [[2, 3], [1, 5]],
+        [[2, 3], [2, 3]],
+        [[2, 3], [2, 4]],
+        [[2, 3], [4, 5]],
+        [[2, 4], [2, 3]],
+        [[2, 4], [2, 5]],
+        [[2, 4], [3, 4]],
+        [[2, 4], [4, 5]],
+        [[2, 5], [1, 3]],
+        [[2, 5], [2, 4]],
+        [[2, 5], [2, 5]],
+        [[2, 5], [3, 4]],
+        [[3, 4], [1, 2]],
+        [[3, 4], [1, 5]],
+        [[3, 4], [2, 3]],
+        [[3, 4], [2, 5]],
+        [[3, 4], [3, 5]],
+        [[3, 5], [1, 4]],
+        [[3, 5], [1, 5]],
+        [[3, 5], [2, 4]],
+        [[3, 5], [2, 5]],
+        [[4, 5], [1, 3]],
+        [[4, 5], [2, 3]],
+        [[4, 5], [2, 4]],
+        [[4, 5], [4, 5]],
+        [[1, 2], [1, 3, 4]],
+        [[1, 3], [2, 4, 5]],
+        [[1, 4], [1, 3, 5]],
+        [[1, 4], [1, 4, 5]],
+        [[1, 5], [1, 3, 4]],
+        [[2, 3], [2, 3, 4]],
+        [[2, 4], [2, 3, 5]],
+        [[2, 4], [3, 4, 5]],
+        [[3, 4], [2, 3, 5]],
+        [[3, 5], [1, 2, 4]],
+        [[3, 5], [1, 2, 5]],
+        [[4, 5], [1, 2, 5]],
+        [[4, 5], [1, 3, 5]],
+    ];
     static public function create($decks): NewGame {
         $object = new NewGame();
         $wildlife_factory = WildlifeFactory::create($decks['wildlife']);
@@ -16,11 +108,46 @@ namespace NieuwenhovenGames\Cascadia;
         return $object;
     }
 
+    public function setPlayers($players) {
+        $this->players = $players;
+    }
+
     public function setWildlifeFactory($wildlife_factory) {
         $this->wildlife_factory = $wildlife_factory;
     }
 
+    public function setHabitatFactory($habitat_factory) {
+        $this->habitat_factory = $habitat_factory;
+    }
+
     public function setup() {
+        $this->setupWildlife();
+        $this->setupStarterHabitat();
+    }
+
+    public function setupStarterHabitat() {
+        // Randomly distribute one Starter Habitat Tile to each player, placing it face-up in front of them. Place the others back into the box, they will not be used this game.
+        $tiles = NewGame::STARTER_HABITAT_TILES;
+        shuffle($tiles);
+        foreach ($this->players as $player_id => $player) {
+            $tile = array_pop($tiles);
+            $this->habitat_factory->addStarterTile($player_id, $tile);
+        }
+    }
+
+    public function setupHabitatTileSelection() {
+        // Randomly select 20 per player, plus 3 tiles. Shuffle these tiles and stack them face down (any number of stacks) within easy reach of all players.
+        // Place any excluded Habitat Tiles back into the box, they will not be used this game
+        $tiles = NewGame::HABITAT_TILES;
+        shuffle($tiles);
+        $number_selected = 3 + count($this->players)*20;
+        for ($i = 0; $i <$number_selected; $i++) {
+            $tile = array_pop($tiles);
+            $this->habitat_factory->add($tile);
+        }
+    }
+
+    public function setupWildlife() {
         for ($type = 1; $type <= 5; $type ++) {
             for ($number = 0; $number <20; $number ++) {
                 $this->wildlife_factory->add($type);

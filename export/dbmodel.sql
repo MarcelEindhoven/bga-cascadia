@@ -40,27 +40,38 @@ ALTER TABLE `player` ADD `player_coins` INT UNSIGNED NOT NULL DEFAULT '0';
 -- The starter habitat tile is modelled as 3 tiles.
 -- Tiles can be in the bag, in the market or on a player board.
 -- The content of the tiles is fixed and not part of the database.
--- The tile type specifies the terrains that are supported.
--- tile_type % 6 specifies the first terrain types that this tile contains.
--- style_type/6 specifies the second terrain type that this tile contains.
+-- The card type specifies the terrains that are supported.
+-- card_type % 6 specifies the first terrain types that this tile contains.
+-- card_type/6 specifies the second terrain type that this tile contains.
 -- 0 = no terrain, 1 = rivers, 2 = wetlands, 3 = forests, 4 = prairies, 5 = mountains
--- The tile argument specifies the wildlife that is supported.
--- tile_arg % 6 specifies the first wildlife that is supported, see wildlife table.
--- tile_arg/6 specifies the second wildlife that is supported.
--- tile_location = "", "market" or player ID
--- tile location argument = market index or horizontal location + (vertical location*100)
+-- The card argument specifies the wildlife that is supported.
+-- card_arg % 6 specifies the first wildlife that is supported, see wildlife table.
+-- card_arg/6%6 specifies the second wildlife that is supported.
+-- card_arg/6*6 specifies the third wildlife that is supported.
+-- card_location = "", "market" or player ID
+-- card location argument = market index or horizontal location + (vertical location*100)
 CREATE TABLE IF NOT EXISTS `tile` (
-  `tile_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `tile_type` varchar(16) NOT NULL,
-  `tile_type_arg` int(11) NOT NULL,
-  `tile_location` varchar(16) NOT NULL,
-  `tile_location_arg` int(11) NOT NULL,
-  PRIMARY KEY (`tile_id`)
+  `card_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `card_type` varchar(16) NOT NULL,
+  `card_type_arg` int(11) NOT NULL,
+  `card_location` varchar(16) NOT NULL,
+  `card_location_arg` int(11) NOT NULL,
+  `card_rotation` int(1) NOT NULL,
+  PRIMARY KEY (`card_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- type: 0 = no wildlife, 1 = bear, 2 = elk, 3 = salmon, 4 = hawk, 5 = fox
 -- location and location argument: see tile table
 CREATE TABLE IF NOT EXISTS `wildlife` (
+  `card_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `card_type` varchar(16) NOT NULL,
+  `card_type_arg` int(11) NOT NULL,
+  `card_location` varchar(16) NOT NULL,
+  `card_location_arg` int(11) NOT NULL,
+  PRIMARY KEY (`card_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+CREATE TABLE IF NOT EXISTS `scoring` (
   `card_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `card_type` varchar(16) NOT NULL,
   `card_type_arg` int(11) NOT NULL,
