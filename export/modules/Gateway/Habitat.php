@@ -20,17 +20,35 @@ class HabitatFactory {
         $this->deck = $deck;
         return $this;
     }
+
     public function add($tile) {
+        $this->definitions[] = array( 'type' => $this->calculateType($tile[0]), 'type_arg' => $this->calculateType($tile[1]) , 'nbr' => 1);
     }
-    public function addStarterTile($player_id, $starter_tile) {}
+
+    protected function calculateType($elements) {
+        $total = 0;
+        $factor = 1;
+        foreach ($elements as $element) {
+            $total = $total + $element * $factor;
+            $factor = $factor * 6;
+        }
+        return $total;
+    }
+
+    public function addStarterTile($player_id, $starter_tile) {
+        $this->placeTile($starter_tile[0], $player_id, 50, 50, 0);
+        $this->placeTile($starter_tile[1], $player_id, 49, 51, 5);
+        $this->placeTile($starter_tile[2], $player_id, 51, 51, 1);
+    }
+
+    public function placeTile($tile, $player_id, $x, $y, $rotation) {
+        $this->definitions[] = array( 'type' => $this->calculateType($tile[0]), 'type_arg' => $this->calculateType($tile[1]), 'location' =>  $player_id, 'location_arg' => $x + $y * 100, 'rotation' => $rotation, 'nbr' => 1);
+    }
 
     public function flush() {
         $this->deck->createCards($this->definitions);
         $this->deck->shuffle(\NieuwenhovenGames\BGA\FrameworkInterfaces\Deck::STANDARD_DECK);
         $this->definitions = [];
     }
-}
-
-class Habitat {
 }
 ?>

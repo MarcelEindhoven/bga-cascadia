@@ -71,6 +71,8 @@ CREATE TABLE IF NOT EXISTS `wildlife` (
   PRIMARY KEY (`card_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
+-- card_type specifies the animal type
+-- card_type_arg specifies the index of the card
 CREATE TABLE IF NOT EXISTS `scoring` (
   `card_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `card_type` varchar(16) NOT NULL,
