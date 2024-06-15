@@ -42,7 +42,8 @@ class HabitatFactory {
     }
 
     public function placeTile($tile, $player_id, $x, $y, $rotation) {
-        $this->definitions[] = array( 'type' => $this->calculateType($tile[0]), 'type_arg' => $this->calculateType($tile[1]), 'location' =>  $player_id, 'location_arg' => $x + $y * 100, 'rotation' => $rotation, 'nbr' => 1);
+        $definitions[] = array( 'type' => $this->calculateType($tile[0]), 'type_arg' => $this->calculateType($tile[1]), 'nbr' => 1);
+        $this->deck->createCards($definitions, $player_id, $x + $y * 100 + $rotation * 10000);
     }
 
     public function flush() {

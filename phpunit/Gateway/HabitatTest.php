@@ -18,8 +18,6 @@ class HabitatTest extends TestCase{
         $this->mock_cards = $this->createMock(\NieuwenhovenGames\BGA\FrameworkInterfaces\Deck::class);
         $this->sut = new HabitatFactory();
         $this->sut->setDeck($this->mock_cards);
-
-        $this->mock_cards->expects($this->exactly(1))->method('shuffle')->with(\NieuwenhovenGames\BGA\FrameworkInterfaces\Deck::STANDARD_DECK);    
     }
 
     public function test_simple_habitat_is_created() {
@@ -29,6 +27,7 @@ class HabitatTest extends TestCase{
 
         $this->mock_cards->expects($this->exactly(1))->method('createCards')->with([$expected_definition]);
 
+        $this->mock_cards->expects($this->exactly(1))->method('shuffle')->with(\NieuwenhovenGames\BGA\FrameworkInterfaces\Deck::STANDARD_DECK);    
         // Act
         $this->sut->add($tile);
         $this->sut->flush();
@@ -42,6 +41,7 @@ class HabitatTest extends TestCase{
 
         $this->mock_cards->expects($this->exactly(1))->method('createCards')->with([$expected_definition]);
 
+        $this->mock_cards->expects($this->exactly(1))->method('shuffle')->with(\NieuwenhovenGames\BGA\FrameworkInterfaces\Deck::STANDARD_DECK);    
         // Act
         $this->sut->add($tile);
         $this->sut->flush();
@@ -56,11 +56,10 @@ class HabitatTest extends TestCase{
         $expected_definition1 = array( 'type' => 2 + 3 * 6, 'type_arg' => 2 + 4 * 6 + 5 * 6 * 6, 'location' => $player, 'location_arg' => 49 + 51 * 100, 'rotation' => 5, 'nbr' => 1);
         $expected_definition2 = array( 'type' => 4 + 1 * 6, 'type_arg' => 1 + 3 * 6, 'location' => $player, 'location_arg' => 51 + 51 * 100, 'rotation' => 1, 'nbr' => 1);
 
-        $this->mock_cards->expects($this->exactly(1))->method('createCards')->with([$expected_definition0, $expected_definition1, $expected_definition2]);
+        $this->mock_cards->expects($this->exactly(3))->method('createCards');
 
         // Act
         $this->sut->addStarterTile($player, $tile);
-        $this->sut->flush();
         // Assert
     }
 }

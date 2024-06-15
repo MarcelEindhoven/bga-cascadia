@@ -6,6 +6,8 @@ namespace NieuwenhovenGames\Cascadia;
  *
  */
 
+ include_once(__DIR__.'/../Gateway/Habitat.php');
+ include_once(__DIR__.'/../Gateway/ScoringCard.php');
  include_once(__DIR__.'/../Gateway/Wildlife.php');
  
  class NewGame {
@@ -103,26 +105,50 @@ namespace NieuwenhovenGames\Cascadia;
     ];
     static public function create($decks): NewGame {
         $object = new NewGame();
+        $habitat_factory = HabitatFactory::create($decks['habitat']);
+        $object->setHabitatFactory($habitat_factory);
+
+        $scoring_card_factory = ScoringCardFactory::create($decks['scoring_card']);
+        $object->setScoringCardFactory($scoring_card_factory);
+
         $wildlife_factory = WildlifeFactory::create($decks['wildlife']);
         $object->setWildlifeFactory($wildlife_factory);
+
         return $object;
     }
 
-    public function setPlayers($players) {
+    public function setPlayers($players): NewGame {
         $this->players = $players;
+        return $this;
     }
 
-    public function setWildlifeFactory($wildlife_factory) {
-        $this->wildlife_factory = $wildlife_factory;
-    }
-
-    public function setHabitatFactory($habitat_factory) {
+    public function setHabitatFactory($habitat_factory): NewGame {
         $this->habitat_factory = $habitat_factory;
+        return $this;
     }
 
-    public function setup() {
+    public function setScoringCardFactory($scoring_card_factory): NewGame {
+        $this->scoring_card_factory = $scoring_card_factory;
+        return $this;
+    }
+
+    public function setWildlifeFactory($wildlife_factory): NewGame {
+        $this->wildlife_factory = $wildlife_factory;
+        return $this;
+    }
+
+    public function setup(): NewGame {
         $this->setupWildlife();
+        $this->setupScoringCard();
+        $this->setupHabitat();
+
+        return $this;
+    }
+
+    public function setupHabitat() {
         $this->setupStarterHabitat();
+        $this->setupHabitatTileSelection();
+        $this->habitat_factory->flush();
     }
 
     public function setupStarterHabitat() {
@@ -145,6 +171,13 @@ namespace NieuwenhovenGames\Cascadia;
             $tile = array_pop($tiles);
             $this->habitat_factory->add($tile);
         }
+    }
+
+    public function setupScoringCard() {
+        for ($type = 1; $type <= 5; $type ++) {
+            $this->scoring_card_factory->add($type, rand(0, 3));
+        }
+        $this->scoring_card_factory->flush();
     }
 
     public function setupWildlife() {

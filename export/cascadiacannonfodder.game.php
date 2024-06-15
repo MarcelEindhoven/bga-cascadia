@@ -43,6 +43,13 @@ class CascadiaCannonFodder extends Table
         ) );
 
         $this->decks = [];
+
+        $this->decks['habitat'] = self::getNew('module.common.deck');
+        $this->decks['habitat']->init('habitat');
+
+        $this->decks['scoring_card'] = self::getNew('module.common.deck');
+        $this->decks['scoring_card']->init('scoring_card');
+
         $this->decks['wildlife'] = self::getNew('module.common.deck');
         $this->decks['wildlife']->init('wildlife');
 	}
@@ -93,7 +100,7 @@ class CascadiaCannonFodder extends Table
         //$this->initStat( 'player', 'player_teststat1', 0 );  // Init a player statistics (for all players)
 
         // TODO: setup the initial game situation here
-        \NieuwenhovenGames\Cascadia\NewGame::create($this->decks)->setup();
+        \NieuwenhovenGames\Cascadia\NewGame::create($this->decks)->setPlayers($players)->setup();
        
 
         // Activate first player (which is in general a good idea :) )
