@@ -21,7 +21,12 @@ class MarketGateway {
         return $this;
     }
 
-    public function setup(): MarketGateway {
+    public function setup($market_size): MarketGateway {
+        foreach ($this->decks as $name => $deck) {
+            for ($i = 0; $i <$market_size; $i++) {
+                $deck->pickCardForLocation(\NieuwenhovenGames\BGA\FrameworkInterfaces\Deck::STANDARD_DECK, $name, $i);
+            }
+        }
         return $this;
     }
 }
