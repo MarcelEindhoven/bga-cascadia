@@ -26,14 +26,14 @@ class NewGameTest extends TestCase{
         $this->mock_market = $this->createMock(MarketGateway::class);
         $this->sut->setMarketGateway($this->mock_market);
 
-        $this->mock_habitat_Setup = $this->createMock(HabitatSetup::class);
-        $this->sut->setHabitatSetup($this->mock_habitat_Setup);
+        $this->mock_habitat_setup = $this->createMock(HabitatSetup::class);
+        $this->sut->setHabitatSetup($this->mock_habitat_setup);
 
-        $this->mock_scoring_card_Setup = $this->createMock(ScoringCardSetup::class);
-        $this->sut->setScoringCardSetup($this->mock_scoring_card_Setup);
+        $this->mock_scoring_card_setup = $this->createMock(ScoringCardSetup::class);
+        $this->sut->setScoringCardSetup($this->mock_scoring_card_setup);
 
-        $this->mock_wildlife_Setup = $this->createMock(WildlifeSetup::class);
-        $this->sut->setWildlifeSetup($this->mock_wildlife_Setup);
+        $this->mock_wildlife_setup = $this->createMock(WildlifeSetup::class);
+        $this->sut->setWildlifeSetup($this->mock_wildlife_setup);
 
     }
 
@@ -57,8 +57,8 @@ class NewGameTest extends TestCase{
      */
     public function test_scoring_card_is_created() {
         // Arrange
-        $this->mock_scoring_card_Setup->expects($this->exactly(5))->method('add');
-        $this->mock_scoring_card_Setup->expects($this->exactly(1))->method('flush');
+        $this->mock_scoring_card_setup->expects($this->exactly(5))->method('add');
+        $this->mock_scoring_card_setup->expects($this->exactly(1))->method('flush');
         // Act
         $this->sut->setupScoringCard();
         // Assert
@@ -68,8 +68,8 @@ class NewGameTest extends TestCase{
     // Place all Wildlife Tokens in the Cloth Bag and shuffle/shake them well.
     public function test_wildlife_is_created() {
         // Arrange
-        $this->mock_wildlife_Setup->expects($this->exactly(100))->method('add');
-        $this->mock_wildlife_Setup->expects($this->exactly(1))->method('flush');
+        $this->mock_wildlife_setup->expects($this->exactly(100))->method('add');
+        $this->mock_wildlife_setup->expects($this->exactly(1))->method('flush');
         // Act
         $this->sut->setupWildlife();
         // Assert
@@ -78,8 +78,8 @@ class NewGameTest extends TestCase{
     public function test_no_starter_habitat_is_created_and_assigned() {
         // Arrange
         $this->sut->setPlayers([]);
-        $this->mock_habitat_Setup->expects($this->exactly(0))->method('addStarterTile');
-        $this->mock_habitat_Setup->expects($this->exactly(0))->method('flush');
+        $this->mock_habitat_setup->expects($this->exactly(0))->method('addStarterTile');
+        $this->mock_habitat_setup->expects($this->exactly(0))->method('flush');
         // Act
         $this->sut->setupStarterHabitat();
         // Assert
@@ -88,8 +88,8 @@ class NewGameTest extends TestCase{
     public function test_starter_habitat_is_created_and_assigned() {
         // Arrange
         $this->sut->setPlayers($this->players2);
-        $this->mock_habitat_Setup->expects($this->exactly(2))->method('addStarterTile');
-        $this->mock_habitat_Setup->expects($this->exactly(0))->method('flush');
+        $this->mock_habitat_setup->expects($this->exactly(2))->method('addStarterTile');
+        $this->mock_habitat_setup->expects($this->exactly(0))->method('flush');
         // Act
         $this->sut->setupStarterHabitat();
         // Assert
@@ -97,8 +97,8 @@ class NewGameTest extends TestCase{
     public function test_habitat_tiles_selected() {
         // Arrange
         $this->sut->setPlayers($this->players2);
-        $this->mock_habitat_Setup->expects($this->exactly(43))->method('add');
-        $this->mock_habitat_Setup->expects($this->exactly(0))->method('flush');
+        $this->mock_habitat_setup->expects($this->exactly(43))->method('add');
+        $this->mock_habitat_setup->expects($this->exactly(0))->method('flush');
         // Act
         $this->sut->setupHabitatTileSelection();
         // Assert

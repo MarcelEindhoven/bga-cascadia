@@ -106,14 +106,14 @@ include_once(__DIR__.'/../Gateway/Wildlife.php');
     ];
     static public function create($decks): NewGame {
         $object = new NewGame();
-        $habitat_Setup = HabitatSetup::create($decks['habitat']);
-        $object->setHabitatSetup($habitat_Setup);
+        $habitat_setup = HabitatSetup::create($decks['habitat']);
+        $object->setHabitatSetup($habitat_setup);
 
-        $scoring_card_Setup = ScoringCardSetup::create($decks['scoring_card']);
-        $object->setScoringCardSetup($scoring_card_Setup);
+        $scoring_card_setup = ScoringCardSetup::create($decks['scoring_card']);
+        $object->setScoringCardSetup($scoring_card_setup);
 
-        $wildlife_Setup = WildlifeSetup::create($decks['wildlife']);
-        $object->setWildlifeSetup($wildlife_Setup);
+        $wildlife_setup = WildlifeSetup::create($decks['wildlife']);
+        $object->setWildlifeSetup($wildlife_setup);
 
         unset($decks['scoring_card']);
         $market = MarketGateway::create($decks);
@@ -127,18 +127,18 @@ include_once(__DIR__.'/../Gateway/Wildlife.php');
         return $this;
     }
 
-    public function setHabitatSetup($habitat_Setup): NewGame {
-        $this->habitat_Setup = $habitat_Setup;
+    public function setHabitatSetup($habitat_setup): NewGame {
+        $this->habitat_setup = $habitat_setup;
         return $this;
     }
 
-    public function setScoringCardSetup($scoring_card_Setup): NewGame {
-        $this->scoring_card_Setup = $scoring_card_Setup;
+    public function setScoringCardSetup($scoring_card_setup): NewGame {
+        $this->scoring_card_setup = $scoring_card_setup;
         return $this;
     }
 
-    public function setWildlifeSetup($wildlife_Setup): NewGame {
-        $this->wildlife_Setup = $wildlife_Setup;
+    public function setWildlifeSetup($wildlife_setup): NewGame {
+        $this->wildlife_setup = $wildlife_setup;
         return $this;
     }
 
@@ -163,7 +163,7 @@ include_once(__DIR__.'/../Gateway/Wildlife.php');
     public function setupHabitat() {
         $this->setupStarterHabitat();
         $this->setupHabitatTileSelection();
-        $this->habitat_Setup->flush();
+        $this->habitat_setup->flush();
     }
 
     public function setupStarterHabitat() {
@@ -172,7 +172,7 @@ include_once(__DIR__.'/../Gateway/Wildlife.php');
         shuffle($tiles);
         foreach ($this->players as $player_id => $player) {
             $tile = array_pop($tiles);
-            $this->habitat_Setup->addStarterTile($player_id, $tile);
+            $this->habitat_setup->addStarterTile($player_id, $tile);
         }
     }
 
@@ -184,24 +184,24 @@ include_once(__DIR__.'/../Gateway/Wildlife.php');
         $number_selected = 3 + count($this->players)*20;
         for ($i = 0; $i <$number_selected; $i++) {
             $tile = array_pop($tiles);
-            $this->habitat_Setup->add($tile);
+            $this->habitat_setup->add($tile);
         }
     }
 
     public function setupScoringCard() {
         for ($type = 1; $type <= 5; $type ++) {
-            $this->scoring_card_Setup->add($type, rand(0, 3));
+            $this->scoring_card_setup->add($type, rand(0, 3));
         }
-        $this->scoring_card_Setup->flush();
+        $this->scoring_card_setup->flush();
     }
 
     public function setupWildlife() {
         for ($type = 1; $type <= 5; $type ++) {
             for ($number = 0; $number <20; $number ++) {
-                $this->wildlife_Setup->add($type);
+                $this->wildlife_setup->add($type);
             }
         }
-        $this->wildlife_Setup->flush();
+        $this->wildlife_setup->flush();
     }
 }
 ?>
