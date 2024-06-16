@@ -20,6 +20,7 @@
 require_once( APP_GAMEMODULE_PATH.'module/table/table.game.php' );
 
 include_once(__DIR__.'/modules/NewGame/NewGame.php');
+include_once(__DIR__.'/modules/NewGame/PlayerSetup.php');
 
 class CascadiaCannonFodder extends Table
 {
@@ -69,6 +70,8 @@ class CascadiaCannonFodder extends Table
     */
     protected function setupNewGame( $players, $options = array() )
     {    
+        \NieuwenhovenGames\Cascadia\PlayerSetup::create($this->getGameStateValue('number_ai_players'))->setup($players);
+
         // Set the colors of the players with HTML color code
         // The default below is red/green/blue/orange/brown
         // The number of colors defined here must correspond to the maximum number of players allowed for the gams
@@ -126,7 +129,7 @@ class CascadiaCannonFodder extends Table
     
         // Get information about players
         // Note: you can retrieve some extra field you added for "player" table in "dbmodel.sql" if you need it.
-        $sql = "SELECT player_id id, player_score score FROM player ";
+        $sql = "SELECT player_id id, player_score score, player_coins coins FROM player ";
         $result['players'] = $this->getCollectionFromDb( $sql );
   
         // TODO: Gather all information about current game situation (visible by player $current_player_id).
