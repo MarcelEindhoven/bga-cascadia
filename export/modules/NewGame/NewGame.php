@@ -6,9 +6,10 @@ namespace NieuwenhovenGames\Cascadia;
  *
  */
 
- include_once(__DIR__.'/../Gateway/Habitat.php');
- include_once(__DIR__.'/../Gateway/ScoringCard.php');
- include_once(__DIR__.'/../Gateway/Wildlife.php');
+include_once(__DIR__.'/../Gateway/Habitat.php');
+include_once(__DIR__.'/../Gateway/Market.php');
+include_once(__DIR__.'/../Gateway/ScoringCard.php');
+include_once(__DIR__.'/../Gateway/Wildlife.php');
  
  class NewGame {
     const STARTER_HABITAT_TILES = [
@@ -105,14 +106,18 @@ namespace NieuwenhovenGames\Cascadia;
     ];
     static public function create($decks): NewGame {
         $object = new NewGame();
-        $habitat_factory = HabitatFactory::create($decks['habitat']);
-        $object->setHabitatFactory($habitat_factory);
+        $habitat_Setup = HabitatSetup::create($decks['habitat']);
+        $object->setHabitatSetup($habitat_Setup);
 
-        $scoring_card_factory = ScoringCardFactory::create($decks['scoring_card']);
-        $object->setScoringCardFactory($scoring_card_factory);
+        $scoring_card_Setup = ScoringCardSetup::create($decks['scoring_card']);
+        $object->setScoringCardSetup($scoring_card_Setup);
 
-        $wildlife_factory = WildlifeFactory::create($decks['wildlife']);
-        $object->setWildlifeFactory($wildlife_factory);
+        $wildlife_Setup = WildlifeSetup::create($decks['wildlife']);
+        $object->setWildlifeSetup($wildlife_Setup);
+
+        unset($decks['scoring_card']);
+        $market = MarketGateway::create($decks);
+        $object->setMarketGateway($market);
 
         return $object;
     }
@@ -122,18 +127,23 @@ namespace NieuwenhovenGames\Cascadia;
         return $this;
     }
 
-    public function setHabitatFactory($habitat_factory): NewGame {
-        $this->habitat_factory = $habitat_factory;
+    public function setHabitatSetup($habitat_Setup): NewGame {
+        $this->habitat_Setup = $habitat_Setup;
         return $this;
     }
 
-    public function setScoringCardFactory($scoring_card_factory): NewGame {
-        $this->scoring_card_factory = $scoring_card_factory;
+    public function setScoringCardSetup($scoring_card_Setup): NewGame {
+        $this->scoring_card_Setup = $scoring_card_Setup;
         return $this;
     }
 
-    public function setWildlifeFactory($wildlife_factory): NewGame {
-        $this->wildlife_factory = $wildlife_factory;
+    public function setWildlifeSetup($wildlife_Setup): NewGame {
+        $this->wildlife_Setup = $wildlife_Setup;
+        return $this;
+    }
+
+    public function setMarketGateway($market): NewGame {
+        $this->market = $market;
         return $this;
     }
 
@@ -141,14 +151,19 @@ namespace NieuwenhovenGames\Cascadia;
         $this->setupWildlife();
         $this->setupScoringCard();
         $this->setupHabitat();
+        $this->setupMarket();
 
         return $this;
+    }
+
+    public function setupMarket() {
+        $this->market->setup(4);
     }
 
     public function setupHabitat() {
         $this->setupStarterHabitat();
         $this->setupHabitatTileSelection();
-        $this->habitat_factory->flush();
+        $this->habitat_Setup->flush();
     }
 
     public function setupStarterHabitat() {
@@ -157,7 +172,7 @@ namespace NieuwenhovenGames\Cascadia;
         shuffle($tiles);
         foreach ($this->players as $player_id => $player) {
             $tile = array_pop($tiles);
-            $this->habitat_factory->addStarterTile($player_id, $tile);
+            $this->habitat_Setup->addStarterTile($player_id, $tile);
         }
     }
 
@@ -169,24 +184,24 @@ namespace NieuwenhovenGames\Cascadia;
         $number_selected = 3 + count($this->players)*20;
         for ($i = 0; $i <$number_selected; $i++) {
             $tile = array_pop($tiles);
-            $this->habitat_factory->add($tile);
+            $this->habitat_Setup->add($tile);
         }
     }
 
     public function setupScoringCard() {
         for ($type = 1; $type <= 5; $type ++) {
-            $this->scoring_card_factory->add($type, rand(0, 3));
+            $this->scoring_card_Setup->add($type, rand(0, 3));
         }
-        $this->scoring_card_factory->flush();
+        $this->scoring_card_Setup->flush();
     }
 
     public function setupWildlife() {
         for ($type = 1; $type <= 5; $type ++) {
             for ($number = 0; $number <20; $number ++) {
-                $this->wildlife_factory->add($type);
+                $this->wildlife_Setup->add($type);
             }
         }
-        $this->wildlife_factory->flush();
+        $this->wildlife_Setup->flush();
     }
 }
 ?>

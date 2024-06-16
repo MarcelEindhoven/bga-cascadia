@@ -7,16 +7,16 @@ namespace NieuwenhovenGames\Cascadia;
  */
 include_once(__DIR__.'/../BGA/FrameworkInterfaces/Deck.php');
 
-class HabitatFactory {
+class HabitatSetup {
     protected array $definitions = [];
 
-    static public function create($deck): HabitatFactory {
-        $object = new HabitatFactory();
+    static public function create($deck): HabitatSetup {
+        $object = new HabitatSetup();
         $object->setDeck($deck);
         return $object;
     }
 
-    public function setDeck($deck): HabitatFactory {
+    public function setDeck($deck): HabitatSetup {
         $this->deck = $deck;
         return $this;
     }

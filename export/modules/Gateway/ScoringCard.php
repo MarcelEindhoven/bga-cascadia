@@ -7,16 +7,16 @@ namespace NieuwenhovenGames\Cascadia;
  */
 include_once(__DIR__.'/../BGA/FrameworkInterfaces/Deck.php');
 
-class ScoringCardFactory {
+class ScoringCardSetup {
     protected array $definitions = [];
 
-    static public function create($deck): ScoringCardFactory {
-        $object = new ScoringCardFactory();
+    static public function create($deck): ScoringCardSetup {
+        $object = new ScoringCardSetup();
         $object->setDeck($deck);
         return $object;
     }
 
-    public function setDeck($deck): ScoringCardFactory {
+    public function setDeck($deck): ScoringCardSetup {
         $this->deck = $deck;
         return $this;
     }

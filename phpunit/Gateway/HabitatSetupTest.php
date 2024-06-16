@@ -13,10 +13,10 @@ include_once(__DIR__.'/../../export/modules/Gateway/Habitat.php');
 
 include_once(__DIR__.'/../../export/modules/BGA/FrameworkInterfaces/Deck.php');
 
-class HabitatTest extends TestCase{
+class HabitatSetupTest extends TestCase{
     protected function setUp(): void {
         $this->mock_cards = $this->createMock(\NieuwenhovenGames\BGA\FrameworkInterfaces\Deck::class);
-        $this->sut = new HabitatFactory();
+        $this->sut = new HabitatSetup();
         $this->sut->setDeck($this->mock_cards);
     }
 
