@@ -21,21 +21,17 @@ namespace NieuwenhovenGames\Cascadia;
 
     public function setup(&$players): PlayerSetup {
         $keys = array_keys($players);
-        if ($this->number_AI > 0) {
-            $players[array_key_first($players)]['player_name'] = 'AI_1';
+        for ($AI_index = 0; $AI_index < $this->number_AI; $AI_index++) {
+            $this->skipFirstPlayerIfPossible($keys, $this->number_AI - $AI_index);
+            $players[$keys[array_key_first($keys)]]['player_name'] = 'AI_' . ($AI_index + 1);
             unset($keys[array_key_first($keys)]);
-        }
-        if ($this->number_AI < count($players)) {
-            unset($keys[array_key_first($keys)]);
-        }
-        $AI_index = 1;
-        foreach ($keys as $player_id) {
-            if ($AI_index < $this->number_AI) {
-                $AI_index ++;
-                $players[$player_id]['player_name'] = 'AI_' . $AI_index;
-            }
         }
         return $this;
+    }
+    protected function skipFirstPlayerIfPossible(&$keys, $remaining_AI) {
+        if ($remaining_AI < count($keys)) {
+            unset($keys[array_key_first($keys)]);
+        }
     }
 }
 ?>

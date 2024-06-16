@@ -57,9 +57,8 @@ class PlayerSetupTest extends TestCase{
         // Act
         $this->sut->setup($players);
         // Assert
-        $this->assertEquals('AI_1', $players[77]['player_name']);
-        $this->assertEquals(PlayerSetupTest::PLAYERS4[7]['player_name'], $players[7]['player_name']);
-        $this->assertEqualsCanonicalizing(['AI_2', 'AI_3'], [$players[6]['player_name'], $players[5]['player_name']]);
+        $this->assertEquals(PlayerSetupTest::PLAYERS4[77]['player_name'], $players[77]['player_name']);
+        $this->assertEqualsCanonicalizing(['AI_1', 'AI_2', 'AI_3'], [$players[7]['player_name'], $players[6]['player_name'], $players[5]['player_name']]);
     }
 
     public function test_two_AI() {
@@ -69,10 +68,10 @@ class PlayerSetupTest extends TestCase{
         // Act
         $this->sut->setup($players);
         // Assert
-        $this->assertEquals('AI_1', $players[77]['player_name']);
-        $this->assertEquals('AI_2', $players[6]['player_name']);
-        $this->assertEquals(PlayerSetupTest::PLAYERS4[7]['player_name'], $players[7]['player_name']);
-        $this->assertEquals(PlayerSetupTest::PLAYERS4[5]['player_name'], $players[5]['player_name']);
+        $this->assertEquals('AI_1', $players[7]['player_name']);
+        $this->assertEquals('AI_2', $players[5]['player_name']);
+        $this->assertEquals(PlayerSetupTest::PLAYERS4[77]['player_name'], $players[77]['player_name']);
+        $this->assertEquals(PlayerSetupTest::PLAYERS4[6]['player_name'], $players[6]['player_name']);
     }
 }
 ?>
