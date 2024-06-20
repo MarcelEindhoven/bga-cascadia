@@ -20,11 +20,11 @@ class HabitatSetupTest extends TestCase{
         $this->sut->setDeck($this->mock_cards);
     }
 
-    public function test_simple_habitat_is_created() {
+    /**
+     * @dataProvider habitatProvider
+     */
+    public function test_habitat_wildlife_is_created($tile, $expected_definition) {
         // Arrange
-        $tile = [[1], [1]];
-        $expected_definition = array( 'type' => 1, 'type_arg' => 1 , 'nbr' => 1);
-
         $this->mock_cards->expects($this->exactly(1))->method('createCards')->with([$expected_definition]);
 
         $this->mock_cards->expects($this->exactly(1))->method('shuffle')->with(\NieuwenhovenGames\BGA\FrameworkInterfaces\Deck::STANDARD_DECK);    
@@ -34,18 +34,12 @@ class HabitatSetupTest extends TestCase{
         // Assert
     }
 
-    public function test_double_habitat_double_wildlife_is_created() {
-        // Arrange
-        $tile = [[4, 5], [2, 4]];
-        $expected_definition = array( 'type' => 4 + 5 * 6, 'type_arg' => 2 + 4 * 6 , 'nbr' => 1);
-
-        $this->mock_cards->expects($this->exactly(1))->method('createCards')->with([$expected_definition]);
-
-        $this->mock_cards->expects($this->exactly(1))->method('shuffle')->with(\NieuwenhovenGames\BGA\FrameworkInterfaces\Deck::STANDARD_DECK);    
-        // Act
-        $this->sut->add($tile);
-        $this->sut->flush();
-        // Assert
+    public function habitatProvider(): array {
+        return [
+            [[[1], [1]], array( 'type' => 1, 'type_arg' => 1 , 'nbr' => 1)],
+            [[[4, 5], [2, 4]], array( 'type' => 4 + 5 * 6, 'type_arg' => 2 + 4 * 6 , 'nbr' => 1)],
+            [[[1, 2], [1, 3, 4]], array( 'type' => 1 + 2 * 6, 'type_arg' => 1 + 3 * 6 + 4 * 6 * 6, 'nbr' => 1)],
+        ];
     }
 
     public function test_starter_tile() {
