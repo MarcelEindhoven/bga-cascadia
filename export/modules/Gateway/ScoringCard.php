@@ -28,8 +28,25 @@ class ScoringCardSetup {
         $this->deck->shuffle(\NieuwenhovenGames\BGA\FrameworkInterfaces\Deck::STANDARD_DECK);
         $this->definitions = [];
     }
+    public function deal() {}
 }
 
-class ScoringCard {
+class CurrentScoringCards {
+    static public function create($deck): CurrentScoringCards {
+        $object = new ScoringCardSetup();
+        $object->setDeck($deck);
+        return $object;
+    }
+
+    public function setDeck($deck): CurrentScoringCards {
+        $this->deck = $deck;
+        return $this;
+    }
+
+    public function get(): array {
+        $cards = $this->deck->getCardsInLocation(\NieuwenhovenGames\BGA\FrameworkInterfaces\Deck::STANDARD_DECK);
+        array_multisort(array_column($cards, 'type'), SORT_ASC, $cards);
+        return $cards;
+    }
 }
 ?>
