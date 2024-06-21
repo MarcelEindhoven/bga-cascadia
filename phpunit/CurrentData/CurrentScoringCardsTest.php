@@ -16,13 +16,11 @@ include_once(__DIR__.'/../../export/modules/BGA/FrameworkInterfaces/Deck.php');
 class CurrentScoringCardsTest extends TestCase{
     protected CurrentScoringCards $sut;
 
-    public function test_scoring_is_retrieved_and_sorted() {
+    /**
+     * @dataProvider scoringProvider
+     */
+    public function test_scoring_is_retrieved_and_sorted($retrieved_cards, $expected_cards) {
         // Arrange
-        $card1 = ['type' => 1, 'type_arg' => 0];
-        $card2 = ['type' => 2, 'type_arg' => 3];
-        $retrieved_cards = [$card2, $card1];
-        $expected_cards = [$card1, $card2];
-
         $this->mock_cards = $this->createMock(\NieuwenhovenGames\BGA\FrameworkInterfaces\Deck::class);
         $this->sut = new CurrentScoringCards();
         $this->sut->setDeck($this->mock_cards);
@@ -33,6 +31,17 @@ class CurrentScoringCardsTest extends TestCase{
         $cards = $this->sut->get();
         // Assert
         $this->assertEquals($expected_cards, $cards);
+    }
+
+    public function scoringProvider(): array {
+        $card1 = ['type' => 1, 'type_arg' => 0];
+        $card2 = ['type' => 2, 'type_arg' => 3];
+        return [
+            [[], []],
+            [[$card1], [$card1]],
+            [[$card2, $card1], [$card1, $card2]],
+            [[$card1, $card2], [$card1, $card2]],
+        ];
     }
 }
 ?>
