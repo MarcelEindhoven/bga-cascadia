@@ -31,7 +31,44 @@ class MarketGateway {
     }
 }
 
+class CurrentHabitat {
+    static public function create($deck): CurrentHabitat {
+        $object = new CurrentHabitat();
+        $object->setDeck($deck);
+        return $object;
+    }
+    public function setDeck($deck): CurrentHabitat {
+        $this->deck = $deck;
+        return $this;
+    }
+
+    public function getMarket(): array {
+        return $this->unpackTypesCards($this->deck->getCardsInLocation('market'));
+    }
+    protected function unpackTypesCards($cards): array {
+        $unpacked_cards = [];
+        foreach ($cards as $card) {
+            $unpacked_cards[] = $this->unpackTypes($card);
+        }
+        return $unpacked_cards;
+    }
+    protected function unpackTypes($card): array {
+        $card['supported_wildlife'] = $this->calculateTypes($card['type_arg']);
+        $card['terrain_types'] = $this->calculateTypes($card['type']);
+        return $card;
+    }
+    static public function calculateTypes($type_number): array {
+        $types = [];
+        while ($type_number >0) {
+            $types[] = $type_number % 6;
+            $type_number = intdiv($type_number, 6);
+        }
+        return $types;
+    }
+}
 class CurrentMarket {
+    protected array $converters = [];
+
     static public function create($decks): CurrentMarket {
         $object = new CurrentMarket();
         $object->setDecks($decks);
@@ -39,14 +76,14 @@ class CurrentMarket {
     }
 
     public function setDecks($decks): CurrentMarket {
-        $this->decks = $decks;
+        $this->converters['habitat'] = CurrentHabitat::create($decks['habitat']);
         return $this;
     }
 
     public function get(): array {
         $items_per_row = [];
-        foreach ($this->decks as $name => $deck) {
-            $items_per_row[$name] = $this->unpackHabitatCards($deck->getCardsInLocation('market'));
+        foreach ($this->converters as $name => $converter) {
+            $items_per_row[$name] = $converter->getMarket();
         }
         return $items_per_row;
     }
