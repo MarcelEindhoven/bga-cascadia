@@ -25,7 +25,7 @@ class HabitatSetup {
         $this->definitions[] = array( 'type' => $this->calculateType($tile[0]), 'type_arg' => $this->calculateType($tile[1]) , 'nbr' => 1);
     }
 
-    protected function calculateType($elements) {
+    static public function calculateType($elements) {
         $total = 0;
         $factor = 1;
         foreach ($elements as $element) {

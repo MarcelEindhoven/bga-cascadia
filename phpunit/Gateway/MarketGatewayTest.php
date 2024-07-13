@@ -24,7 +24,7 @@ class MarketGatewayTest extends TestCase{
 
     public function test_single_market_item() {
         // Arrange
-        $this->mock_cards->expects($this->exactly(1))->method('pickCardForLocation')->with(\NieuwenhovenGames\BGA\FrameworkInterfaces\Deck::STANDARD_DECK, $this->deck_name, 0);
+        $this->mock_cards->expects($this->exactly(1))->method('pickCardForLocation')->with(\NieuwenhovenGames\BGA\FrameworkInterfaces\Deck::STANDARD_DECK, 'market', 0);
 
         // Act
         $this->sut->setup(1);

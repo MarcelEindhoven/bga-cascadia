@@ -21,17 +21,25 @@ namespace NieuwenhovenGames\Cascadia;
 
     public function setup(&$players): PlayerSetup {
         $keys = array_keys($players);
+        // Assign player slots to AI by overwriting the player name
         for ($AI_index = 0; $AI_index < $this->number_AI; $AI_index++) {
-            $this->skipFirstPlayerIfPossible($keys, $this->number_AI - $AI_index);
-            $players[$keys[array_key_first($keys)]]['player_name'] = 'AI_' . ($AI_index + 1);
+            // Interleave human players with AI players
+            $this->skipFirstKeyIfPossible($keys, $this->number_AI - $AI_index);
+            $this->assignPlayerAsAI($players[$keys[array_key_first($keys)]], $AI_index + 1);
             unset($keys[array_key_first($keys)]);
         }
         return $this;
     }
-    protected function skipFirstPlayerIfPossible(&$keys, $remaining_AI) {
+    protected function skipFirstKeyIfPossible(& $keys, $remaining_AI) {
         if ($remaining_AI < count($keys)) {
+            // First in the remaining list is a human player
             unset($keys[array_key_first($keys)]);
         }
+    }
+    protected function assignPlayerAsAI(& $player, $AI_sequence_number): PlayerSetup {
+        $player['player_name'] = 'AI_' . ($AI_sequence_number);
+
+        return $this;
     }
 }
 ?>
