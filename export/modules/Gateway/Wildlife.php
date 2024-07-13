@@ -47,6 +47,10 @@ class CurrentWildlife {
         return $this;
     }
 
+    public function getMarket(): array {
+        return $this->deck->getCardsInLocation('market');
+    }
+
     public function get(): array {
         $wildlife_per_player = [];
         foreach ($this->players as $player_id => $player) {

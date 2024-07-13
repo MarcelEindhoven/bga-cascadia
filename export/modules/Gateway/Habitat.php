@@ -52,4 +52,40 @@ class HabitatSetup {
         $this->definitions = [];
     }
 }
+
+class CurrentHabitat {
+    static public function create($deck): CurrentHabitat {
+        $object = new CurrentHabitat();
+        $object->setDeck($deck);
+        return $object;
+    }
+    public function setDeck($deck): CurrentHabitat {
+        $this->deck = $deck;
+        return $this;
+    }
+
+    public function getMarket(): array {
+        return $this->unpackTypesCards($this->deck->getCardsInLocation('market'));
+    }
+    protected function unpackTypesCards($cards): array {
+        $unpacked_cards = [];
+        foreach ($cards as $card) {
+            $unpacked_cards[] = $this->unpackTypes($card);
+        }
+        return $unpacked_cards;
+    }
+    protected function unpackTypes($card): array {
+        $card['supported_wildlife'] = $this->calculateTypes($card['type_arg']);
+        $card['terrain_types'] = $this->calculateTypes($card['type']);
+        return $card;
+    }
+    static public function calculateTypes($type_number): array {
+        $types = [];
+        while ($type_number >0) {
+            $types[] = $type_number % 6;
+            $type_number = intdiv($type_number, 6);
+        }
+        return $types;
+    }
+}
 ?>
