@@ -20,7 +20,7 @@ class CurrentMarketTest extends TestCase{
     protected string $deck_name = 'habitat';
 
     /**
-     * @dataProvider habitatProvider
+     * @dataProvider marketProvider
      */
     public function test_habitat_is_retrieved_and_unpacked($retrieved_cards, $expected_cards) {
         // Arrange
@@ -38,24 +38,26 @@ class CurrentMarketTest extends TestCase{
         $this->assertEquals($expected_cards, $cards);
     }
 
-    public function habitatProvider(): array {
-        list($card1, $expected1) = $this->createCardAndExpectedHabitat([], []);
-        list($card2, $expected2) = $this->createCardAndExpectedHabitat([1], [1]);
-        list($card3, $expected3) = $this->createCardAndExpectedHabitat([1, 4, 5], [1, 5]);
+    public function marketProvider(): array {
+        list($card1, $expected1) = $this->createCardAndExpectedHabitat([], [], 1);
+        list($card2, $expected2) = $this->createCardAndExpectedHabitat([1], [1], 3);
+        list($card3, $expected3) = $this->createCardAndExpectedHabitat([1, 4, 5], [1, 5], 2);
         return [
             [[], [$this->deck_name => [], 'wildlife' => []]],
             [[$card1], [$this->deck_name => [$expected1], 'wildlife' => [$card1]]],
             [[$card2], [$this->deck_name => [$expected2], 'wildlife' => [$card2]]],
-            [[$card2, $card3], [$this->deck_name => [$expected2, $expected3], 'wildlife' => [$card2, $card3]]],
+            [[$card1, $card3], [$this->deck_name => [$expected1, $expected3], 'wildlife' => [$card1, $card3]]],
+            // Sort according to location argument
+            [[$card3, $card2, $card1], [$this->deck_name => [$expected1, $expected3, $expected2], 'wildlife' => [$card1, $card3, $card2]]],
         ];
     }
 
-    protected function createCardAndExpectedHabitat($terrain_types, $supported_wildlife) {
+    protected function createCardAndExpectedHabitat($terrain_types, $supported_wildlife, $market_index) {
         $type = HabitatSetup::calculateType($terrain_types);
         $type_arg = HabitatSetup::calculateType($supported_wildlife);
         return [
-            ['type' => $type, 'type_arg' => $type_arg, ],
-            ['type' => $type, 'type_arg' => $type_arg, 'terrain_types' => $terrain_types, 'supported_wildlife' => $supported_wildlife, ],
+            ['type' => $type, 'type_arg' => $type_arg, 'location_arg' => $market_index, ],
+            ['type' => $type, 'type_arg' => $type_arg, 'location_arg' => $market_index, 'terrain_types' => $terrain_types, 'supported_wildlife' => $supported_wildlife, ],
         ];
     }
 }

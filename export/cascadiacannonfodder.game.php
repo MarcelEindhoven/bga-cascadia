@@ -19,6 +19,8 @@
 
 require_once( APP_GAMEMODULE_PATH.'module/table/table.game.php' );
 
+include_once(__DIR__.'/modules/Infrastructure/DataSourcesFactory.php');
+
 include_once(__DIR__.'/modules/NewGame/NewGame.php');
 include_once(__DIR__.'/modules/NewGame/PlayerSetup.php');
 

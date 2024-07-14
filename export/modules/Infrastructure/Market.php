@@ -50,7 +50,9 @@ class CurrentMarket {
     public function get(): array {
         $items_per_row = [];
         foreach ($this->converters as $name => $converter) {
-            $items_per_row[$name] = $converter->getMarket();
+            $cards = $converter->getMarket();
+            array_multisort(array_column($cards, 'location_arg'), SORT_ASC, $cards);
+            $items_per_row[$name] = $cards;
         }
         return $items_per_row;
     }
