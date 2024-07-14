@@ -9,16 +9,16 @@ namespace NieuwenhovenGames\Cascadia;
 include_once(__DIR__.'/../../vendor/autoload.php');
 use PHPUnit\Framework\TestCase;
 
-include_once(__DIR__.'/../../export/modules/Gateway/Market.php');
+include_once(__DIR__.'/../../export/modules/Infrastructure/Market.php');
 
 include_once(__DIR__.'/../../export/modules/BGA/FrameworkInterfaces/Deck.php');
 
-class MarketGatewayTest extends TestCase{
+class MarketInfrastructureTest extends TestCase{
     protected string $deck_name = 'habitat';
 
     protected function setUp(): void {
         $this->mock_cards = $this->createMock(\NieuwenhovenGames\BGA\FrameworkInterfaces\Deck::class);
-        $this->sut = new MarketGateway();
+        $this->sut = new MarketInfrastructure();
         $this->sut->setDecks([$this->deck_name => $this->mock_cards]);
     }
 

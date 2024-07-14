@@ -9,21 +9,21 @@ include_once(__DIR__.'/../BGA/FrameworkInterfaces/Deck.php');
 include_once(__DIR__.'/Habitat.php');
 include_once(__DIR__.'/Wildlife.php');
 
-class MarketGateway {
+class MarketInfrastructure {
     protected array $definitions = [];
 
-    static public function create($decks): MarketGateway {
-        $object = new MarketGateway();
+    static public function create($decks): MarketInfrastructure {
+        $object = new MarketInfrastructure();
         $object->setDecks($decks);
         return $object;
     }
 
-    public function setDecks($decks): MarketGateway {
+    public function setDecks($decks): MarketInfrastructure {
         $this->decks = $decks;
         return $this;
     }
 
-    public function setup($market_size): MarketGateway {
+    public function setup($market_size): MarketInfrastructure {
         foreach ($this->decks as $name => $deck) {
             for ($i = 0; $i <$market_size; $i++) {
                 $deck->pickCardForLocation(\NieuwenhovenGames\BGA\FrameworkInterfaces\Deck::STANDARD_DECK, 'market', $i);

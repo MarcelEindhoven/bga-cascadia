@@ -33,7 +33,7 @@ class ScoringCardSetup {
 
 class CurrentScoringCards {
     static public function create($deck): CurrentScoringCards {
-        $object = new ScoringCardSetup();
+        $object = new CurrentScoringCards();
         $object->setDeck($deck);
         return $object;
     }

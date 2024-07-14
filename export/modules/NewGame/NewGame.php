@@ -6,10 +6,10 @@ namespace NieuwenhovenGames\Cascadia;
  *
  */
 
-include_once(__DIR__.'/../Gateway/Habitat.php');
-include_once(__DIR__.'/../Gateway/Market.php');
-include_once(__DIR__.'/../Gateway/ScoringCard.php');
-include_once(__DIR__.'/../Gateway/Wildlife.php');
+include_once(__DIR__.'/../Infrastructure/Habitat.php');
+include_once(__DIR__.'/../Infrastructure/Market.php');
+include_once(__DIR__.'/../Infrastructure/ScoringCard.php');
+include_once(__DIR__.'/../Infrastructure/Wildlife.php');
  
  class NewGame {
     const STARTER_HABITAT_TILES = [
@@ -116,8 +116,8 @@ include_once(__DIR__.'/../Gateway/Wildlife.php');
         $object->setWildlifeSetup($wildlife_setup);
 
         unset($decks['scoring_card']);
-        $market = MarketGateway::create($decks);
-        $object->setMarketGateway($market);
+        $market = MarketInfrastructure::create($decks);
+        $object->setMarketInfrastructure($market);
 
         return $object;
     }
@@ -142,7 +142,7 @@ include_once(__DIR__.'/../Gateway/Wildlife.php');
         return $this;
     }
 
-    public function setMarketGateway($market): NewGame {
+    public function setMarketInfrastructure($market): NewGame {
         $this->market = $market;
         return $this;
     }

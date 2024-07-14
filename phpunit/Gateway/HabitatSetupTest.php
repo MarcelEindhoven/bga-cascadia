@@ -9,7 +9,7 @@ namespace NieuwenhovenGames\Cascadia;
 include_once(__DIR__.'/../../vendor/autoload.php');
 use PHPUnit\Framework\TestCase;
 
-include_once(__DIR__.'/../../export/modules/Gateway/Habitat.php');
+include_once(__DIR__.'/../../export/modules/Infrastructure/Habitat.php');
 
 include_once(__DIR__.'/../../export/modules/BGA/FrameworkInterfaces/Deck.php');
 
