@@ -22,6 +22,8 @@ require_once( APP_GAMEMODULE_PATH.'module/table/table.game.php' );
 include_once(__DIR__.'/modules/NewGame/NewGame.php');
 include_once(__DIR__.'/modules/NewGame/PlayerSetup.php');
 
+include_once(__DIR__.'/modules/UseCases/GetAllDatas.php');
+
 class CascadiaCannonFodder extends Table
 {
     protected array $decks = [];
@@ -123,14 +125,18 @@ class CascadiaCannonFodder extends Table
     */
     protected function getAllDatas()
     {
-        $result = array();
-    
         $current_player_id = $this->getCurrentPlayerId();    // !! We must only return informations visible by this player !!
     
         // Get information about players
         // Note: you can retrieve some extra field you added for "player" table in "dbmodel.sql" if you need it.
         $sql = "SELECT player_id id, player_score score, player_coins coins FROM player ";
-        $result['players'] = $this->getCollectionFromDb( $sql );
+        $players = $this->getCollectionFromDb( $sql );
+
+        $result = \NieuwenhovenGames\Cascadia\GetAllDatas::create(
+            \NieuwenhovenGames\Cascadia\DataSourcesFactory::create($this->decks)->setPlayers($players)->getSources()
+        )->get();
+    
+        $result['players'] = $players;
   
         // TODO: Gather all information about current game situation (visible by player $current_player_id).
   

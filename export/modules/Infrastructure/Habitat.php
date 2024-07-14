@@ -64,6 +64,16 @@ class CurrentHabitat {
         return $this;
     }
 
+    public function setPlayers($players): CurrentHabitat {
+        $this->players = $players;
+        return $this;
+    }
+
+    public function get(): array {
+        $cards = $this->deck->getCardsInLocation(\NieuwenhovenGames\BGA\FrameworkInterfaces\Deck::STANDARD_DECK);
+        return $cards;
+    }
+
     public function getMarket(): array {
         return $this->unpackTypesCards($this->deck->getCardsInLocation('market'));
     }
