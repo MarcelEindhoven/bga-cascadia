@@ -81,6 +81,8 @@ class CurrentHabitatTerritory {
 }
 
 class CurrentTerritory {
+    const X = 'horizontal';
+    const Y = 'vertical';
     static public function unpackPositions($cards): array {
         $unpacked_cards = [];
         foreach ($cards as & $card) {
@@ -92,10 +94,10 @@ class CurrentTerritory {
         $card['rotation'] = intdiv($card['location_arg'], 10000);
 
         $remainder = $card['location_arg'] - ($card['rotation'] * 10000);
-        $card['y'] = intdiv($remainder, 100);
+        $card[CurrentTerritory::Y] = intdiv($remainder, 100);
 
-        $remainder = $remainder - ($card['y'] * 100);
-        $card['x'] = $remainder;
+        $remainder = $remainder - ($card[CurrentTerritory::Y] * 100);
+        $card[CurrentTerritory::X] = $remainder;
 
         return $card;
     }
