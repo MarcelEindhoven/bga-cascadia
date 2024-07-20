@@ -31,9 +31,9 @@ class DataSourcesFactory {
     public function getSources(): array {
         $sources['scoring_card'] = CurrentScoringCards::create($this->decks['scoring_card']);
 
-        $sources['wildlife'] = CurrentWildlife::create($this->decks['wildlife']);
+        $sources['wildlife'] = CurrentWildlifeTerritory::create($this->decks['wildlife']);
         $sources['wildlife']->setPlayers($this->players);
-        $sources['habitat'] = CurrentHabitat::create($this->decks['habitat']);
+        $sources['habitat'] = CurrentHabitatTerritory::create($this->decks['habitat']);
         $sources['habitat']->setPlayers($this->players);
 
         $sources['market'] = CurrentMarket::create($this->decks);

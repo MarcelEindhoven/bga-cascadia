@@ -53,27 +53,51 @@ class HabitatSetup {
     }
 }
 
-class CurrentHabitat {
+class CurrentHabitatTerritory {
     protected array $players;
 
-    static public function create($deck): CurrentHabitat {
-        $object = new CurrentHabitat();
+    static public function create($deck): CurrentHabitatTerritory {
+        $object = new CurrentHabitatTerritory();
         $object->setDeck($deck);
         return $object;
     }
-    public function setDeck($deck): CurrentHabitat {
+    public function setDeck($deck): CurrentHabitatTerritory {
         $this->deck = $deck;
         return $this;
     }
 
-    public function setPlayers($players): CurrentHabitat {
+    public function setPlayers($players): CurrentHabitatTerritory {
         $this->players = $players;
         return $this;
     }
 
     public function get(): array {
-        $cards = $this->deck->getCardsInLocation(\NieuwenhovenGames\BGA\FrameworkInterfaces\Deck::STANDARD_DECK);
-        return $cards;
+        $habitat_per_player = [];
+        foreach ($this->players as $player_id => $player) {
+            $habitat_per_player[$player_id] = CurrentHabitat::unpackTypes(CurrentTerritory::unpackPositions($this->deck->getCardsInLocation($player_id)));
+        }
+        return $habitat_per_player;
+    }
+}
+
+class CurrentTerritory {
+    static public function unpackPositions($cards): array {
+        $unpacked_cards = [];
+        foreach ($cards as & $card) {
+            $unpacked_cards[] = CurrentTerritory::unpackPosition($card);
+        }
+        return $unpacked_cards;
+    }
+    static public function unpackPosition($card): array {
+        $card['rotation'] = intdiv($card['location_arg'], 10000);
+
+        $remainder = $card['location_arg'] - ($card['rotation'] * 10000);
+        $card['y'] = intdiv($remainder, 100);
+
+        $remainder = $remainder - ($card['y'] * 100);
+        $card['x'] = $remainder;
+
+        return $card;
     }
 }
 
@@ -89,20 +113,25 @@ class CurrentHabitatMarket {
     }
 
     public function get(): array {
-        return $this->unpackTypesCards($this->deck->getCardsInLocation('market'));
+        return CurrentHabitat::unpackTypes(($this->deck->getCardsInLocation('market')));
     }
-    protected function unpackTypesCards($cards): array {
+}
+
+class CurrentHabitat {
+    static public function unpackTypes($cards): array {
         $unpacked_cards = [];
         foreach ($cards as $card) {
-            $unpacked_cards[] = $this->unpackTypes($card);
+            $unpacked_cards[] = CurrentHabitat::unpackType($card);
         }
         return $unpacked_cards;
     }
-    protected function unpackTypes($card): array {
-        $card['supported_wildlife'] = $this->calculateTypes($card['type_arg']);
-        $card['terrain_types'] = $this->calculateTypes($card['type']);
+
+    static protected function unpackType($card): array {
+        $card['supported_wildlife'] = CurrentHabitat::calculateTypes($card['type_arg']);
+        $card['terrain_types'] = CurrentHabitat::calculateTypes($card['type']);
         return $card;
     }
+
     static public function calculateTypes($type_number): array {
         $types = [];
         while ($type_number >0) {

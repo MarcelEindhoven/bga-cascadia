@@ -14,7 +14,7 @@ include_once(__DIR__.'/../../export/modules/Infrastructure/Wildlife.php');
 include_once(__DIR__.'/../../export/modules/BGA/FrameworkInterfaces/Deck.php');
 
 class CurrentWildlifeTest extends TestCase{
-    protected CurrentWildlife $sut;
+    protected CurrentWildlifeTerritory $sut;
     const DEFAULT_PLAYER_ID = 77;
 
     /**
@@ -24,7 +24,7 @@ class CurrentWildlifeTest extends TestCase{
         // Arrange
         $players1 = [CurrentWildlifeTest::DEFAULT_PLAYER_ID => ['player_id' => CurrentWildlifeTest::DEFAULT_PLAYER_ID, 'player_name' => 'test ']];
         $this->mock_cards = $this->createMock(\NieuwenhovenGames\BGA\FrameworkInterfaces\Deck::class);
-        $this->sut = new CurrentWildlife();
+        $this->sut = new CurrentWildlifeTerritory();
         $this->sut->setDeck($this->mock_cards);
         $this->sut->setPlayers($players1);
 
