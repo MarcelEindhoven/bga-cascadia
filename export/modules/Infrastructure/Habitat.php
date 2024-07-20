@@ -54,6 +54,8 @@ class HabitatSetup {
 }
 
 class CurrentHabitat {
+    protected array $players;
+
     static public function create($deck): CurrentHabitat {
         $object = new CurrentHabitat();
         $object->setDeck($deck);
@@ -73,8 +75,20 @@ class CurrentHabitat {
         $cards = $this->deck->getCardsInLocation(\NieuwenhovenGames\BGA\FrameworkInterfaces\Deck::STANDARD_DECK);
         return $cards;
     }
+}
 
-    public function getMarket(): array {
+class CurrentHabitatMarket {
+    static public function create($deck): CurrentHabitatMarket {
+        $object = new CurrentHabitatMarket();
+        $object->setDeck($deck);
+        return $object;
+    }
+    public function setDeck($deck): CurrentHabitatMarket {
+        $this->deck = $deck;
+        return $this;
+    }
+
+    public function get(): array {
         return $this->unpackTypesCards($this->deck->getCardsInLocation('market'));
     }
     protected function unpackTypesCards($cards): array {

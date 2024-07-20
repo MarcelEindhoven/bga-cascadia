@@ -42,39 +42,22 @@ class CurrentMarket {
     }
 
     public function setDecks($decks): CurrentMarket {
-        $this->converters['habitat'] = CurrentHabitat::create($decks['habitat']);
-        $this->converters['wildlife'] = CurrentWildlife::create($decks['wildlife']);
+        $this->converters['habitat'] = CurrentHabitatMarket::create($decks['habitat']);
+        $this->converters['wildlife'] = CurrentWildlifeMarket::create($decks['wildlife']);
         return $this;
     }
 
     public function get(): array {
         $items_per_row = [];
         foreach ($this->converters as $name => $converter) {
-            $cards = $converter->getMarket();
-            array_multisort(array_column($cards, 'location_arg'), SORT_ASC, $cards);
-            $items_per_row[$name] = $cards;
+            $items_per_row[$name] = $this->getItemsSortedOnRowIndex($converter);
         }
         return $items_per_row;
     }
-    protected function unpackHabitatCards($cards): array {
-        $unpacked_cards = [];
-        foreach ($cards as $card) {
-            $unpacked_cards[] = $this->unpackHabitat($card);
-        }
-        return $unpacked_cards;
-    }
-    protected function unpackHabitat($card): array {
-        $card['supported_wildlife'] = $this->calculateTypes($card['type_arg']);
-        $card['terrain_types'] = $this->calculateTypes($card['type']);
-        return $card;
-    }
-    static public function calculateTypes($type_number): array {
-        $types = [];
-        while ($type_number >0) {
-            $types[] = $type_number % 6;
-            $type_number = intdiv($type_number, 6);
-        }
-        return $types;
+    protected function getItemsSortedOnRowIndex($converter): array {
+        $cards = $converter->get();
+        array_multisort(array_column($cards, 'location_arg'), SORT_ASC, $cards);
+        return $cards;
     }
 }
 ?>

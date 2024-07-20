@@ -31,6 +31,8 @@ class WildlifeSetup {
 }
 
 class CurrentWildlife {
+    protected array $players;
+
     static public function create($deck): CurrentWildlife {
         $object = new CurrentWildlife();
         $object->setDeck($deck);
@@ -45,10 +47,6 @@ class CurrentWildlife {
     public function setPlayers($players): CurrentWildlife {
         $this->players = $players;
         return $this;
-    }
-
-    public function getMarket(): array {
-        return $this->deck->getCardsInLocation('market');
     }
 
     public function get(): array {
@@ -68,6 +66,23 @@ class CurrentWildlife {
             }
         }
         return $wildlife_per_player;
+    }
+}
+
+class CurrentWildlifeMarket {
+    static public function create($deck): CurrentWildlifeMarket {
+        $object = new CurrentWildlifeMarket();
+        $object->setDeck($deck);
+        return $object;
+    }
+
+    public function setDeck($deck): CurrentWildlifeMarket {
+        $this->deck = $deck;
+        return $this;
+    }
+
+    public function get(): array {
+        return $this->deck->getCardsInLocation('market');
     }
 }
 ?>
