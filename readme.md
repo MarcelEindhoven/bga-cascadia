@@ -59,7 +59,7 @@ npm install --save-dev sinon
 npm install --save-dev dojo
 npm install --save-dev amd-loader
 
-package.json add test script
+edit package.json: add test script
 npm test
 
 ### PHP unit testing
