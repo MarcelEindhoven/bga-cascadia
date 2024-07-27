@@ -5,9 +5,10 @@ define(['dojo/_base/declare'], (declare) => {
         setDojo(toolkit){this.toolkit = toolkit},
         setGameGUI(dom){this.dom = dom},
 
-        createToken(type, id){
-            block = this.dom.format_block(type, {token_id: id});
+        createToken(category, id, type){
+            block = this.dom.format_block(category, {token_id: id});
             this.toolkit.place(block, 'tokens');
+            this.toolkit.addClass(id, category + type);
         },
         move(id_to_move, destination_id, x = 0, y = 0){
             if (x != 0 || y != 0) {

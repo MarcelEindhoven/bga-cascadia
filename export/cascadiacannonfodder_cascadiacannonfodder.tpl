@@ -88,7 +88,7 @@ with ‘A’ in the bottom right corner).
 
 
 <script type="text/javascript">
-var jstpl_token0='<div class="field" id="${token_id}"></div>';
+var field='<div class="field" id="${token_id}"></div>';
 var upper_half='<div class="upper_half" id="${token_id}"></div>';
 var field_wildlife='<div class="field_wildlife" id="${token_id}"></div>';
 

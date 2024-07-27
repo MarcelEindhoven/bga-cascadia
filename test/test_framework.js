@@ -9,6 +9,7 @@ describe('Framework', function () {
 
         dojo = {
             place: sinon.spy(),
+            addClass: sinon.spy(),
         };
         sut.setDojo(dojo);
 
@@ -21,32 +22,45 @@ describe('Framework', function () {
         sut.setGameGUI(gamegui);
     });
     describe('Create token', function () {
-        function act_default(type, id) {
-            sut.createToken(type, id);
+        function act_default(category, id, type = 1) {
+            sut.createToken(category, id, type);
         };
         it('format_block', function () {
             // Arrange
-            type = 'type ';
+            category = 'category ';
             id = 'ID ';
             // Act
-            act_default(type, id);
+            act_default(category, id);
             // Assert
             sinon.assert.calledOnce(gamegui.format_block);
             sinon.assert.match(gamegui.format_block.getCall(0).args.length, 2);
-            sinon.assert.match(gamegui.format_block.getCall(0).args[0], type);
+            sinon.assert.match(gamegui.format_block.getCall(0).args[0], category);
             sinon.assert.match(gamegui.format_block.getCall(0).args[1].token_id, id);
         });
         it('place', function () {
             // Arrange
-            type = 'type';
+            category = 'category';
             id = 'ID';
             // Act
-            act_default(type, id);
+            act_default(category, id);
             // Assert
             sinon.assert.calledOnce(dojo.place);
             sinon.assert.match(dojo.place.getCall(0).args.length, 2);
             sinon.assert.match(dojo.place.getCall(0).args[0], block);
             sinon.assert.match(dojo.place.getCall(0).args[1], 'tokens');
+        });
+        it('colour', function () {
+            // Arrange
+            category = 'wildlife';
+            id = 'ID';
+            type = '5';
+            // Act
+            act_default(category, id, type);
+            // Assert
+            sinon.assert.calledOnce(dojo.addClass);
+            sinon.assert.match(dojo.addClass.getCall(0).args.length, 2);
+            sinon.assert.match(dojo.addClass.getCall(0).args[0], id);
+            sinon.assert.match(dojo.addClass.getCall(0).args[1], 'wildlife5');
         });
     });
     describe('Move token', function () {
@@ -59,7 +73,7 @@ describe('Framework', function () {
         }
         it('placeOnObject', function () {
             // Arrange
-            id_to_move = 'type';
+            id_to_move = 'category';
             destination_id = 'ID';
             // Act
             act_default(id_to_move, destination_id);
@@ -70,7 +84,7 @@ describe('Framework', function () {
         });
         it('placeOnObjectPos', function () {
             // Arrange
-            id_to_move = 'type';
+            id_to_move = 'category';
             destination_id = 'ID';
             x = 1;
             y = 0;

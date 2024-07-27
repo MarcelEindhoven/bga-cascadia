@@ -94,6 +94,37 @@
     position: relative;
     background-color: rgb(90, 0, 8);
 }
+.wildlife1 {
+    background-color: rgb(90, 0, 8);
+}
+.wildlife2 {
+    background-color: rgb(90, 50, 8);
+}
+.wildlife3 {
+    background-color: rgb(90, 100, 8);
+}
+.wildlife4 {
+    background-color: rgb(90, 150, 8);
+}
+.wildlife5 {
+    background-color: rgb(90, 200, 8);
+}
+.field_wildlife1 {
+    background-color: rgb(90, 0, 8);
+}
+.field_wildlife2 {
+    background-color: rgb(90, 50, 8);
+}
+.field_wildlife3 {
+    background-color: rgb(90, 100, 8);
+}
+.field_wildlife4 {
+    background-color: rgb(90, 150, 8);
+}
+.field_wildlife5 {
+    background-color: rgb(90, 200, 8);
+}
+
 .token3 {
     clip-path: polygon(0% 0%, 100% 0%, 50% 100%);
 }

@@ -68,17 +68,17 @@ function (dojo, declare) {
         },
         prototyping: function() {
             console.log('prototyping ' + this.player_id);
-            dojo.place( this.format_block( 'jstpl_token0', {
+            dojo.place( this.format_block( 'field', {
                 token_id: 'topleft',
             } ) , 'tokens' );
             this.slideToObject( 'topleft', 'habitat_' + 0).play();
 
-            dojo.place( this.format_block( 'jstpl_token0', {
+            dojo.place( this.format_block( 'field', {
                 token_id: 'bottomright',
             } ) , 'tokens' );
             this.slideToObject( 'bottomright', 'wildlife_' + 3).play();
 
-            dojo.place( this.format_block( 'jstpl_token0', {
+            dojo.place( this.format_block( 'field', {
                 token_id: 'abcd',
             } ) , 'tokens' );
             this.slideToObjectPos( 'abcd', '' + this.player_id, 50, 50).play();
@@ -93,6 +93,7 @@ function (dojo, declare) {
             dojo.place( this.format_block( 'field_wildlife', {
                 token_id: 'bird2',
             } ) , 'tokens' );
+            dojo.addClass('bird2', 'wildlife3');
             this.slideToObjectPos( 'bird2', '' + this.player_id, 50+15, 50+25).play();
 
         },
