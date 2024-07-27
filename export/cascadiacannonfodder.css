@@ -130,6 +130,24 @@
 .wildlife5 {
     background-color: rgb(90, 200, 8);
 }
+.rotate0 {
+    transform: rotate(0deg);
+}
+.rotate1 {
+    transform: rotate(60deg);
+}
+.rotate2 {
+    trasform: rotate(120deg);
+}
+.rotate3 {
+    transform: rotate(180deg);
+}
+.rotate4 {
+    transform: rotate(-120deg);
+}
+.rotate5 {
+    transform: rotate(-60deg);
+}
 
 .token3 {
     clip-path: polygon(0% 0%, 100% 0%, 50% 100%);

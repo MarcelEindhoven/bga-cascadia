@@ -70,24 +70,6 @@ function (dojo, declare, framework) {
             console.log( "Ending game setup" );
         },
         prototyping: function(gamedatas) {
-            dojo.place( this.format_block( 'field', {
-                token_id: 'abcd',
-            } ) , 'tokens' );
-            this.slideToObjectPos( 'abcd', '' + this.player_id, 50, 50).play();
-            dojo.place( this.format_block( 'upper_half', {
-                token_id: 'abcd_upper_half',
-            } ) , 'tokens' );
-            this.slideToObjectPos( 'abcd_upper_half', '' + this.player_id, 50, 50).play();
-            dojo.place( this.format_block( 'field_wildlife', {
-                token_id: 'bird',
-            } ) , 'tokens' );
-            this.slideToObjectPos( 'bird', '' + this.player_id, 50+15, 50+5).play();
-            dojo.place( this.format_block( 'field_wildlife', {
-                token_id: 'bird2',
-            } ) , 'tokens' );
-            dojo.addClass('bird2', 'wildlife3');
-            this.slideToObjectPos( 'bird2', '' + this.player_id, 50+15, 50+25).play();
-
             w = gamedatas.market.wildlife[0];
             this.framework.createToken('wildlife', w.id, 'wildlife' + w.type);
             this.framework.move(w.id, 'wildlife_0');
@@ -117,7 +99,41 @@ function (dojo, declare, framework) {
                 this.framework.createToken('upper_half', id, 'field' + h.terrain_types[1]);
                 this.framework.move(id, h.id);
             }
-        },
+
+            h = gamedatas.habitat[this.player_id][1];
+            this.framework.createToken('field', h.id, 'field' + h.terrain_types[0]);
+            this.framework.move(h.id, '' + this.player_id, 0, 0);
+            if (typeof h.terrain_types[1] != 'undefined') {
+                id = h.id + 'upper_half';
+                this.framework.createToken('upper_half', id, 'field' + h.terrain_types[1]);
+                this.framework.move(id, h.id);
+                dojo.addClass(id, 'rotate' + h.rotation);
+            }
+            x1 = 0;
+            y1 = -11;
+            x0 = 0;
+            y0 = 0;
+            if (typeof h.supported_wildlife[2] != 'undefined') {
+                id = h.id + 'field_wildlife2';
+                this.framework.createToken('field_wildlife', id, 'wildlife' + h.supported_wildlife[2]);
+                this.framework.move(id, h.id, 0, -11);
+                x1 = 9;
+                y1 = 9;
+                x0 = -9;
+                y0 = 9;
+            }
+            if (typeof h.supported_wildlife[1] != 'undefined') {
+                id = h.id + 'field_wildlife1';
+                this.framework.createToken('field_wildlife', id, 'wildlife' + h.supported_wildlife[1]);
+                this.framework.move(id, h.id, x1, y1);
+                if (x0 == 0) {
+                    y0 = -11;
+                }
+            }
+            id = h.id + 'field_wildlife0';
+            this.framework.createToken('field_wildlife', id, 'wildlife' + h.supported_wildlife[0]);
+            this.framework.move(id, h.id, x0, y0);
+    },
        
 
         ///////////////////////////////////////////////////
