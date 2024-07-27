@@ -91,6 +91,7 @@ with ‘A’ in the bottom right corner).
 var field='<div class="field" id="${token_id}"></div>';
 var upper_half='<div class="upper_half" id="${token_id}"></div>';
 var field_wildlife='<div class="field_wildlife" id="${token_id}"></div>';
+var wildlife='<div class="wildlife" id="${token_id}"></div>';
 
 // Javascript HTML templates
 

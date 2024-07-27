@@ -17,10 +17,11 @@
 
 define([
     "dojo","dojo/_base/declare",
+    g_gamethemeurl + 'modules/BGA/javascript/framework.js',
     "ebg/core/gamegui",
     "ebg/counter"
 ],
-function (dojo, declare) {
+function (dojo, declare, framework) {
     return declare("bgagame.cascadiacannonfodder", ebg.core.gamegui, {
         constructor: function(){
             console.log('cascadiacannonfodder constructor');
@@ -57,10 +58,24 @@ function (dojo, declare) {
             }
             
             // TODO: Set up your game interface here, according to "gamedatas"
-            
+            this.framework = new framework();
+            this.framework.setGameGUI(this);
+            this.framework.setDojo(dojo);            
  
             // Setup game notifications to handle (see "setupNotifications" method below)
             this.setupNotifications();
+
+            w = gamedatas.market.wildlife[0];
+            this.framework.createToken('wildlife', w.id, w.type);
+            this.framework.move(w.id, 'wildlife_0');
+
+            w = gamedatas.market.wildlife[2];
+            this.framework.createToken('wildlife', w.id, w.type);
+            this.framework.move(w.id, 'wildlife_2');
+
+            w = gamedatas.market.wildlife[3];
+            this.framework.createToken('wildlife', w.id, w.type);
+            this.framework.move(w.id, 'wildlife_3');
 
             this.prototyping();
 
@@ -72,11 +87,6 @@ function (dojo, declare) {
                 token_id: 'topleft',
             } ) , 'tokens' );
             this.slideToObject( 'topleft', 'habitat_' + 0).play();
-
-            dojo.place( this.format_block( 'field', {
-                token_id: 'bottomright',
-            } ) , 'tokens' );
-            this.slideToObject( 'bottomright', 'wildlife_' + 3).play();
 
             dojo.place( this.format_block( 'field', {
                 token_id: 'abcd',
