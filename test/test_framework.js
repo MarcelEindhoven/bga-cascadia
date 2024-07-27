@@ -96,5 +96,22 @@ describe('Framework', function () {
             assert_default(gamegui.placeOnObjectPos, id_to_move, destination_id);
         });
     });
+    describe('Classify token', function () {
+        function act_default(id, type) {
+            sut.classifyToken(id, type);
+        };
+        it('colour', function () {
+            // Arrange
+            id = 'ID';
+            type = 'wildlife5';
+            // Act
+            act_default(id, type);
+            // Assert
+            sinon.assert.calledOnce(dojo.addClass);
+            assert.equal(dojo.addClass.getCall(0).args.length, 2);
+            assert.equal(dojo.addClass.getCall(0).args[0], id);
+            assert.equal(dojo.addClass.getCall(0).args[1], 'wildlife5');
+        });
+    });
 
 });
