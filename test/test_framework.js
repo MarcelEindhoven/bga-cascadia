@@ -33,9 +33,9 @@ describe('Framework', function () {
             act_default(category, id);
             // Assert
             sinon.assert.calledOnce(gamegui.format_block);
-            sinon.assert.match(gamegui.format_block.getCall(0).args.length, 2);
-            sinon.assert.match(gamegui.format_block.getCall(0).args[0], category);
-            sinon.assert.match(gamegui.format_block.getCall(0).args[1].token_id, id);
+            assert.equal(gamegui.format_block.getCall(0).args.length, 2);
+            assert.equal(gamegui.format_block.getCall(0).args[0], category);
+            assert.equal(gamegui.format_block.getCall(0).args[1].token_id, id);
         });
         it('place', function () {
             // Arrange
@@ -45,22 +45,22 @@ describe('Framework', function () {
             act_default(category, id);
             // Assert
             sinon.assert.calledOnce(dojo.place);
-            sinon.assert.match(dojo.place.getCall(0).args.length, 2);
-            sinon.assert.match(dojo.place.getCall(0).args[0], block);
-            sinon.assert.match(dojo.place.getCall(0).args[1], 'tokens');
+            assert.equal(dojo.place.getCall(0).args.length, 2);
+            assert.equal(dojo.place.getCall(0).args[0], block);
+            assert.equal(dojo.place.getCall(0).args[1], 'tokens');
         });
         it('colour', function () {
             // Arrange
-            category = 'wildlife';
+            category = 'field_wildlife';
             id = 'ID';
-            type = '5';
+            type = 'wildlife5';
             // Act
             act_default(category, id, type);
             // Assert
             sinon.assert.calledOnce(dojo.addClass);
-            sinon.assert.match(dojo.addClass.getCall(0).args.length, 2);
-            sinon.assert.match(dojo.addClass.getCall(0).args[0], id);
-            sinon.assert.match(dojo.addClass.getCall(0).args[1], 'wildlife5');
+            assert.equal(dojo.addClass.getCall(0).args.length, 2);
+            assert.equal(dojo.addClass.getCall(0).args[0], id);
+            assert.equal(dojo.addClass.getCall(0).args[1], 'wildlife5');
         });
     });
     describe('Move token', function () {
@@ -68,8 +68,8 @@ describe('Framework', function () {
             sut.move(id_to_move, destination_id, x, y);
         };
         function assert_default(spy, id_to_move, destination_id) {
-            sinon.assert.match(spy.getCall(0).args[0], id_to_move);
-            sinon.assert.match(spy.getCall(0).args[1], destination_id);
+            assert.equal(spy.getCall(0).args[0], id_to_move);
+            assert.equal(spy.getCall(0).args[1], destination_id);
         }
         it('placeOnObject', function () {
             // Arrange
@@ -79,7 +79,7 @@ describe('Framework', function () {
             act_default(id_to_move, destination_id);
             // Assert
             sinon.assert.calledOnce(gamegui.placeOnObject);
-            sinon.assert.match(gamegui.placeOnObject.getCall(0).args.length, 2);
+            assert.equal(gamegui.placeOnObject.getCall(0).args.length, 2);
             assert_default(gamegui.placeOnObject, id_to_move, destination_id);
         });
         it('placeOnObjectPos', function () {
@@ -92,7 +92,7 @@ describe('Framework', function () {
             act_default(id_to_move, destination_id, x, y);
             // Assert
             sinon.assert.calledOnce(gamegui.placeOnObjectPos);
-            sinon.assert.match(gamegui.placeOnObjectPos.getCall(0).args.length, 4);
+            assert.equal(gamegui.placeOnObjectPos.getCall(0).args.length, 4);
             assert_default(gamegui.placeOnObjectPos, id_to_move, destination_id);
         });
     });

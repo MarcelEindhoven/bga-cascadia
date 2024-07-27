@@ -8,7 +8,7 @@ define(['dojo/_base/declare'], (declare) => {
         createToken(category, id, type){
             block = this.dom.format_block(category, {token_id: id});
             this.toolkit.place(block, 'tokens');
-            this.toolkit.addClass(id, category + type);
+            this.toolkit.addClass(id, type);
         },
         move(id_to_move, destination_id, x = 0, y = 0){
             if (x != 0 || y != 0) {

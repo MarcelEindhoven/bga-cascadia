@@ -100,6 +100,21 @@
     position: relative;
     background-color: rgb(90, 0, 8);
 }
+.field1 {
+    background-color: rgb(90, 0, 180);
+}
+.field2 {
+    background-color: rgb(90, 50, 180);
+}
+.field3 {
+    background-color: rgb(90, 100, 180);
+}
+.field4 {
+    background-color: rgb(90, 150, 180);
+}
+.field5 {
+    background-color: rgb(90, 200, 180);
+}
 .wildlife1 {
     background-color: rgb(90, 0, 8);
 }
@@ -113,21 +128,6 @@
     background-color: rgb(90, 150, 8);
 }
 .wildlife5 {
-    background-color: rgb(90, 200, 8);
-}
-.field_wildlife1 {
-    background-color: rgb(90, 0, 8);
-}
-.field_wildlife2 {
-    background-color: rgb(90, 50, 8);
-}
-.field_wildlife3 {
-    background-color: rgb(90, 100, 8);
-}
-.field_wildlife4 {
-    background-color: rgb(90, 150, 8);
-}
-.field_wildlife5 {
     background-color: rgb(90, 200, 8);
 }
 

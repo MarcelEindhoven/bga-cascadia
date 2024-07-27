@@ -65,29 +65,11 @@ function (dojo, declare, framework) {
             // Setup game notifications to handle (see "setupNotifications" method below)
             this.setupNotifications();
 
-            w = gamedatas.market.wildlife[0];
-            this.framework.createToken('wildlife', w.id, w.type);
-            this.framework.move(w.id, 'wildlife_0');
-
-            w = gamedatas.market.wildlife[2];
-            this.framework.createToken('wildlife', w.id, w.type);
-            this.framework.move(w.id, 'wildlife_2');
-
-            w = gamedatas.market.wildlife[3];
-            this.framework.createToken('wildlife', w.id, w.type);
-            this.framework.move(w.id, 'wildlife_3');
-
-            this.prototyping();
+            this.prototyping(gamedatas);
 
             console.log( "Ending game setup" );
         },
-        prototyping: function() {
-            console.log('prototyping ' + this.player_id);
-            dojo.place( this.format_block( 'field', {
-                token_id: 'topleft',
-            } ) , 'tokens' );
-            this.slideToObject( 'topleft', 'habitat_' + 0).play();
-
+        prototyping: function(gamedatas) {
             dojo.place( this.format_block( 'field', {
                 token_id: 'abcd',
             } ) , 'tokens' );
@@ -106,6 +88,35 @@ function (dojo, declare, framework) {
             dojo.addClass('bird2', 'wildlife3');
             this.slideToObjectPos( 'bird2', '' + this.player_id, 50+15, 50+25).play();
 
+            w = gamedatas.market.wildlife[0];
+            this.framework.createToken('wildlife', w.id, 'wildlife' + w.type);
+            this.framework.move(w.id, 'wildlife_0');
+
+            w = gamedatas.market.wildlife[2];
+            this.framework.createToken('wildlife', w.id, 'wildlife' + w.type);
+            this.framework.move(w.id, 'wildlife_2');
+
+            w = gamedatas.market.wildlife[3];
+            this.framework.createToken('wildlife', w.id, 'wildlife' + w.type);
+            this.framework.move(w.id, 'wildlife_3');
+
+            h = gamedatas.market.habitat[1];
+            this.framework.createToken('field', h.id, 'field' + h.terrain_types[0]);
+            this.framework.move(h.id, 'habitat_1');
+            if (typeof h.terrain_types[1] != 'undefined') {
+                id = h.id + 'upper_half';
+                this.framework.createToken('upper_half', id, 'field' + h.terrain_types[1]);
+                this.framework.move(id, h.id);
+            }
+
+            h = gamedatas.market.habitat[3];
+            this.framework.createToken('field', h.id, 'field' + h.terrain_types[0]);
+            this.framework.move(h.id, 'habitat_3');
+            if (typeof h.terrain_types[1] != 'undefined') {
+                id = h.id + 'upper_half';
+                this.framework.createToken('upper_half', id, 'field' + h.terrain_types[1]);
+                this.framework.move(id, h.id);
+            }
         },
        
 
