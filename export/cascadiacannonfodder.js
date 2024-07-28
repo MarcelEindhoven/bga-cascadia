@@ -65,8 +65,9 @@ function (dojo, declare, framework) {
             // Setup game notifications to handle (see "setupNotifications" method below)
             this.setupNotifications();
             this.marketSetup(gamedatas.market);
+            this.setupHabitat(gamedatas.habitat);
 
-            this.prototyping(gamedatas);
+            // this.prototyping(gamedatas);
 
             console.log( "Ending game setup" );
         },
@@ -136,6 +137,18 @@ function (dojo, declare, framework) {
             this.framework.createToken('field_wildlife', id, 'wildlife' + h.supported_wildlife[0]);
             this.framework.move(id, h.id, x0, y0);
         },
+        setupHabitat: function(habitat) {
+            for (var player_index in habitat) {
+                player_habitat = habitat[player_index];
+                for (var index in player_habitat) {
+                    h = player_habitat[index];
+                    this.createHabitatTile(h);
+                    horizontal = h.horizontal - 51;
+                    vertical = h.vertical - 51;
+                    this.moveHabitatTile(h, '' + player_index, horizontal*24, vertical*40);
+                }
+            }
+        },
         marketSetup: function(market) {
             this.marketSetupWildlife(market.wildlife);
             this.marketSetupHabitat(market.habitat);
@@ -150,28 +163,31 @@ function (dojo, declare, framework) {
         marketSetupHabitat: function(habitat) {
             for (var index in habitat) {
                 h = habitat[index];
-                tile_id = 'tile' + h.id;
-                this.framework.createToken('field', tile_id, 'field' + h.terrain_types[0]);
-                if (typeof h.terrain_types[1] != 'undefined') {
-                    id = h.id + 'upper_half';
-                    this.framework.createToken('upper_half', id, 'field' + h.terrain_types[1]);
-                }
-                if (typeof h.supported_wildlife[2] != 'undefined') {
-                    id = h.id + 'field_wildlife2';
-                    this.framework.createToken('field_wildlife', id, 'wildlife' + h.supported_wildlife[2]);
-                }
-                if (typeof h.supported_wildlife[1] != 'undefined') {
-                    id = h.id + 'field_wildlife1';
-                    this.framework.createToken('field_wildlife', id, 'wildlife' + h.supported_wildlife[1]);
-                }
-                id = h.id + 'field_wildlife0';
-                this.framework.createToken('field_wildlife', id, 'wildlife' + h.supported_wildlife[0]);
+                this.createHabitatTile(h);
                 this.moveHabitatTile(h, 'habitat_' + h.location_arg);
             }
         },
-        moveHabitatTile: function(tile, element) {
+        createHabitatTile: function(tile) {
             tile_id = 'tile' + tile.id;
-            this.framework.move(tile_id, element);
+            this.framework.createToken('field', tile_id, 'field' + tile.terrain_types[0]);
+            if (typeof tile.terrain_types[1] != 'undefined') {
+                id = tile.id + 'upper_half';
+                this.framework.createToken('upper_half', id, 'field' + tile.terrain_types[1]);
+            }
+            if (typeof tile.supported_wildlife[2] != 'undefined') {
+                id = tile.id + 'field_wildlife2';
+                this.framework.createToken('field_wildlife', id, 'wildlife' + tile.supported_wildlife[2]);
+            }
+            if (typeof tile.supported_wildlife[1] != 'undefined') {
+                id = tile.id + 'field_wildlife1';
+                this.framework.createToken('field_wildlife', id, 'wildlife' + tile.supported_wildlife[1]);
+            }
+            id = tile.id + 'field_wildlife0';
+            this.framework.createToken('field_wildlife', id, 'wildlife' + tile.supported_wildlife[0]);
+        },
+        moveHabitatTile: function(tile, element, x = 0, y = 0) {
+            tile_id = 'tile' + tile.id;
+            this.framework.move(tile_id, element, x, y);
             if (typeof tile.terrain_types[1] != 'undefined') {
                 id = tile.id + 'upper_half';
                 this.framework.move(id, tile_id);
