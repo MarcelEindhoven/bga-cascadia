@@ -98,7 +98,7 @@ describe('Framework', function () {
     });
     describe('Classify token', function () {
         function act_default(id, type) {
-            sut.classifyToken(id, type);
+            sut.classify(id, type);
         };
         it('colour', function () {
             // Arrange

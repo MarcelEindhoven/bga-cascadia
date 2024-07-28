@@ -110,7 +110,7 @@ function (dojo, declare, framework) {
                 id = h.id + 'upper_half';
                 this.framework.createToken('upper_half', id, 'field' + h.terrain_types[1]);
                 this.framework.move(id, h.id);
-                this.framework.classifyToken(id, 'rotate' + h.rotation);
+                this.framework.classify(id, 'rotate' + h.rotation);
             }
             x1 = 0;
             y1 = -11;

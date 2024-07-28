@@ -17,7 +17,7 @@ define(['dojo/_base/declare'], (declare) => {
                 this.dom.placeOnObject(id_to_move, destination_id);
             }
         },
-        classifyToken(id, type){
+        classify(id, type){
             this.toolkit.addClass(id, type);
         },
     });
