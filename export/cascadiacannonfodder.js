@@ -150,41 +150,54 @@ function (dojo, declare, framework) {
         marketSetupHabitat: function(habitat) {
             for (var index in habitat) {
                 h = habitat[index];
-                this.framework.createToken('field', h.id, 'field' + h.terrain_types[0]);
-                this.framework.move(h.id, 'habitat_' + h.location_arg);
+                tile_id = 'tile' + h.id;
+                this.framework.createToken('field', tile_id, 'field' + h.terrain_types[0]);
                 if (typeof h.terrain_types[1] != 'undefined') {
                     id = h.id + 'upper_half';
                     this.framework.createToken('upper_half', id, 'field' + h.terrain_types[1]);
-                    this.framework.move(id, h.id);
                 }
-                    this.framework.createToken('wildlife', 'wildlife' + w.id, 'wildlife' + w.type);
-                this.framework.move('wildlife' + w.id, 'wildlife_' + w.location_arg);
-
-                x1 = 0;
-                y1 = -11;
-                x0 = 0;
-                y0 = 0;
                 if (typeof h.supported_wildlife[2] != 'undefined') {
                     id = h.id + 'field_wildlife2';
                     this.framework.createToken('field_wildlife', id, 'wildlife' + h.supported_wildlife[2]);
-                    this.framework.move(id, h.id, 0, -11);
-                    x1 = 9;
-                    y1 = 9;
-                    x0 = -9;
-                    y0 = 9;
                 }
                 if (typeof h.supported_wildlife[1] != 'undefined') {
                     id = h.id + 'field_wildlife1';
                     this.framework.createToken('field_wildlife', id, 'wildlife' + h.supported_wildlife[1]);
-                    this.framework.move(id, h.id, x1, y1);
-                    if (x0 == 0) {
-                        y0 = -11;
-                    }
                 }
                 id = h.id + 'field_wildlife0';
                 this.framework.createToken('field_wildlife', id, 'wildlife' + h.supported_wildlife[0]);
-                this.framework.move(id, h.id, x0, y0);
+                this.moveHabitatTile(h, 'habitat_' + h.location_arg);
+            }
+        },
+        moveHabitatTile: function(tile, element) {
+            tile_id = 'tile' + tile.id;
+            this.framework.move(tile_id, element);
+            if (typeof tile.terrain_types[1] != 'undefined') {
+                id = tile.id + 'upper_half';
+                this.framework.move(id, tile_id);
+            }
+
+            x1 = 0;
+            y1 = -11;
+            x0 = 0;
+            y0 = 0;
+            if (typeof tile.supported_wildlife[2] != 'undefined') {
+                id = tile.id + 'field_wildlife2';
+                this.framework.move(id, tile_id, 0, -11);
+                x1 = 9;
+                y1 = 9;
+                x0 = -9;
+                y0 = 9;
+            }
+            if (typeof tile.supported_wildlife[1] != 'undefined') {
+                id = tile.id + 'field_wildlife1';
+                this.framework.move(id, tile_id, x1, y1);
+                if (x0 == 0) {
+                    y0 = -11;
                 }
+            }
+            id = tile.id + 'field_wildlife0';
+            this.framework.move(id, tile_id, x0, y0);
         },
        
 
