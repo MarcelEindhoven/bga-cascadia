@@ -18,10 +18,11 @@
 define([
     "dojo","dojo/_base/declare",
     g_gamethemeurl + 'modules/BGA/javascript/framework.js',
+    g_gamethemeurl + 'modules/javascript/habitat_tiles.js',
     "ebg/core/gamegui",
     "ebg/counter"
 ],
-function (dojo, declare, framework) {
+function (dojo, declare, framework, habitat_tiles) {
     return declare("bgagame.cascadiacannonfodder", ebg.core.gamegui, {
         constructor: function(){
             console.log('cascadiacannonfodder constructor');
@@ -29,7 +30,12 @@ function (dojo, declare, framework) {
             // Here, you can init the global variables of your user interface
             // Example:
             // this.myGlobalValue = 0;
-
+            this.framework = new framework();
+            this.framework.setGameGUI(this);
+            this.framework.setDojo(dojo);            
+ 
+            this.habitat_tiles = new habitat_tiles();
+            this.habitat_tiles.setFramework(this.framework);
         },
         
         /*
@@ -58,10 +64,6 @@ function (dojo, declare, framework) {
             }
             
             // TODO: Set up your game interface here, according to "gamedatas"
-            this.framework = new framework();
-            this.framework.setGameGUI(this);
-            this.framework.setDojo(dojo);            
- 
             // Setup game notifications to handle (see "setupNotifications" method below)
             this.setupNotifications();
             this.marketSetup(gamedatas.market);
@@ -72,80 +74,16 @@ function (dojo, declare, framework) {
             console.log( "Ending game setup" );
         },
         prototyping: function(gamedatas) {
-            h = gamedatas.market.habitat[1];
-            this.framework.createToken('field', h.id, 'field' + h.terrain_types[0]);
-            this.framework.move(h.id, 'habitat_1');
-            if (typeof h.terrain_types[1] != 'undefined') {
-                id = h.id + 'upper_half';
-                this.framework.createToken('upper_half', id, 'field' + h.terrain_types[1]);
-                this.framework.move(id, h.id);
-            }
-
-            h = gamedatas.market.habitat[3];
-            this.framework.createToken('field', h.id, 'field' + h.terrain_types[0]);
-            this.framework.move(h.id, 'habitat_3');
-            if (typeof h.terrain_types[1] != 'undefined') {
-                id = h.id + 'upper_half';
-                this.framework.createToken('upper_half', id, 'field' + h.terrain_types[1]);
-                this.framework.move(id, h.id);
-            }
-
-            h0 = gamedatas.habitat[this.player_id][0];
-            h=h0;
-            this.framework.createToken('field', h.id, 'field' + h.terrain_types[0]);
-            this.framework.move(h.id, '' + this.player_id, 0, 0);
-
-            h = gamedatas.habitat[this.player_id][2];
-            this.framework.createToken('field', h.id, 'field' + h.terrain_types[0]);
-            horizontal = h.horizontal - h0.horizontal;;
-            vertical = h.vertical - h0.vertical;;
-            this.framework.move(h.id, '' + this.player_id, horizontal*24, vertical*40);
-
-            h = gamedatas.habitat[this.player_id][1];
-            this.framework.createToken('field', h.id, 'field' + h.terrain_types[0]);
-            horizontal = h.horizontal - h0.horizontal;;
-            vertical = h.vertical - h0.vertical;;
-            this.framework.move(h.id, '' + this.player_id, horizontal*24, vertical*40);
-            if (typeof h.terrain_types[1] != 'undefined') {
-                id = h.id + 'upper_half';
-                this.framework.createToken('upper_half', id, 'field' + h.terrain_types[1]);
-                this.framework.move(id, h.id);
-                this.framework.classify(id, 'rotate' + h.rotation);
-            }
-            x1 = 0;
-            y1 = -11;
-            x0 = 0;
-            y0 = 0;
-            if (typeof h.supported_wildlife[2] != 'undefined') {
-                id = h.id + 'field_wildlife2';
-                this.framework.createToken('field_wildlife', id, 'wildlife' + h.supported_wildlife[2]);
-                this.framework.move(id, h.id, 0, -11);
-                x1 = 9;
-                y1 = 9;
-                x0 = -9;
-                y0 = 9;
-            }
-            if (typeof h.supported_wildlife[1] != 'undefined') {
-                id = h.id + 'field_wildlife1';
-                this.framework.createToken('field_wildlife', id, 'wildlife' + h.supported_wildlife[1]);
-                this.framework.move(id, h.id, x1, y1);
-                if (x0 == 0) {
-                    y0 = -11;
-                }
-            }
-            id = h.id + 'field_wildlife0';
-            this.framework.createToken('field_wildlife', id, 'wildlife' + h.supported_wildlife[0]);
-            this.framework.move(id, h.id, x0, y0);
         },
         setupHabitat: function(habitat) {
             for (var player_index in habitat) {
                 player_habitat = habitat[player_index];
                 for (var index in player_habitat) {
                     h = player_habitat[index];
-                    this.createHabitatTile(h);
+                    this.habitat_tiles.create(h);
                     horizontal = h.horizontal - 51;
                     vertical = h.vertical - 51;
-                    this.moveHabitatTile(h, '' + player_index, horizontal*24, vertical*40);
+                    this.habitat_tiles.move(h, '' + player_index, horizontal*24, vertical*40);
                 }
             }
         },
@@ -163,59 +101,10 @@ function (dojo, declare, framework) {
         marketSetupHabitat: function(habitat) {
             for (var index in habitat) {
                 h = habitat[index];
-                this.createHabitatTile(h);
-                this.moveHabitatTile(h, 'habitat_' + h.location_arg);
+                this.habitat_tiles.create(h);
+                this.habitat_tiles.move(h, 'habitat_' + h.location_arg);
             }
         },
-        createHabitatTile: function(tile) {
-            tile_id = 'tile' + tile.id;
-            this.framework.createToken('field', tile_id, 'field' + tile.terrain_types[0]);
-            if (typeof tile.terrain_types[1] != 'undefined') {
-                id = tile.id + 'upper_half';
-                this.framework.createToken('upper_half', id, 'field' + tile.terrain_types[1]);
-            }
-            if (typeof tile.supported_wildlife[2] != 'undefined') {
-                id = tile.id + 'field_wildlife2';
-                this.framework.createToken('field_wildlife', id, 'wildlife' + tile.supported_wildlife[2]);
-            }
-            if (typeof tile.supported_wildlife[1] != 'undefined') {
-                id = tile.id + 'field_wildlife1';
-                this.framework.createToken('field_wildlife', id, 'wildlife' + tile.supported_wildlife[1]);
-            }
-            id = tile.id + 'field_wildlife0';
-            this.framework.createToken('field_wildlife', id, 'wildlife' + tile.supported_wildlife[0]);
-        },
-        moveHabitatTile: function(tile, element, x = 0, y = 0) {
-            tile_id = 'tile' + tile.id;
-            this.framework.move(tile_id, element, x, y);
-            if (typeof tile.terrain_types[1] != 'undefined') {
-                id = tile.id + 'upper_half';
-                this.framework.move(id, tile_id);
-            }
-
-            x1 = 0;
-            y1 = -11;
-            x0 = 0;
-            y0 = 0;
-            if (typeof tile.supported_wildlife[2] != 'undefined') {
-                id = tile.id + 'field_wildlife2';
-                this.framework.move(id, tile_id, 0, -11);
-                x1 = 9;
-                y1 = 9;
-                x0 = -9;
-                y0 = 9;
-            }
-            if (typeof tile.supported_wildlife[1] != 'undefined') {
-                id = tile.id + 'field_wildlife1';
-                this.framework.move(id, tile_id, x1, y1);
-                if (x0 == 0) {
-                    y0 = -11;
-                }
-            }
-            id = tile.id + 'field_wildlife0';
-            this.framework.move(id, tile_id, x0, y0);
-        },
-       
 
         ///////////////////////////////////////////////////
         //// Game & client states
