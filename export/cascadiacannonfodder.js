@@ -69,11 +69,14 @@ function (dojo, declare, framework, habitat_tiles) {
             this.marketSetup(gamedatas.market);
             this.setupHabitat(gamedatas.habitat);
 
-            // this.prototyping(gamedatas);
+            this.prototyping(gamedatas);
 
             console.log( "Ending game setup" );
         },
         prototyping: function(gamedatas) {
+            dojo.style('' + this.player_id, 'height', '300px');
+            this.framework.resize('' + this.player_id, 150, 200);
+
         },
         setupHabitat: function(habitat) {
             for (var player_index in habitat) {

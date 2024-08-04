@@ -10,6 +10,7 @@ describe('Framework', function () {
         dojo = {
             place: sinon.spy(),
             addClass: sinon.spy(),
+            style: sinon.spy(),
         };
         sut.setDojo(dojo);
 
@@ -111,6 +112,37 @@ describe('Framework', function () {
             assert.equal(dojo.addClass.getCall(0).args.length, 2);
             assert.equal(dojo.addClass.getCall(0).args[0], id);
             assert.equal(dojo.addClass.getCall(0).args[1], 'wildlife5');
+        });
+    });
+    describe('Resize', function () {
+        function act_default(id, width, height) {
+            sut.resize(id, width, height);
+        };
+        it('Style called width', function () {
+            // Arrange
+            id = 'ID';
+            width = 200;
+            height = 100;
+            // Act
+            act_default(id, width, height);
+            // Assert
+            assert.equal(dojo.style.getCall(0).args.length, 3);
+            assert.equal(dojo.style.getCall(0).args[0], id);
+            assert.equal(dojo.style.getCall(0).args[1], 'width');
+            assert.equal(dojo.style.getCall(0).args[2], '' + width + 'px');
+        });
+        it('Style called height', function () {
+            // Arrange
+            id = 'ID';
+            width = 200;
+            height = 100;
+            // Act
+            act_default(id, width, height);
+            // Assert
+            assert.equal(dojo.style.getCall(1).args.length, 3);
+            assert.equal(dojo.style.getCall(1).args[0], id);
+            assert.equal(dojo.style.getCall(1).args[1], 'height');
+            assert.equal(dojo.style.getCall(1).args[2], '' + height + 'px');
         });
     });
 
