@@ -31,10 +31,10 @@ describe('Habitat', function () {
         horizontal_distance = 24;
     });
     describe('Place tile', function () {
-        function act_default(tile) {
-            sut.place(tile);
+        function act_default(x) {
+            sut.place(x);
         };
-        it('move', function () {
+        it('Single tile', function () {
             // Arrange
             // Act
             act_default(tile);
@@ -45,10 +45,34 @@ describe('Habitat', function () {
             assert.equal(tile_handler.move.getCall(0).args[2], 0);
             assert.equal(tile_handler.move.getCall(0).args[3], 0);
         });
+        it('Move vertical after resize', function () {
+            // Arrange
+            act_default(tile);
+            // Act
+            act_default(other_tile);
+            // Assert
+            assert.equal(tile_handler.move.getCall(1).args[2], 0);
+            assert.equal(tile_handler.move.getCall(1).args[3], -vertical_distance / 2);
+            assert.equal(tile_handler.move.getCall(2).args[2], 0);
+            assert.equal(tile_handler.move.getCall(2).args[3], vertical_distance / 2);
+        });
+        it('Move horizontal and vertical with (-1,0) after resize', function () {
+            // Arrange
+            act_default(tile);
+            // Act
+            other_tile.horizontal = tile.horizontal - 1;
+            other_tile.vertical = tile.vertical;
+            act_default(other_tile);
+            // Assert
+            assert.equal(tile_handler.move.getCall(1).args[2], horizontal_distance / 2);
+            assert.equal(tile_handler.move.getCall(1).args[3], vertical_distance / 4);
+            assert.equal(tile_handler.move.getCall(2).args[2], - horizontal_distance / 2);
+            assert.equal(tile_handler.move.getCall(2).args[3], - vertical_distance / 4);
+        });
     });
     describe('Resize', function () {
-        function act_default(tile) {
-            sut.place(tile);
+        function act_default(x) {
+            sut.place(x);
         };
         it('vertical maximum', function () {
             // Arrange

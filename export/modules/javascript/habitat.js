@@ -14,7 +14,7 @@ define(['dojo/_base/declare'], (declare) => {
         place(tile) {
             this.tiles[tile.id] = tile;
             this.resize();
-            this.tile_handler.move(tile, this.id, x = 0, y = 0);
+            this.moveAllTiles();
         },
         resize() {
             vertical_minimum = 50;
@@ -43,8 +43,17 @@ define(['dojo/_base/declare'], (declare) => {
                 }
                 this.framework.resize(this.id, 25 + 24 * (this.horizontal_maximum - this.horizontal_minimum), 25 + 80 *(this.vertical_maximum - this.vertical_minimum));
             }
-            
-
+        },
+        moveAllTiles() {
+            vertical_centre = (this.vertical_maximum + this.vertical_minimum)/2;
+            horizontal_centre = (this.horizontal_maximum + this.horizontal_minimum)/2;
+            for (id in this.tiles) {
+                tile = this.tiles[id];
+                horizontal = this.tiles[id].horizontal;
+                vertical = this.tiles[id].vertical;
+                if (horizontal % 2) {vertical = vertical - 0.5;}
+                this.tile_handler.move(tile, this.id, (horizontal - horizontal_centre)*24, (vertical - vertical_centre)*80);
+            }
         },
     });
 });
