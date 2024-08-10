@@ -91,7 +91,7 @@ function (dojo, declare, framework, habitat_tiles, habitatClass) {
                 }
             }
             for (var player_index in habitat) {
-                this.habitat[player_index].moveAllTiles();
+                this.habitat[player_index].refresh();
             }
         },
         marketSetup: function(market) {

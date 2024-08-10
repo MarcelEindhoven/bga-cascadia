@@ -1,5 +1,6 @@
 define(['dojo/_base/declare'], (declare) => {
     return declare('cascadia.habitat', null, {
+        minimum_size : 50,
         constructor(id) {
             this.id = '' + id;
             this.tiles = [];
@@ -14,7 +15,7 @@ define(['dojo/_base/declare'], (declare) => {
         place(tile) {
             this.tiles[tile.id] = tile;
             this.resize();
-            this.moveAllTiles();
+            this.refresh();
         },
         resize() {
             vertical_minimum = 50;
@@ -41,10 +42,10 @@ define(['dojo/_base/declare'], (declare) => {
                 if (vertical_minimum < this.vertical_minimum) {
                     this.vertical_minimum = vertical_minimum;
                 }
-                this.framework.resize(this.id, 25 + 24 * (this.horizontal_maximum - this.horizontal_minimum), 25 + 80 *(this.vertical_maximum - this.vertical_minimum));
+                this.framework.resize(this.id, this.minimum_size + 24 * (this.horizontal_maximum - this.horizontal_minimum), this.minimum_size + 80 *(this.vertical_maximum - this.vertical_minimum));
             }
         },
-        moveAllTiles() {
+        refresh() {
             vertical_centre = (this.vertical_maximum + this.vertical_minimum)/2;
             horizontal_centre = (this.horizontal_maximum + this.horizontal_minimum)/2;
             for (id in this.tiles) {

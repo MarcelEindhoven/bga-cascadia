@@ -26,7 +26,7 @@ describe('Habitat', function () {
         expected_upper_half_id = 'upper_half' + tile.id;
 
         element = 'test ';
-        minimum_size = 25;
+        minimum_size = 50;
         vertical_distance = 80;
         horizontal_distance = 24;
     });
