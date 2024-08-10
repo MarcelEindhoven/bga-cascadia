@@ -19,10 +19,11 @@ define([
     "dojo","dojo/_base/declare",
     g_gamethemeurl + 'modules/BGA/javascript/framework.js',
     g_gamethemeurl + 'modules/javascript/habitat_tiles.js',
+    g_gamethemeurl + 'modules/javascript/habitat.js',
     "ebg/core/gamegui",
     "ebg/counter"
 ],
-function (dojo, declare, framework, habitat_tiles) {
+function (dojo, declare, framework, habitat_tiles, habitatClass) {
     return declare("bgagame.cascadiacannonfodder", ebg.core.gamegui, {
         constructor: function(){
             console.log('cascadiacannonfodder constructor');
@@ -36,6 +37,7 @@ function (dojo, declare, framework, habitat_tiles) {
  
             this.habitat_tiles = new habitat_tiles();
             this.habitat_tiles.setFramework(this.framework);
+
         },
         
         /*
@@ -74,20 +76,22 @@ function (dojo, declare, framework, habitat_tiles) {
             console.log( "Ending game setup" );
         },
         prototyping: function(gamedatas) {
-            dojo.style('' + this.player_id, 'height', '300px');
-            this.framework.resize('' + this.player_id, 150, 200);
-
         },
         setupHabitat: function(habitat) {
+            this.habitat = [];
             for (var player_index in habitat) {
+                this.habitat[player_index] = new habitatClass(player_index);
+                this.habitat[player_index].setFramework(this.framework);
+                this.habitat[player_index].setTileHandler(this.habitat_tiles);
                 player_habitat = habitat[player_index];
                 for (var index in player_habitat) {
-                    h = player_habitat[index];
-                    this.habitat_tiles.create(h);
-                    horizontal = h.horizontal - 51;
-                    vertical = h.vertical - 51;
-                    this.habitat_tiles.move(h, '' + player_index, horizontal*24, vertical*40);
+                    tile = player_habitat[index];
+                    this.habitat_tiles.create(tile);
+                    this.habitat[player_index].place(tile);
                 }
+            }
+            for (var player_index in habitat) {
+                this.habitat[player_index].moveAllTiles();
             }
         },
         marketSetup: function(market) {
