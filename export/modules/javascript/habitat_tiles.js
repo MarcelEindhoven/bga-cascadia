@@ -23,6 +23,12 @@ define(['dojo/_base/declare'], (declare) => {
                 this.framework.move(this.getSupportedWildlifeID(tile.id, wildlife_index), tile_id);
             }
         },
+        move_and_rotate: function(tile, element, x, y) {
+            this.move(tile, element, x, y);
+            if (this.hasMultipleTerrainTypes(tile)) {
+                this.framework.classify(this.getSecondTerrainTypeID(tile.id), 'rotate' + tile.rotation);
+            }
+        },
         getTileID: function (id) {
             return 'tile'+ id;
         },

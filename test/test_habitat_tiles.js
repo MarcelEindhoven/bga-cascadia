@@ -128,4 +128,38 @@ describe('Habitat tiles', function () {
             assert.equal(framework.move.getCall(0).args[3], y);
         });
     });
+    describe('Rotate token', function () {
+        function act_default(tile, element, x, y) {
+            sut.move_and_rotate(tile, element, x, y);
+        };
+        it('Move', function () {
+            // Arrange
+            // Act
+            act_default(tile, element, x, y);
+            // Assert
+            assert.equal(framework.move.getCall(0).args.length, 4);
+            assert.equal(framework.move.getCall(0).args[0], expected_tile_id);
+            assert.equal(framework.move.getCall(0).args[1], element);
+            assert.equal(framework.move.getCall(0).args[2], x);
+            assert.equal(framework.move.getCall(0).args[3], y);
+        });
+        it('no rotate', function () {
+            // Arrange
+            // Act
+            act_default(tile, element, x, y);
+            // Assert
+            sinon.assert.notCalled(framework.classify);
+        });
+        it('Rotate', function () {
+            // Arrange
+            tile.terrain_types = [1, 3];
+            tile.rotation = 1;
+            // Act
+            act_default(tile, element, x, y);
+            // Assert
+            assert.equal(framework.classify.getCall(0).args.length, 2);
+            assert.equal(framework.classify.getCall(0).args[0], expected_upper_half_id);
+            assert.equal(framework.classify.getCall(0).args[1], 'rotate' + tile.rotation);
+        });
+    });
 });

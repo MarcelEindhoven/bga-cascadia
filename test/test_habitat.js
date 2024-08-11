@@ -15,7 +15,7 @@ describe('Habitat', function () {
         sut.setFramework(framework);
 
         tile_handler = {
-            move: sinon.spy(),
+            move_and_rotate: sinon.spy(),
         };
         sut.setTileHandler(tile_handler);
 
@@ -40,11 +40,11 @@ describe('Habitat', function () {
             // Act
             act_default(tile);
             // Assert
-            assert.equal(tile_handler.move.getCall(0).args.length, 4);
-            assert.equal(tile_handler.move.getCall(0).args[0], tile);
-            assert.equal(tile_handler.move.getCall(0).args[1], '' + player_id);
-            assert.equal(tile_handler.move.getCall(0).args[2], 0);
-            assert.equal(tile_handler.move.getCall(0).args[3], 0);
+            assert.equal(tile_handler.move_and_rotate.getCall(0).args.length, 4);
+            assert.equal(tile_handler.move_and_rotate.getCall(0).args[0], tile);
+            assert.equal(tile_handler.move_and_rotate.getCall(0).args[1], '' + player_id);
+            assert.equal(tile_handler.move_and_rotate.getCall(0).args[2], 0);
+            assert.equal(tile_handler.move_and_rotate.getCall(0).args[3], 0);
         });
         it('Move vertical after resize', function () {
             // Arrange
@@ -52,10 +52,10 @@ describe('Habitat', function () {
             // Act
             act_default(other_tile);
             // Assert
-            assert.equal(tile_handler.move.getCall(1).args[2], 0);
-            assert.equal(tile_handler.move.getCall(1).args[3], -vertical_distance / 2);
-            assert.equal(tile_handler.move.getCall(2).args[2], 0);
-            assert.equal(tile_handler.move.getCall(2).args[3], vertical_distance / 2);
+            assert.equal(tile_handler.move_and_rotate.getCall(1).args[2], 0);
+            assert.equal(tile_handler.move_and_rotate.getCall(1).args[3], -vertical_distance / 2);
+            assert.equal(tile_handler.move_and_rotate.getCall(2).args[2], 0);
+            assert.equal(tile_handler.move_and_rotate.getCall(2).args[3], vertical_distance / 2);
         });
         it('Move horizontal and vertical with (-1,0) after resize', function () {
             // Arrange
@@ -65,10 +65,10 @@ describe('Habitat', function () {
             other_tile.vertical = tile.vertical;
             act_default(other_tile);
             // Assert
-            assert.equal(tile_handler.move.getCall(1).args[2], horizontal_distance / 2);
-            assert.equal(tile_handler.move.getCall(1).args[3], vertical_distance / 4);
-            assert.equal(tile_handler.move.getCall(2).args[2], - horizontal_distance / 2);
-            assert.equal(tile_handler.move.getCall(2).args[3], - vertical_distance / 4);
+            assert.equal(tile_handler.move_and_rotate.getCall(1).args[2], horizontal_distance / 2);
+            assert.equal(tile_handler.move_and_rotate.getCall(1).args[3], vertical_distance / 4);
+            assert.equal(tile_handler.move_and_rotate.getCall(2).args[2], - horizontal_distance / 2);
+            assert.equal(tile_handler.move_and_rotate.getCall(2).args[3], - vertical_distance / 4);
         });
     });
     describe('Resize', function () {
