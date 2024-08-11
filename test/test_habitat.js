@@ -33,6 +33,7 @@ describe('Habitat', function () {
     describe('Place tile', function () {
         function act_default(x) {
             sut.place(x);
+            sut.refresh();
         };
         it('Single tile', function () {
             // Arrange
@@ -74,16 +75,26 @@ describe('Habitat', function () {
         function act_default(x) {
             sut.place(x);
         };
+        it('resize, single tile', function () {
+            // Arrange
+            // Act
+            act_default(tile);
+            // Assert
+            assert.equal(framework.resize.getCall(0).args.length, 3);
+            assert.equal(framework.resize.getCall(0).args[0], '' + player_id);
+            assert.equal(framework.resize.getCall(0).args[1], minimum_size);
+            assert.equal(framework.resize.getCall(0).args[2], minimum_size);
+        });
         it('vertical maximum', function () {
             // Arrange
             act_default(tile);
             // Act
             act_default(other_tile);
             // Assert
-            assert.equal(framework.resize.getCall(0).args.length, 3);
-            assert.equal(framework.resize.getCall(0).args[0], '' + player_id);
-            assert.equal(framework.resize.getCall(0).args[1], minimum_size);
-            assert.equal(framework.resize.getCall(0).args[2], minimum_size + vertical_distance);
+            assert.equal(framework.resize.getCall(1).args.length, 3);
+            assert.equal(framework.resize.getCall(1).args[0], '' + player_id);
+            assert.equal(framework.resize.getCall(1).args[1], minimum_size);
+            assert.equal(framework.resize.getCall(1).args[2], minimum_size + vertical_distance);
         });
         it('vertical minimum', function () {
             // Arrange
@@ -92,10 +103,10 @@ describe('Habitat', function () {
             // Act
             act_default(other_tile);
             // Assert
-            assert.equal(framework.resize.getCall(0).args.length, 3);
-            assert.equal(framework.resize.getCall(0).args[0], '' + player_id);
-            assert.equal(framework.resize.getCall(0).args[1], minimum_size);
-            assert.equal(framework.resize.getCall(0).args[2], minimum_size + vertical_distance);
+            assert.equal(framework.resize.getCall(1).args.length, 3);
+            assert.equal(framework.resize.getCall(1).args[0], '' + player_id);
+            assert.equal(framework.resize.getCall(1).args[1], minimum_size);
+            assert.equal(framework.resize.getCall(1).args[2], minimum_size + vertical_distance);
         });
         it('Single resize, same other tile', function () {
             // Arrange
@@ -104,14 +115,7 @@ describe('Habitat', function () {
             // Act
             act_default(other_tile);
             // Assert
-            sinon.assert.callCount(framework.resize, 1);
-        });
-        it('No resize, single tile', function () {
-            // Arrange
-            // Act
-            act_default(tile);
-            // Assert
-            sinon.assert.notCalled(framework.resize);
+            sinon.assert.callCount(framework.resize, 2);
         });
         it('No resize, same tile', function () {
             // Arrange
@@ -119,7 +123,7 @@ describe('Habitat', function () {
             // Act
             act_default(tile);
             // Assert
-            sinon.assert.notCalled(framework.resize);
+            sinon.assert.callCount(framework.resize, 1);
         });
         it('horizontal minimum', function () {
             // Arrange
@@ -129,10 +133,8 @@ describe('Habitat', function () {
             // Act
             act_default(other_tile);
             // Assert
-            assert.equal(framework.resize.getCall(0).args.length, 3);
-            assert.equal(framework.resize.getCall(0).args[0], '' + player_id);
-            assert.equal(framework.resize.getCall(0).args[1], minimum_size + 2 * horizontal_distance);
-            assert.equal(framework.resize.getCall(0).args[2], minimum_size);
+            assert.equal(framework.resize.getCall(1).args[1], minimum_size + 2 * horizontal_distance);
+            assert.equal(framework.resize.getCall(1).args[2], minimum_size);
         });
         it('Even and odd column', function () {
             // Arrange
@@ -142,10 +144,10 @@ describe('Habitat', function () {
             // Act
             act_default(other_tile);
             // Assert
-            assert.equal(framework.resize.getCall(0).args.length, 3);
-            assert.equal(framework.resize.getCall(0).args[0], '' + player_id);
-            assert.equal(framework.resize.getCall(0).args[1], minimum_size + horizontal_distance);
-            assert.equal(framework.resize.getCall(0).args[2], minimum_size + vertical_distance / 2);
+            assert.equal(framework.resize.getCall(1).args.length, 3);
+            assert.equal(framework.resize.getCall(1).args[0], '' + player_id);
+            assert.equal(framework.resize.getCall(1).args[1], minimum_size + horizontal_distance);
+            assert.equal(framework.resize.getCall(1).args[2], minimum_size + vertical_distance / 2);
         });
     });
 });

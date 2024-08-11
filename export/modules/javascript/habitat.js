@@ -1,60 +1,55 @@
 define(['dojo/_base/declare'], (declare) => {
     return declare('cascadia.habitat', null, {
         minimum_size : 50,
+        vertical_distance : 80,
+        horizontal_distance : 24,
         constructor(id) {
             this.id = '' + id;
             this.tiles = [];
-            this.vertical_minimum = 50;
-            this.vertical_maximum = 50;
-            this.horizontal_minimum = 50;
-            this.horizontal_maximum = 50;
+            this.x_minimum = 5000000;
+            this.x_maximum = 0;
+            this.y_minimum = 5000000;
+            this.y_maximum = 0;
         },
         setFramework(framework){this.framework = framework},
         setTileHandler(tile_handler){this.tile_handler = tile_handler;},
 
         place(tile) {
             this.tiles[tile.id] = tile;
-            this.resize();
-            this.refresh();
+            this.resize(tile);
         },
-        resize() {
-            vertical_minimum = 50;
-            vertical_maximum = 50;
-            horizontal_minimum = 50;
-            horizontal_maximum = 50;
-            for (id in this.tiles) {
-                horizontal = this.tiles[id].horizontal;
-                vertical = this.tiles[id].vertical;
-                if (horizontal % 2) {vertical = vertical - 0.5;}
-                if (vertical <vertical_minimum) {vertical_minimum = vertical;} else if (vertical >vertical_maximum) {vertical_maximum = vertical;}
-                if (horizontal <horizontal_minimum) {horizontal_minimum = horizontal;} else if (horizontal >horizontal_maximum) {horizontal_maximum = horizontal;}
-            }
-            if ( (vertical_minimum < this.vertical_minimum)|| (vertical_maximum > this.vertical_maximum) || (horizontal_minimum < this.horizontal_minimum) || (horizontal_maximum > this.horizontal_maximum)) {
-                if (horizontal_maximum > this.horizontal_maximum) {
-                    this.horizontal_maximum = horizontal_maximum;
+        resize(tile) {
+            const [x, y] = this.getAbsoluteCoordinates(tile.horizontal, tile.vertical);
+            if ( (y < this.y_minimum) || (y > this.y_maximum) || (x < this.x_minimum) || (x > this.x_maximum)) {
+                if (x > this.x_maximum) {
+                    this.x_maximum = x;
                 }
-                if (horizontal_minimum < this.horizontal_minimum) {
-                    this.horizontal_minimum = horizontal_minimum;                    
+                if (x < this.x_minimum) {
+                    this.x_minimum = x;                    
                 }
-                if (vertical_maximum > this.vertical_maximum) {
-                    this.vertical_maximum = vertical_maximum;
+                if (y > this.y_maximum) {
+                    this.y_maximum = y;
                 }
-                if (vertical_minimum < this.vertical_minimum) {
-                    this.vertical_minimum = vertical_minimum;
+                if (y < this.y_minimum) {
+                    this.y_minimum = y;
                 }
-                this.framework.resize(this.id, this.minimum_size + 24 * (this.horizontal_maximum - this.horizontal_minimum), this.minimum_size + 80 *(this.vertical_maximum - this.vertical_minimum));
+                this.framework.resize(this.id, this.minimum_size + this.x_maximum - this.x_minimum, this.minimum_size + this.y_maximum - this.y_minimum);
             }
         },
         refresh() {
-            vertical_centre = (this.vertical_maximum + this.vertical_minimum)/2;
-            horizontal_centre = (this.horizontal_maximum + this.horizontal_minimum)/2;
+            y_centre = (this.y_maximum + this.y_minimum)/2;
+            x_centre = (this.x_maximum + this.x_minimum)/2;
             for (id in this.tiles) {
                 tile = this.tiles[id];
-                horizontal = this.tiles[id].horizontal;
-                vertical = this.tiles[id].vertical;
-                if (horizontal % 2) {vertical = vertical - 0.5;}
-                this.tile_handler.move(tile, this.id, (horizontal - horizontal_centre)*24, (vertical - vertical_centre)*80);
+                const [x, y] = this.getAbsoluteCoordinates(tile.horizontal, tile.vertical);
+                this.tile_handler.move(tile, this.id, x - x_centre, y - y_centre);
             }
+        },
+        getAbsoluteCoordinates(horizontal, vertical) {
+            x = horizontal* this.horizontal_distance;
+            y = vertical*this.vertical_distance;
+            if (horizontal % 2) {y = y - this.vertical_distance/2;}
+            return [x, y];
         },
     });
 });
