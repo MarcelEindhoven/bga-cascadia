@@ -5,16 +5,17 @@ define(['dojo/_base/declare'], (declare) => {
         setFramework(framework){this.framework = framework},
 
         create(tile){
-            this.framework.createToken('field', this.getTileID(tile.id), 'field' + tile.terrain_types[0]);
+            this.framework.createToken('field', tile.unique_id, 'field' + tile.terrain_types[0]);
             if (this.hasMultipleTerrainTypes(tile)) {
                 this.framework.createToken('upper_half', this.getSecondTerrainTypeID(tile.id), 'field' + tile.terrain_types[1]);
             }
             for (var wildlife_index in tile.supported_wildlife) {
                 this.framework.createToken('field_wildlife', this.getSupportedWildlifeID(tile.id, wildlife_index), 'wildlife' + tile.supported_wildlife[wildlife_index]);
             }
+            this.framework.subscribe(tile.unique_id, this, 'tile_selected');
         },
         move: function(tile, element, x = 0, y = 0) {
-            tile_id = this.getTileID(tile.id);
+            tile_id = tile.unique_id;
             this.framework.move(tile_id, element, x, y);
             if (this.hasMultipleTerrainTypes(tile)) {
                 this.framework.move(this.getSecondTerrainTypeID(tile.id), tile_id);

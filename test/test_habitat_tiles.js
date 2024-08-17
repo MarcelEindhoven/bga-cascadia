@@ -10,10 +10,11 @@ describe('Habitat tiles', function () {
             createToken: sinon.spy(),
             move: sinon.spy(),
             classify: sinon.spy(),
+            subscribe: sinon.spy(),
         };
         sut.setFramework(framework);
 
-        tile = {id: 2, terrain_types: [1], supported_wildlife: [2]};
+        tile = {id: 2, terrain_types: [1], supported_wildlife: [2], unique_id: 'tile2'};
 
         expected_tile_id = 'tile' + tile.id;
         expected_upper_half_id = 'upper_half' + tile.id;
@@ -65,6 +66,16 @@ describe('Habitat tiles', function () {
             assert.equal(framework.createToken.getCall(3).args[0], 'field_wildlife');
             assert.equal(framework.createToken.getCall(3).args[1], 'field_wildlife2' + tile.id);
             assert.equal(framework.createToken.getCall(3).args[2], 'wildlife' + tile.supported_wildlife[2]);
+        });
+        it('subscribe', function () {
+            // Arrange
+            // Act
+            act_default(tile);
+            // Assert
+            assert.equal(framework.subscribe.getCall(0).args.length, 3);
+            assert.equal(framework.subscribe.getCall(0).args[0], expected_tile_id);
+            assert.equal(framework.subscribe.getCall(0).args[1], sut);
+            assert.equal(framework.subscribe.getCall(0).args[2], 'tile_selected');
         });
     });
     describe('Move token 0, 0', function () {
