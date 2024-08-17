@@ -56,8 +56,8 @@ class CurrentMarketTest extends TestCase{
         $type = HabitatSetup::calculateType($terrain_types);
         $type_arg = HabitatSetup::calculateType($supported_wildlife);
         return [
-            ['type' => $type, 'type_arg' => $type_arg, 'location_arg' => $market_index, ],
-            ['type' => $type, 'type_arg' => $type_arg, 'location_arg' => $market_index, 'terrain_types' => $terrain_types, 'supported_wildlife' => $supported_wildlife, ],
+            ['id' => 5, 'type' => $type, 'type_arg' => $type_arg, 'location_arg' => $market_index, ],
+            ['id' => 5, 'type' => $type, 'type_arg' => $type_arg, 'location_arg' => $market_index, 'terrain_types' => $terrain_types, 'supported_wildlife' => $supported_wildlife, 'unique_id' => 'tile' . 5, ],
         ];
     }
 }
