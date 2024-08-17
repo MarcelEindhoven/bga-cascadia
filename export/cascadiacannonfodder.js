@@ -76,6 +76,7 @@ function (dojo, declare, framework, habitat_tiles, habitatClass) {
             console.log( "Ending game setup" );
         },
         prototyping: function(gamedatas) {
+            
         },
         setupHabitat: function(habitat) {
             this.habitat = [];
@@ -88,6 +89,9 @@ function (dojo, declare, framework, habitat_tiles, habitatClass) {
                     tile = player_habitat[index];
                     this.habitat_tiles.create(tile);
                     this.habitat[player_index].place(tile);
+                    dojo.addClass('tile' + tile.id, 'subscribe');
+                    dojo.query('.subscribe').connect('onclick', this, 'habitat_selected1');
+                    dojo.removeClass('tile' + tile.id, 'subscribe');
                 }
             }
             for (var player_index in habitat) {
@@ -107,10 +111,28 @@ function (dojo, declare, framework, habitat_tiles, habitatClass) {
         },
         marketSetupHabitat: function(habitat) {
             for (var index in habitat) {
-                h = habitat[index];
-                this.habitat_tiles.create(h);
-                this.habitat_tiles.move(h, 'habitat_' + h.location_arg);
+                tile = habitat[index];
+                this.habitat_tiles.create(tile);
+                this.habitat_tiles.move(tile, 'habitat_' + tile.location_arg);
+                dojo.addClass('tile' + tile.id, 'subscribe');
+                this.connect($('tile' + tile.id), 'onClick', 'habitat_selected');
+                //dojo.connect($('habitat_' + h.location_arg), 'onClick', this, 'habitat_selected1');
+                dojo.query('.subscribe').connect('onclick', this, 'habitat_selected2');
+                dojo.removeClass('tile' + tile.id, 'subscribe');
             }
+        },
+        habitat_selected: function(selected_element) {
+            console.log('habitat_selected');
+            console.log(selected_element.currentTarget);
+            console.log(selected_element);
+        },
+        habitat_selected1: function(selected_element) {
+            console.log('habitat_selected1');
+            console.log(selected_element.currentTarget.id);
+        },
+        habitat_selected2: function(selected_element) {
+            console.log('habitat_selected2');
+            console.log(selected_element.currentTarget.id);
         },
 
         ///////////////////////////////////////////////////
