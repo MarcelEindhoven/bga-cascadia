@@ -7,11 +7,18 @@ describe('Framework', function () {
     beforeEach(function() {
         sut = new sut_module();
 
+        query_result = {
+            connect: sinon.stub(),
+        };
         dojo = {
             place: sinon.spy(),
             addClass: sinon.spy(),
+            removeClass: sinon.spy(),
             style: sinon.spy(),
+            disconnect: sinon.spy(),
+            query: sinon.stub().returns(query_result),
         };
+
         sut.setDojo(dojo);
 
         block = {test: 'test'}
@@ -143,6 +150,63 @@ describe('Framework', function () {
             assert.equal(dojo.style.getCall(1).args[0], id);
             assert.equal(dojo.style.getCall(1).args[1], 'height');
             assert.equal(dojo.style.getCall(1).args[2], '' + height + 'px');
+        });
+    });
+    describe('Subscribe', function () {
+        function act_default(id, object, method) {
+            sut.subscribe(id, object, method);
+        };
+        it('addClass', function () {
+            // Arrange
+            id = 'ID';
+            object = 'wildlife5';
+            method = 'habitat_selected';
+            // Act
+            act_default(id, object, method);
+            // Assert
+            sinon.assert.calledOnce(dojo.addClass);
+            assert.equal(dojo.addClass.getCall(0).args.length, 2);
+            assert.equal(dojo.addClass.getCall(0).args[0], id);
+            assert.equal(dojo.addClass.getCall(0).args[1], 'subscribe');
+        });
+        it('query', function () {
+            // Arrange
+            id = 'ID';
+            object = 'wildlife5';
+            method = 'habitat_selected';
+            // Act
+            act_default(id, object, method);
+            // Assert
+            sinon.assert.calledOnce(dojo.query);
+            assert.equal(dojo.query.getCall(0).args.length, 1);
+            assert.equal(dojo.query.getCall(0).args[0], '.subscribe');
+        });
+        it('connect', function () {
+            // Arrange
+            id = 'ID';
+            object = 'wildlife5';
+            method = 'habitat_selected';
+            // Act
+            act_default(id, object, method);
+            // Assert
+            sinon.assert.calledOnce(query_result.connect);
+            assert.equal(query_result.connect.getCall(0).args.length, 3);
+            assert.equal(query_result.connect.getCall(0).args[0], 'onclick');
+            assert.equal(query_result.connect.getCall(0).args[1], object);
+            assert.equal(query_result.connect.getCall(0).args[2], method);
+        });
+        it('removeClass', function () {
+            // Arrange
+            id = 'ID';
+            object = 'wildlife5';
+            method = 'habitat_selected';
+            // Act
+            act_default(id, object, method);
+            // Assert
+            sinon.assert.calledOnce(dojo.removeClass);
+            assert.equal(dojo.removeClass.getCall(0).args.length, 2);
+            assert.equal(dojo.removeClass.getCall(0).args[0], id);
+            assert.equal(dojo.removeClass.getCall(0).args[1], 'subscribe');
         });
     });
 

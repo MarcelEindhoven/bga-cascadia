@@ -1,6 +1,7 @@
 define(['dojo/_base/declare'], (declare) => {
     return declare('cascadia.framework', null, {
         constructor() {
+            this.subscriptions = {};
         },
         setDojo(toolkit){this.toolkit = toolkit},
         setGameGUI(dom){this.dom = dom},
@@ -23,6 +24,11 @@ define(['dojo/_base/declare'], (declare) => {
         resize(id, width, height){
             this.toolkit.style(id, 'width', '' + width + 'px');
             this.toolkit.style(id, 'height', '' + height + 'px');
+        },
+        subscribe(id, object, method) {
+            this.toolkit.addClass(id, 'subscribe');
+            this.toolkit.query('.subscribe').connect('onclick', object, method);
+            this.toolkit.removeClass(id, 'subscribe');
         },
     });
 });
