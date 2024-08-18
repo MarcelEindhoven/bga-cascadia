@@ -1,7 +1,7 @@
 define(['dojo/_base/declare'], (declare) => {
     return declare('cascadia.habitat_tiles', null, {
         constructor() {
-            this.subscriptions = {};
+            this.subscriptions = [];
         },
         setFramework(framework){this.framework = framework},
 
@@ -41,20 +41,19 @@ define(['dojo/_base/declare'], (declare) => {
             return typeof tile.terrain_types[1] != 'undefined';
         },
         subscribe(tile, object, method) {
-            this.subscriptions[tile.unique_id] = {object: object, method: method};
+            this.subscriptions.push({tile: tile, object: object, method: method});
         },
         unsubscribe(tile, object, method) {
-            id = tile.unique_id;
-            if (id in this.subscriptions) {
-                delete this.subscriptions[id];
-            }
+            this.subscriptions = this.subscriptions.filter(e => e.method != method || e.object !== object || e.tile !== tile);
         },
         tile_selected(event) {
             id = event.currentTarget.id;
-            if (id in this.subscriptions) {
-                subscription = this.subscriptions[id];
-                method = subscription.object[subscription.method];
-                method(id);
+            for (index in this.subscriptions) {
+                subscription = this.subscriptions[index];
+                if (id == subscription.tile.unique_id) {
+                    method = subscription.object[subscription.method];
+                    method(tile);    
+                }
             }
         },
     });

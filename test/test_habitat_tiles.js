@@ -13,11 +13,16 @@ describe('Habitat tiles', function () {
             subscribe: sinon.spy(),
         };
         sut.setFramework(framework);
+
         callback_object = {
+            tile_selected: sinon.spy(),
+        };
+        callback_object2 = {
             tile_selected: sinon.spy(),
         };
 
         tile = {id: 2, terrain_types: [1], supported_wildlife: [2], unique_id: 'tile2'};
+        other_tile = {id: 4, terrain_types: [1], supported_wildlife: [2], unique_id: 'tile4'};
 
         expected_tile_id = 'tile' + tile.id;
         expected_upper_half_id = 'upper_half' + tile.id;
@@ -212,7 +217,7 @@ describe('Habitat tiles', function () {
             sut.tile_selected(event);
             // Assert
             assert.equal(callback_object.tile_selected.getCall(0).args.length, 1);
-            assert.equal(callback_object.tile_selected.getCall(0).args[0], tile.unique_id);
+            assert.equal(callback_object.tile_selected.getCall(0).args[0], tile);
         });
         it('Unsubscribe', function () {
             // Arrange
@@ -223,6 +228,60 @@ describe('Habitat tiles', function () {
             sut.tile_selected(event);
             // Assert
             sinon.assert.notCalled(callback_object.tile_selected);
+        });
+        it('Unsubscribe Different method', function () {
+            // Arrange
+            sut.subscribe(tile, callback_object, 'tile_selected');
+            sut.unsubscribe(tile, callback_object, 'tile_selectedxxxxxxxxxx');
+            event = {currentTarget: {id: tile.unique_id}};
+            // Act
+            sut.tile_selected(event);
+            // Assert
+            sinon.assert.callCount(callback_object.tile_selected, 1);
+        });
+        it('Unsubscribe Different object', function () {
+            // Arrange
+            sut.subscribe(tile, callback_object, 'tile_selected');
+            sut.unsubscribe(tile, callback_object2, 'tile_selected');
+            event = {currentTarget: {id: tile.unique_id}};
+            // Act
+            sut.tile_selected(event);
+            // Assert
+            sinon.assert.callCount(callback_object.tile_selected, 1);
+        });
+        it('Unsubscribe Different tile', function () {
+            // Arrange
+            sut.subscribe(tile, callback_object, 'tile_selected');
+            sut.unsubscribe(other_tile, callback_object, 'tile_selected');
+            event = {currentTarget: {id: tile.unique_id}};
+            // Act
+            sut.tile_selected(event);
+            // Assert
+            sinon.assert.callCount(callback_object.tile_selected, 1);
+        });
+        it('Multiple subscribe different ids', function () {
+            // Arrange
+            sut.subscribe(tile, callback_object, 'tile_selected');
+            sut.subscribe(other_tile, callback_object2, 'tile_selected');
+            event = {currentTarget: {id: tile.unique_id}};
+            // Act
+            sut.tile_selected(event);
+            // Assert
+            assert.equal(callback_object.tile_selected.getCall(0).args.length, 1);
+            assert.equal(callback_object.tile_selected.getCall(0).args[0], tile);
+
+            sinon.assert.notCalled(callback_object2.tile_selected);
+        });
+        it('Multiple subscribe same ids', function () {
+            // Arrange
+            sut.subscribe(tile, callback_object, 'tile_selected');
+            sut.subscribe(tile, callback_object2, 'tile_selected');
+            event = {currentTarget: {id: tile.unique_id}};
+            // Act
+            sut.tile_selected(event);
+            // Assert
+            assert.equal(callback_object.tile_selected.getCall(0).args[0], tile);
+            assert.equal(callback_object2.tile_selected.getCall(0).args[0], tile);
         });
     });
 });
