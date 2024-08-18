@@ -1,6 +1,7 @@
 define(['dojo/_base/declare'], (declare) => {
     return declare('cascadia.habitat_tiles', null, {
         constructor() {
+            this.subscriptions = {};
         },
         setFramework(framework){this.framework = framework},
 
@@ -30,9 +31,6 @@ define(['dojo/_base/declare'], (declare) => {
                 this.framework.classify(this.getSecondTerrainTypeID(tile.id), 'rotate' + tile.rotation);
             }
         },
-        getTileID: function (id) {
-            return 'tile'+ id;
-        },
         getSecondTerrainTypeID: function (id) {
             return 'upper_half'+ id;
         },
@@ -41,6 +39,23 @@ define(['dojo/_base/declare'], (declare) => {
         },
         hasMultipleTerrainTypes(tile) {
             return typeof tile.terrain_types[1] != 'undefined';
+        },
+        subscribe(tile, object, method) {
+            this.subscriptions[tile.unique_id] = {object: object, method: method};
+        },
+        unsubscribe(tile, object, method) {
+            id = tile.unique_id;
+            if (id in this.subscriptions) {
+                delete this.subscriptions[id];
+            }
+        },
+        tile_selected(event) {
+            id = event.currentTarget.id;
+            if (id in this.subscriptions) {
+                subscription = this.subscriptions[id];
+                method = subscription.object[subscription.method];
+                method(id);
+            }
         },
     });
 });
