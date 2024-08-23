@@ -13,12 +13,19 @@ describe('Habitat tiles', function () {
             subscribe: sinon.spy(),
         };
         sut.setFramework(framework);
+        subscribe = {
+            createToken: sinon.spy(),
+            move: sinon.spy(),
+            classify: sinon.spy(),
+            subscribe: sinon.spy(),
+        };
+        sut.setTokenSubscriptions(subscribe);
 
         callback_object = {
-            tile_selected: sinon.spy(),
+            token_selected: sinon.spy(),
         };
         callback_object2 = {
-            tile_selected: sinon.spy(),
+            token_selected: sinon.spy(),
         };
 
         tile = {id: 2, terrain_types: [1], supported_wildlife: [2], unique_id: 'tile2'};
@@ -80,10 +87,10 @@ describe('Habitat tiles', function () {
             // Act
             act_default(tile);
             // Assert
-            assert.equal(framework.subscribe.getCall(0).args.length, 3);
-            assert.equal(framework.subscribe.getCall(0).args[0], expected_tile_id);
-            assert.equal(framework.subscribe.getCall(0).args[1], sut);
-            assert.equal(framework.subscribe.getCall(0).args[2], 'tile_selected');
+            assert.equal(subscribe.subscribe.getCall(0).args.length, 3);
+            assert.equal(subscribe.subscribe.getCall(0).args[0], expected_tile_id);
+            assert.equal(subscribe.subscribe.getCall(0).args[1], sut);
+            assert.equal(subscribe.subscribe.getCall(0).args[2], 'token_selected');
         });
     });
     describe('Move token 0, 0', function () {
@@ -179,109 +186,6 @@ describe('Habitat tiles', function () {
             assert.equal(framework.classify.getCall(0).args.length, 2);
             assert.equal(framework.classify.getCall(0).args[0], expected_upper_half_id);
             assert.equal(framework.classify.getCall(0).args[1], 'rotate' + tile.rotation);
-        });
-    });
-    describe('Subscribe', function () {
-        function act_default(tile, object, method) {
-            sut.subscribe(tile, object, method);
-        };
-        it('Subscribe', function () {
-            // Arrange
-            // Act
-            sut.subscribe(tile, callback_object, 'tile_selected');
-            // Assert
-            sinon.assert.notCalled(callback_object.tile_selected);
-        });
-        it('Event without subscription', function () {
-            // Arrange
-            event = {currentTarget: {id: 'token'}};
-            // Act
-            sut.tile_selected(event);
-            // Assert
-            sinon.assert.notCalled(callback_object.tile_selected);
-        });
-        it('Event ID does not match subscription', function () {
-            // Arrange
-            sut.subscribe(tile, callback_object, 'tile_selected');
-            event = {currentTarget: {id: 'token'}};
-            // Act
-            sut.tile_selected(event);
-            // Assert
-            sinon.assert.notCalled(callback_object.tile_selected);
-        });
-        it('Event ID does matches subscription', function () {
-            // Arrange
-            sut.subscribe(tile, callback_object, 'tile_selected');
-            event = {currentTarget: {id: tile.unique_id}};
-            // Act
-            sut.tile_selected(event);
-            // Assert
-            assert.equal(callback_object.tile_selected.getCall(0).args.length, 1);
-            assert.equal(callback_object.tile_selected.getCall(0).args[0], tile);
-        });
-        it('Unsubscribe', function () {
-            // Arrange
-            sut.subscribe(tile, callback_object, 'tile_selected');
-            sut.unsubscribe(tile, callback_object, 'tile_selected');
-            event = {currentTarget: {id: tile.unique_id}};
-            // Act
-            sut.tile_selected(event);
-            // Assert
-            sinon.assert.notCalled(callback_object.tile_selected);
-        });
-        it('Unsubscribe Different method', function () {
-            // Arrange
-            sut.subscribe(tile, callback_object, 'tile_selected');
-            sut.unsubscribe(tile, callback_object, 'tile_selectedxxxxxxxxxx');
-            event = {currentTarget: {id: tile.unique_id}};
-            // Act
-            sut.tile_selected(event);
-            // Assert
-            sinon.assert.callCount(callback_object.tile_selected, 1);
-        });
-        it('Unsubscribe Different object', function () {
-            // Arrange
-            sut.subscribe(tile, callback_object, 'tile_selected');
-            sut.unsubscribe(tile, callback_object2, 'tile_selected');
-            event = {currentTarget: {id: tile.unique_id}};
-            // Act
-            sut.tile_selected(event);
-            // Assert
-            sinon.assert.callCount(callback_object.tile_selected, 1);
-        });
-        it('Unsubscribe Different tile', function () {
-            // Arrange
-            sut.subscribe(tile, callback_object, 'tile_selected');
-            sut.unsubscribe(other_tile, callback_object, 'tile_selected');
-            event = {currentTarget: {id: tile.unique_id}};
-            // Act
-            sut.tile_selected(event);
-            // Assert
-            sinon.assert.callCount(callback_object.tile_selected, 1);
-        });
-        it('Multiple subscribe different ids', function () {
-            // Arrange
-            sut.subscribe(tile, callback_object, 'tile_selected');
-            sut.subscribe(other_tile, callback_object2, 'tile_selected');
-            event = {currentTarget: {id: tile.unique_id}};
-            // Act
-            sut.tile_selected(event);
-            // Assert
-            assert.equal(callback_object.tile_selected.getCall(0).args.length, 1);
-            assert.equal(callback_object.tile_selected.getCall(0).args[0], tile);
-
-            sinon.assert.notCalled(callback_object2.tile_selected);
-        });
-        it('Multiple subscribe same ids', function () {
-            // Arrange
-            sut.subscribe(tile, callback_object, 'tile_selected');
-            sut.subscribe(tile, callback_object2, 'tile_selected');
-            event = {currentTarget: {id: tile.unique_id}};
-            // Act
-            sut.tile_selected(event);
-            // Assert
-            assert.equal(callback_object.tile_selected.getCall(0).args[0], tile);
-            assert.equal(callback_object2.tile_selected.getCall(0).args[0], tile);
         });
     });
 });

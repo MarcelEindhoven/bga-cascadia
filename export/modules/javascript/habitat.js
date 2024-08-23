@@ -39,8 +39,8 @@ define(['dojo/_base/declare'], (declare) => {
         refresh() {
             const y_centre = (this.y_maximum + this.y_minimum)/2;
             const x_centre = (this.x_maximum + this.x_minimum)/2;
-            for (id in this.tiles) {
-                tile = this.tiles[id];
+            for (index in this.tiles) {
+                tile = this.tiles[index];
                 const [x, y] = this.getAbsoluteCoordinates(tile.horizontal, tile.vertical);
                 this.tile_handler.move_and_rotate(tile, this.id, x - x_centre, y - y_centre);
             }
