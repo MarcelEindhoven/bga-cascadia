@@ -8,26 +8,30 @@ describe('Use case select tile', function () {
         player_id = 125;
         sut = new sut_module(player_id);
 
-        framework = {
+        tile_handler = {
+            create: sinon.spy(),
+            unsubscribe: sinon.spy(),
+        };
+        sut.set_tile_handler(tile_handler);
+
+        habitat = {
+            place: sinon.spy(),
+            remove: sinon.spy(),
+        };
+        sut.set_habitat(habitat);
+
+        token_subscriptions = {
             subscribe: sinon.spy(),
             unsubscribe: sinon.spy(),
         };
-        sut.setFramework(framework);
+        sut.set_token_subscriptions(token_subscriptions);
 
         callback_object = {
             tile_placed: sinon.spy(),
         };
 
         tile = {id: 2, terrain_types: [1], supported_wildlife: [2], horizontal: 50, vertical: 50, unique_id: 'tile2'};
-        other_tile = {id: 22, terrain_types: [1], supported_wildlife: [2], horizontal: 50, vertical: 51, unique_id: 'tile2'};
-
-        expected_tile_id = 'tile' + tile.id;
-        expected_upper_half_id = 'upper_half' + tile.id;
-
-        element = 'test ';
-        minimum_size = 50;
-        vertical_distance = 80;
-        horizontal_distance = 24;
+        expected_candidate_tile = {horizontal: 50, vertical: 51};
     });
     describe('Candidate Tile selected', function () {
         function act_default(object, method, tile) {
@@ -40,6 +44,37 @@ describe('Use case select tile', function () {
             act_default(callback_object, 'tile_placed', tile);
             // Assert
             assert.equal(callback_object.tile_placed.getCall(0).args.length, 1);
+        });
+    });
+    describe('Market Tile selected', function () {
+        function act_default(positions, tile) {
+            sut.set_candidate_positions(positions);
+            sut.market_tile_selected(tile);
+        };
+        it('No candidate positions', function () {
+            // Arrange
+            // Act
+            sut.market_tile_selected(tile);
+            // Assert
+        });
+        it('Create tile', function () {
+            // Arrange
+            // Act
+            act_default([{horizontal: 50, vertical: 51}], tile);
+            // Assert
+            assert.equal(tile_handler.create.getCall(0).args.length, 1);
+        });
+        it('Propose tile', function () {
+            // Arrange
+            // Act
+            act_default([{horizontal: 50, vertical: 51}], tile);
+            // Assert
+        });
+        it('Subscribe', function () {
+            // Arrange
+            // Act
+            act_default([{horizontal: 50, vertical: 51}], tile);
+            // Assert
         });
     });
 });

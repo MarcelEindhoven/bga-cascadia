@@ -87,10 +87,10 @@ describe('Habitat tiles', function () {
             // Act
             act_default(tile);
             // Assert
-            assert.equal(subscribe.subscribe.getCall(0).args.length, 3);
-            assert.equal(subscribe.subscribe.getCall(0).args[0], expected_tile_id);
-            assert.equal(subscribe.subscribe.getCall(0).args[1], sut);
-            assert.equal(subscribe.subscribe.getCall(0).args[2], 'token_selected');
+            assert.equal(framework.subscribe.getCall(0).args.length, 3);
+            assert.equal(framework.subscribe.getCall(0).args[0], expected_tile_id);
+            assert.equal(framework.subscribe.getCall(0).args[1], subscribe);
+            assert.equal(framework.subscribe.getCall(0).args[2], 'token_selected');
         });
     });
     describe('Move token 0, 0', function () {

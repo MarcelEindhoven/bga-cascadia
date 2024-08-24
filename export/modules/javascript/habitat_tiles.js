@@ -13,7 +13,7 @@ define(['dojo/_base/declare'], (declare) => {
             for (var wildlife_index in tile.supported_wildlife) {
                 this.framework.createToken('field_wildlife', this.getSupportedWildlifeID(tile.id, wildlife_index), 'wildlife' + tile.supported_wildlife[wildlife_index]);
             }
-            this.token_subscriptions.subscribe(tile.unique_id, this, 'token_selected');
+            this.framework.subscribe(tile.unique_id, this.token_subscriptions, 'token_selected');
         },
         move: function(tile, element, x = 0, y = 0) {
             tile_id = tile.unique_id;

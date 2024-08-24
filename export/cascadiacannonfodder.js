@@ -20,10 +20,12 @@ define([
     g_gamethemeurl + 'modules/BGA/javascript/framework.js',
     g_gamethemeurl + 'modules/javascript/habitat_tiles.js',
     g_gamethemeurl + 'modules/javascript/habitat.js',
+    g_gamethemeurl + 'modules/javascript/token_subscriptions.js',
+    g_gamethemeurl + 'modules/javascript/usecase_place_tile.js',
     "ebg/core/gamegui",
     "ebg/counter"
 ],
-function (dojo, declare, framework, habitat_tiles, habitatClass) {
+function (dojo, declare, framework, habitat_tiles, habitatClass, token_subscriptions, usecase_place_tile) {
     return declare("bgagame.cascadiacannonfodder", ebg.core.gamegui, {
         constructor: function(){
             console.log('cascadiacannonfodder constructor');
@@ -34,9 +36,12 @@ function (dojo, declare, framework, habitat_tiles, habitatClass) {
             this.framework = new framework();
             this.framework.setGameGUI(this);
             this.framework.setDojo(dojo);            
+
+            this.token_subscriptions = new token_subscriptions();
  
             this.habitat_tiles = new habitat_tiles();
             this.habitat_tiles.setFramework(this.framework);
+            this.habitat_tiles.setTokenSubscriptions(this.token_subscriptions);
 
         },
         
@@ -76,7 +81,7 @@ function (dojo, declare, framework, habitat_tiles, habitatClass) {
             console.log( "Ending game setup" );
         },
         prototyping: function(gamedatas) {
-            
+            place_tile = new usecase_place_tile();
         },
         setupHabitat: function(habitat) {
             this.habitat = [];
@@ -89,7 +94,7 @@ function (dojo, declare, framework, habitat_tiles, habitatClass) {
                     tile = player_habitat[index];
                     this.habitat_tiles.create(tile);
                     this.habitat[player_index].place(tile);
-                    this.habitat_tiles.subscribe(tile, this, 'habitat_selected1');
+                    //this.habitat_tiles.subscribe(tile, this, 'habitat_selected1');
                 }
             }
             for (var player_index in habitat) {
@@ -112,7 +117,7 @@ function (dojo, declare, framework, habitat_tiles, habitatClass) {
                 tile = habitat[index];
                 this.habitat_tiles.create(tile);
                 this.habitat_tiles.move(tile, 'habitat_' + tile.location_arg);
-                this.habitat_tiles.subscribe(tile, this, 'habitat_selected');
+//                this.habitat_tiles.subscribe(tile, this, 'habitat_selected');
             }
         },
         habitat_selected: function(tile) {
