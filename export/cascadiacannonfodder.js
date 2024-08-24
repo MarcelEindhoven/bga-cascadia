@@ -123,8 +123,8 @@ function (dojo, declare, framework, habitat_tiles, habitatClass) {
             console.log('habitat_selected1');
             console.log(tile);
         },
-        habitat_selected2: function(tile) {
-            console.log('habitat_selected2');
+        tile_placed: function(tile) {
+            console.log('tile_placed');
             console.log(tile);
         },
 

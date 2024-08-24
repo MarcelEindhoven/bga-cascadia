@@ -1,9 +1,9 @@
 var assert = require('assert');
 var sinon = require('sinon');
 
-var sut_module = require('../export/modules/javascript/usecase_select_tile.js');
+var sut_module = require('../export/modules/javascript/usecase_place_tile.js');
 
-describe('Habitat', function () {
+describe('Use case select tile', function () {
     beforeEach(function() {
         player_id = 125;
         sut = new sut_module(player_id);
@@ -15,11 +15,11 @@ describe('Habitat', function () {
         sut.setFramework(framework);
 
         callback_object = {
-            token_selected: sinon.spy(),
+            token_placed: sinon.spy(),
         };
 
-        tile = {id: 2, terrain_types: [1], supported_wildlife: [2], horizontal: 50, vertical: 50};
-        other_tile = {id: 22, terrain_types: [1], supported_wildlife: [2], horizontal: 50, vertical: 51};
+        tile = {id: 2, terrain_types: [1], supported_wildlife: [2], horizontal: 50, vertical: 50, unique_id: 'tile2'};
+        other_tile = {id: 22, terrain_types: [1], supported_wildlife: [2], horizontal: 50, vertical: 51, unique_id: 'tile2'};
 
         expected_tile_id = 'tile' + tile.id;
         expected_upper_half_id = 'upper_half' + tile.id;
@@ -46,7 +46,7 @@ describe('Habitat', function () {
             act_default([tile]);
             // Assert
             assert.equal(framework.subscribe.getCall(0).args.length, 3);
-            assert.equal(framework.subscribe.getCall(0).args[0], tile.id);
+            assert.equal(framework.subscribe.getCall(0).args[0], tile);
             assert.equal(framework.subscribe.getCall(0).args[1], sut);
             assert.equal(framework.subscribe.getCall(0).args[2], 'token_selected');
         });
@@ -69,23 +69,23 @@ describe('Habitat', function () {
             act_default([tile]);
             // Assert
             assert.equal(framework.unsubscribe.getCall(0).args.length, 3);
-            assert.equal(framework.unsubscribe.getCall(0).args[0], tile.id);
+            assert.equal(framework.unsubscribe.getCall(0).args[0], tile);
             assert.equal(framework.unsubscribe.getCall(0).args[1], sut);
             assert.equal(framework.unsubscribe.getCall(0).args[2], 'token_selected');
         });
     });
     describe('Tile selected', function () {
         function act_default(object, method, event) {
-            sut.subscribe_token_selected(object, method);
+            sut.subscribe_token_placed(object, method);
             sut.token_selected(event);
         };
-        it('token_selected', function () {
+        it('token_placed', function () {
             // Arrange
             event = {srcElement: {}};
             // Act
-            act_default(callback_object, 'token_selected', event);
+            act_default(callback_object, 'token_placed', event);
             // Assert
-            assert.equal(callback_object.token_selected.getCall(0).args.length, 1);
+            assert.equal(callback_object.token_placed.getCall(0).args.length, 1);
         });
     });
 });
