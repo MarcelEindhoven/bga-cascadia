@@ -20,12 +20,13 @@ define([
     g_gamethemeurl + 'modules/BGA/javascript/framework.js',
     g_gamethemeurl + 'modules/javascript/habitat_tiles.js',
     g_gamethemeurl + 'modules/javascript/habitat.js',
+    g_gamethemeurl + 'modules/javascript/market.js',
     g_gamethemeurl + 'modules/javascript/token_subscriptions.js',
     g_gamethemeurl + 'modules/javascript/usecase_place_tile.js',
     "ebg/core/gamegui",
     "ebg/counter"
 ],
-function (dojo, declare, framework, habitat_tiles, habitatClass, token_subscriptions, usecase_place_tile) {
+function (dojo, declare, framework, habitat_tiles, habitatClass, market, token_subscriptions, usecase_place_tile) {
     return declare("bgagame.cascadiacannonfodder", ebg.core.gamegui, {
         constructor: function(){
             console.log('cascadiacannonfodder constructor');
@@ -43,6 +44,9 @@ function (dojo, declare, framework, habitat_tiles, habitatClass, token_subscript
             this.habitat_tiles.setFramework(this.framework);
             this.habitat_tiles.setTokenSubscriptions(this.token_subscriptions);
 
+            this.market = new market();
+            this.market.setFramework(this.framework);
+            this.market.setTileHandler(this.habitat_tiles);
         },
         
         /*
@@ -73,16 +77,21 @@ function (dojo, declare, framework, habitat_tiles, habitatClass, token_subscript
             // TODO: Set up your game interface here, according to "gamedatas"
             // Setup game notifications to handle (see "setupNotifications" method below)
             this.setupNotifications();
-            this.marketSetup(gamedatas.market);
             this.setupHabitat(gamedatas.habitat);
+            this.marketSetup(gamedatas.market);
 
             this.prototyping(gamedatas);
+            this.refresh();
 
             console.log( "Ending game setup" );
         },
         prototyping: function(gamedatas) {
             place_tile = new usecase_place_tile();
-        },
+            place_tile.set_candidate_positions([{horizontal: 50, vertical: 51}]);
+            place_tile.set_tile_handler(this.habitat_tiles);
+            place_tile.set_token_subscriptions(this.token_subscriptions);
+            place_tile.set_habitat(this.habitat[this.player_id]);
+            },
         setupHabitat: function(habitat) {
             this.habitat = [];
             for (var player_index in habitat) {
@@ -97,13 +106,17 @@ function (dojo, declare, framework, habitat_tiles, habitatClass, token_subscript
                     //this.habitat_tiles.subscribe(tile, this, 'habitat_selected1');
                 }
             }
-            for (var player_index in habitat) {
-                this.habitat[player_index].refresh();
-            }
         },
         marketSetup: function(market) {
             this.marketSetupWildlife(market.wildlife);
             this.marketSetupHabitat(market.habitat);
+        },
+        refresh: function() {
+            for (var player_index in this.habitat) {
+                this.habitat[player_index].refresh();
+            }
+
+            this.market.refresh();
         },
         marketSetupWildlife: function(wildlife) {
             for (var index in wildlife) {
@@ -116,7 +129,7 @@ function (dojo, declare, framework, habitat_tiles, habitatClass, token_subscript
             for (var index in habitat) {
                 tile = habitat[index];
                 this.habitat_tiles.create(tile);
-                this.habitat_tiles.move(tile, 'habitat_' + tile.location_arg);
+                this.market.place(tile);
 //                this.habitat_tiles.subscribe(tile, this, 'habitat_selected');
             }
         },
