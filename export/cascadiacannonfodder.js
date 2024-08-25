@@ -42,11 +42,12 @@ function (dojo, declare, framework, habitat_tiles, habitatClass, market, token_s
  
             this.habitat_tiles = new habitat_tiles();
             this.habitat_tiles.setFramework(this.framework);
-            this.habitat_tiles.setTokenSubscriptions(this.token_subscriptions);
+            this.habitat_tiles.set_token_subscriptions(this.token_subscriptions);
 
             this.market = new market();
             this.market.setFramework(this.framework);
             this.market.setTileHandler(this.habitat_tiles);
+            this.market.set_token_subscriptions(this.token_subscriptions);
         },
         
         /*
@@ -86,11 +87,12 @@ function (dojo, declare, framework, habitat_tiles, habitatClass, market, token_s
             console.log( "Ending game setup" );
         },
         prototyping: function(gamedatas) {
-            place_tile = new usecase_place_tile();
-            place_tile.set_candidate_positions([{horizontal: 50, vertical: 51}]);
-            place_tile.set_tile_handler(this.habitat_tiles);
-            place_tile.set_token_subscriptions(this.token_subscriptions);
-            place_tile.set_habitat(this.habitat[this.player_id]);
+            this.place_tile = new usecase_place_tile();
+            this.place_tile.set_candidate_positions([{horizontal: 50, vertical: 53}]);
+            this.place_tile.set_tile_handler(this.habitat_tiles);
+            this.place_tile.set_token_subscriptions(this.token_subscriptions);
+            this.place_tile.set_habitat(this.habitat[this.player_id]);
+            this.market.subscribe_tile_selected(this.place_tile, 'market_tile_selected');
             },
         setupHabitat: function(habitat) {
             this.habitat = [];
@@ -130,6 +132,7 @@ function (dojo, declare, framework, habitat_tiles, habitatClass, market, token_s
                 tile = habitat[index];
                 this.habitat_tiles.create(tile);
                 this.market.place(tile);
+                this.framework.subscribe(tile.unique_id, this.token_subscriptions, 'token_selected');
 //                this.habitat_tiles.subscribe(tile, this, 'habitat_selected');
             }
         },

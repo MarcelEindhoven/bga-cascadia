@@ -4,7 +4,8 @@ define(['dojo/_base/declare'], (declare) => {
             this.subscriptions = [];
         },
         subscribe(token, object, method) {
-            this.subscriptions.push({token: token, object: object, method: method});
+            subscription = {token: token, object: object, method: method};
+            this.subscriptions.push(subscription);
         },
         unsubscribe(token, object, method) {
             this.subscriptions = this.subscriptions.filter(e => e.method != method || e.object !== object || e.token !== token);

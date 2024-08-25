@@ -23,6 +23,7 @@ define(['dojo/_base/declare'], (declare) => {
             }
         },
         market_tile_selected(tile) {
+            console.log('market_tile_selected >');
             for (index in this.candidate_positions) {
                 candidate_position = this.candidate_positions[index];
                 this.tile_handler.create(tile);

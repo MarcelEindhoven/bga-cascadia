@@ -5,6 +5,7 @@ define(['dojo/_base/declare'], (declare) => {
         },
         setFramework(framework){this.framework = framework},
         setTileHandler(tile_handler){this.tile_handler = tile_handler;},
+        set_token_subscriptions(token_subscriptions){this.token_subscriptions = token_subscriptions;},
 
         place(tile) {
             this.tiles[tile.id] = tile;
@@ -13,6 +14,12 @@ define(['dojo/_base/declare'], (declare) => {
             for (index in this.tiles) {
                 tile = this.tiles[index];
                 this.tile_handler.move(tile, 'habitat_' + tile.location_arg);
+            }
+        },
+        subscribe_tile_selected(object, method) {
+            for (index in this.tiles) {
+                tile = this.tiles[index];
+                this.token_subscriptions.subscribe(tile, object, method);
             }
         },
     });

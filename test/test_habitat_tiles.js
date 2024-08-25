@@ -19,7 +19,7 @@ describe('Habitat tiles', function () {
             classify: sinon.spy(),
             subscribe: sinon.spy(),
         };
-        sut.setTokenSubscriptions(subscribe);
+        sut.set_token_subscriptions(subscribe);
 
         callback_object = {
             token_selected: sinon.spy(),

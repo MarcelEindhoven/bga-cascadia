@@ -3,7 +3,7 @@ define(['dojo/_base/declare'], (declare) => {
         constructor() {
         },
         setFramework(framework){this.framework = framework},
-        setTokenSubscriptions(token_subscriptions){this.token_subscriptions = token_subscriptions},
+        set_token_subscriptions(token_subscriptions){this.token_subscriptions = token_subscriptions},
 
         create(tile){
             this.framework.createToken('field', tile.unique_id, 'field' + tile.terrain_types[0]);

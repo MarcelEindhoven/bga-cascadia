@@ -20,6 +20,12 @@ describe('market', function () {
         };
         sut.setTileHandler(tile_handler);
 
+        token_subscriptions = {
+            subscribe: sinon.spy(),
+            unsubscribe: sinon.spy(),
+        };
+        sut.set_token_subscriptions(token_subscriptions);
+
         tile = {id: 2, terrain_types: [1], supported_wildlife: [2], horizontal: 50, vertical: 50};
         other_tile = {id: 22, terrain_types: [1], supported_wildlife: [2], horizontal: 50, vertical: 51};
 
@@ -44,6 +50,31 @@ describe('market', function () {
             assert.equal(tile_handler.move.getCall(0).args.length, 2);
             assert.equal(tile_handler.move.getCall(0).args[0], tile);
             assert.equal(tile_handler.move.getCall(0).args[1], 'habitat_' + tile.location_arg);
+        });
+    });
+    describe('Subscribe tile', function () {
+        function act_default(x, object, method) {
+            sut.place(x);
+            sut.subscribe_tile_selected(object, method);
+        };
+        it('no tile', function () {
+            // Arrange
+            // Act
+            sut.subscribe_tile_selected();
+            // Assert
+            sinon.assert.notCalled(token_subscriptions.subscribe);
+        });
+        it('Single tile', function () {
+            // Arrange
+            object = token_subscriptions;
+            method = 'q';
+            // Act
+            act_default(tile, object, method);
+            // Assert
+            assert.equal(token_subscriptions.subscribe.getCall(0).args.length, 3);
+            assert.equal(token_subscriptions.subscribe.getCall(0).args[0], tile);
+            assert.equal(token_subscriptions.subscribe.getCall(0).args[1], object);
+            assert.equal(token_subscriptions.subscribe.getCall(0).args[2], method);
         });
     });
 });
