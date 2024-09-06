@@ -32,7 +32,7 @@ describe('Habitat tiles', function () {
         other_tile = {id: 4, terrain_types: [1], supported_wildlife: [2], unique_id: 'tile4'};
 
         expected_tile_id = 'tile' + tile.id;
-        expected_upper_half_id = 'upper_half' + tile.id;
+        expected_upper_half_id = 'upper_half' + tile.unique_id;
 
         element = 'test ';
     });
@@ -57,7 +57,7 @@ describe('Habitat tiles', function () {
             // Assert
             assert.equal(framework.createToken.getCall(1).args.length, 3);
             assert.equal(framework.createToken.getCall(1).args[0], 'field_wildlife');
-            assert.equal(framework.createToken.getCall(1).args[1], 'field_wildlife0' + tile.id);
+            assert.equal(framework.createToken.getCall(1).args[1], 'field_wildlife0' + tile.unique_id);
             assert.equal(framework.createToken.getCall(1).args[2], 'wildlife' + tile.supported_wildlife[0]);
         });
         it('createToken terrain_types[1]', function () {
@@ -79,7 +79,7 @@ describe('Habitat tiles', function () {
             // Assert
             assert.equal(framework.createToken.getCall(3).args.length, 3);
             assert.equal(framework.createToken.getCall(3).args[0], 'field_wildlife');
-            assert.equal(framework.createToken.getCall(3).args[1], 'field_wildlife2' + tile.id);
+            assert.equal(framework.createToken.getCall(3).args[1], 'field_wildlife2' + tile.unique_id);
             assert.equal(framework.createToken.getCall(3).args[2], 'wildlife' + tile.supported_wildlife[2]);
         });
         it('subscribe', function () {
@@ -124,7 +124,7 @@ describe('Habitat tiles', function () {
             act_default(tile, element);
             // Assert
             assert.equal(framework.move.getCall(1).args.length, 2);
-            assert.equal(framework.move.getCall(1).args[0], 'field_wildlife0' + tile.id);
+            assert.equal(framework.move.getCall(1).args[0], 'field_wildlife0' + tile.unique_id);
             assert.equal(framework.move.getCall(1).args[1], expected_tile_id);
         });
         it('field_wildlife2', function () {
@@ -134,7 +134,7 @@ describe('Habitat tiles', function () {
             act_default(tile, element);
             // Assert
             assert.equal(framework.move.getCall(3).args.length, 2);
-            assert.equal(framework.move.getCall(3).args[0], 'field_wildlife2' + tile.id);
+            assert.equal(framework.move.getCall(3).args[0], 'field_wildlife2' + tile.unique_id);
             assert.equal(framework.move.getCall(3).args[1], expected_tile_id);
         });
     });

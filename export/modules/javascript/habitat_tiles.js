@@ -8,10 +8,10 @@ define(['dojo/_base/declare'], (declare) => {
         create(tile){
             this.framework.createToken('field', tile.unique_id, 'field' + tile.terrain_types[0]);
             if (this.hasMultipleTerrainTypes(tile)) {
-                this.framework.createToken('upper_half', this.getSecondTerrainTypeID(tile.id), 'field' + tile.terrain_types[1]);
+                this.framework.createToken('upper_half', this.getSecondTerrainTypeID(tile.unique_id), 'field' + tile.terrain_types[1]);
             }
             for (var wildlife_index in tile.supported_wildlife) {
-                this.framework.createToken('field_wildlife', this.getSupportedWildlifeID(tile.id, wildlife_index), 'wildlife' + tile.supported_wildlife[wildlife_index]);
+                this.framework.createToken('field_wildlife', this.getSupportedWildlifeID(tile.unique_id, wildlife_index), 'wildlife' + tile.supported_wildlife[wildlife_index]);
             }
             this.framework.subscribe(tile.unique_id, this.token_subscriptions, 'token_selected');
         },
@@ -19,16 +19,16 @@ define(['dojo/_base/declare'], (declare) => {
             tile_id = tile.unique_id;
             this.framework.move(tile_id, element, x, y);
             if (this.hasMultipleTerrainTypes(tile)) {
-                this.framework.move(this.getSecondTerrainTypeID(tile.id), tile_id);
+                this.framework.move(this.getSecondTerrainTypeID(tile.unique_id), tile_id);
             }
             for (var wildlife_index in tile.supported_wildlife) {
-                this.framework.move(this.getSupportedWildlifeID(tile.id, wildlife_index), tile_id);
+                this.framework.move(this.getSupportedWildlifeID(tile.unique_id, wildlife_index), tile_id);
             }
         },
         move_and_rotate: function(tile, element, x, y) {
             this.move(tile, element, x, y);
             if (this.hasMultipleTerrainTypes(tile)) {
-                this.framework.classify(this.getSecondTerrainTypeID(tile.id), 'rotate' + tile.rotation);
+                this.framework.classify(this.getSecondTerrainTypeID(tile.unique_id), 'rotate' + tile.rotation);
             }
         },
         getSecondTerrainTypeID: function (id) {
