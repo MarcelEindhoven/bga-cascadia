@@ -101,34 +101,34 @@
     background-color: rgb(90, 0, 8);
 }
 .field1 {
-    background-color: rgb(90, 0, 180);
+    background-color: rgb(0, 12, 180);
 }
 .field2 {
-    background-color: rgb(90, 50, 180);
+    background-color: rgb(50, 180, 100);
 }
 .field3 {
-    background-color: rgb(90, 100, 180);
+    background-color: rgb(2, 39, 30);
 }
 .field4 {
-    background-color: rgb(90, 150, 180);
+    background-color: rgb(233, 236, 10);
 }
 .field5 {
-    background-color: rgb(90, 200, 180);
+    background-color: rgb(116, 91, 91);
 }
 .wildlife1 {
-    background-color: rgb(90, 0, 8);
+    background-color: rgb(46, 12, 7);
 }
 .wildlife2 {
-    background-color: rgb(90, 50, 8);
+    background-color: rgb(212, 116, 12);
 }
 .wildlife3 {
-    background-color: rgb(90, 100, 8);
+    background-color: rgb(219, 117, 180);
 }
 .wildlife4 {
-    background-color: rgb(90, 150, 8);
+    background-color: rgb(101, 192, 214);
 }
 .wildlife5 {
-    background-color: rgb(90, 200, 8);
+    background-color: rgb(233, 85, 17);
 }
 .rotate0 {
     transform: rotate(0deg);
