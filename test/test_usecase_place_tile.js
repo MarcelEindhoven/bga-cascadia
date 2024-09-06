@@ -67,6 +67,8 @@ describe('Use case select tile', function () {
             assert.equal(tile_handler.create.getCall(0).args[0].vertical, 51);
             assert.equal(tile_handler.create.getCall(0).args[0].horizontal, 52);
             assert.equal(tile_handler.create.getCall(0).args[0].unique_id, unique_id+52+51);
+            assert.equal(tile_handler.create.getCall(0).args[0].terrain_types, tile.terrain_types);
+            assert.equal(tile_handler.create.getCall(0).args[0].supported_wildlife, tile.supported_wildlife);
         });
         it('Original tile unchanged', function () {
             // Arrange

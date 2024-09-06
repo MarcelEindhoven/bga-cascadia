@@ -26,9 +26,6 @@ define(['dojo/_base/declare'], (declare) => {
             ths.market_tile_selected(tile);
         },
         market_tile_selected(tile) {
-            console.log('market_tile_selected >');
-            console.log (this);
-            console.log (tile);
             unique_id = tile.unique_id;
             for (index in this.candidate_positions) {
                 candidate_position = this.candidate_positions[index];
@@ -39,7 +36,6 @@ define(['dojo/_base/declare'], (declare) => {
                 proposed_tile.unique_id = unique_id + candidate_position.horizontal + candidate_position.vertical
 
                 this.tile_handler.create(proposed_tile);
-                console.log (proposed_tile);
 
                 this.habitat.place(proposed_tile);
             }

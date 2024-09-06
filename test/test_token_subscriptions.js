@@ -54,8 +54,9 @@ describe('Habitat tiles', function () {
             // Act
             sut.token_selected(event);
             // Assert
-            assert.equal(callback_object.token_selected.getCall(0).args.length, 1);
-            assert.equal(callback_object.token_selected.getCall(0).args[0], tile);
+            assert.equal(callback_object.token_selected.getCall(0).args.length, 2);
+            assert.equal(callback_object.token_selected.getCall(0).args[0], callback_object);
+            assert.equal(callback_object.token_selected.getCall(0).args[1], tile);
         });
         it('Unsubscribe', function () {
             // Arrange
@@ -105,8 +106,9 @@ describe('Habitat tiles', function () {
             // Act
             sut.token_selected(event);
             // Assert
-            assert.equal(callback_object.token_selected.getCall(0).args.length, 1);
-            assert.equal(callback_object.token_selected.getCall(0).args[0], tile);
+            assert.equal(callback_object.token_selected.getCall(0).args.length, 2);
+            assert.equal(callback_object.token_selected.getCall(0).args[0], callback_object);
+            assert.equal(callback_object.token_selected.getCall(0).args[1], tile);
 
             sinon.assert.notCalled(callback_object2.token_selected);
         });
@@ -118,8 +120,10 @@ describe('Habitat tiles', function () {
             // Act
             sut.token_selected(event);
             // Assert
-            assert.equal(callback_object.token_selected.getCall(0).args[0], tile);
-            assert.equal(callback_object2.token_selected.getCall(0).args[0], tile);
+            assert.equal(callback_object.token_selected.getCall(0).args[0], callback_object);
+            assert.equal(callback_object2.token_selected.getCall(0).args[0], callback_object2);
+            assert.equal(callback_object.token_selected.getCall(0).args[1], tile);
+            assert.equal(callback_object2.token_selected.getCall(0).args[1], tile);
         });
     });
 });
