@@ -58,7 +58,7 @@ function (dojo, declare, framework, habitat_tiles, habitatClass, market, token_s
             
             The method is called each time the game interface is displayed to a player, ie:
             _ when the game starts
-            _ when a player refreshes the game page (F5)
+            _ when a player drawes the game page (F5)
             
             "gamedatas" argument contains all datas retrieved by your "getAllDatas" PHP method.
         */
@@ -81,18 +81,32 @@ function (dojo, declare, framework, habitat_tiles, habitatClass, market, token_s
             this.setupHabitat(gamedatas.habitat);
             this.marketSetup(gamedatas.market);
 
+            this.draw = {};
+            this.draw.habitat = this.habitat;
+            this.draw.market = this.market;
+            this.draw.draw = function(x) {
+                for (var player_index in this.habitat) {
+                    this.habitat[player_index].paint();
+                }
+                console.log('draw');
+           
+                //Sthis.market.paint();
+            };
             this.prototyping(gamedatas);
-            this.refresh();
 
             console.log( "Ending game setup" );
         },
         prototyping: function(gamedatas) {
+
+            this.framework.control_will_be_returned_to_user();
+
             this.place_tile = new usecase_place_tile();
             this.place_tile.set_candidate_positions([{horizontal: 50, vertical: 53}]);
             this.place_tile.set_tile_handler(this.habitat_tiles);
             this.place_tile.set_token_subscriptions(this.token_subscriptions);
             this.place_tile.set_habitat(this.habitat[this.player_id]);
             this.market.subscribe_tile_selected(this.place_tile, 'market_tile_selected');
+            this.market.subscribe_tile_selected(this.framework, 'control_will_be_returned_to_user');
             },
         setupHabitat: function(habitat) {
             this.habitat = [];
@@ -107,18 +121,13 @@ function (dojo, declare, framework, habitat_tiles, habitatClass, market, token_s
                     this.habitat[player_index].place(tile);
                     //this.habitat_tiles.subscribe(tile, this, 'habitat_selected1');
                 }
+                this.framework.add_ui_element(this.habitat[player_index]);
             }
         },
         marketSetup: function(market) {
             this.marketSetupWildlife(market.wildlife);
             this.marketSetupHabitat(market.habitat);
-        },
-        refresh: function() {
-            for (var player_index in this.habitat) {
-                this.habitat[player_index].refresh();
-            }
-
-            this.market.refresh();
+            this.framework.add_ui_element(this.market);
         },
         marketSetupWildlife: function(wildlife) {
             for (var index in wildlife) {

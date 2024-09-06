@@ -14,7 +14,7 @@
  *
  * The method "build_page" below is called each time the game interface is displayed to a player, ie:
  * _ when the game starts
- * _ when a player refreshes the game page (F5)
+ * _ when a player drawes the game page (F5)
  *
  * "build_page" method allows you to dynamically modify the HTML generated for the game interface. In
  * particular, you can set here the values of variables elements defined in cascadiacannonfodder_cascadiacannonfodder.tpl (elements

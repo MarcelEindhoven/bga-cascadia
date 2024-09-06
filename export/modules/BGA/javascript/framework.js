@@ -1,7 +1,8 @@
 define(['dojo/_base/declare'], (declare) => {
     return declare('cascadia.framework', null, {
         constructor() {
-            this.subscriptions = {};
+            this.ui_elements = [];
+            this.ui_dirty = false;
         },
         setDojo(toolkit){this.toolkit = toolkit},
         setGameGUI(dom){this.dom = dom},
@@ -24,11 +25,25 @@ define(['dojo/_base/declare'], (declare) => {
         resize(id, width, height){
             this.toolkit.style(id, 'width', '' + width + 'px');
             this.toolkit.style(id, 'height', '' + height + 'px');
+            this.ui_dirty = true;
         },
         subscribe(id, object, method) {
             this.toolkit.addClass(id, 'subscribe');
             this.toolkit.query('.subscribe').connect('onclick', object, method);
             this.toolkit.removeClass(id, 'subscribe');
+        },
+        add_ui_element(UI_element) {
+            this.ui_elements.push(UI_element);
+        },
+        control_will_be_returned_to_user() {
+            if (this.ui_dirty) {
+                for (index in this.ui_elements) {
+                    ui_element = this.ui_elements[index];
+                    ui_element.paint();
+                }
+    
+                this.ui_dirty = false;
+            }
         },
     });
 });

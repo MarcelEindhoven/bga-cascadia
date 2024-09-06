@@ -59,16 +59,24 @@ describe('Use case select tile', function () {
         });
         it('Create tile', function () {
             // Arrange
+            unique_id = tile.unique_id;
             // Act
-            act_default([{horizontal: 50, vertical: 51}], tile);
+            act_default([{horizontal: 52, vertical: 51}], tile);
             // Assert
             assert.equal(tile_handler.create.getCall(0).args.length, 1);
+            assert.equal(tile_handler.create.getCall(0).args[0].vertical, 51);
+            assert.equal(tile_handler.create.getCall(0).args[0].horizontal, 52);
+            assert.equal(tile_handler.create.getCall(0).args[0].unique_id, unique_id+52+51);
         });
         it('Propose tile', function () {
             // Arrange
             // Act
-            act_default([{horizontal: 50, vertical: 51}], tile);
+            act_default([{horizontal: 52, vertical: 51}], tile);
             // Assert
+            assert.equal(habitat.place.getCall(0).args.length, 1);
+            assert.equal(habitat.place.getCall(0).args[0].vertical, 51);
+            assert.equal(habitat.place.getCall(0).args[0].horizontal, 52);
+            assert.equal(habitat.place.getCall(0).args[0].unique_id, unique_id+52+51);
         });
         it('Subscribe', function () {
             // Arrange

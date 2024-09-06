@@ -24,9 +24,15 @@ define(['dojo/_base/declare'], (declare) => {
         },
         market_tile_selected(tile) {
             console.log('market_tile_selected >');
+            unique_id = tile.unique_id;
             for (index in this.candidate_positions) {
                 candidate_position = this.candidate_positions[index];
+                tile.vertical =candidate_position.vertical;
+                tile.horizontal =candidate_position.horizontal;
+                tile.unique_id = unique_id + candidate_position.horizontal + candidate_position.vertical;
                 this.tile_handler.create(tile);
+
+                this.habitat.place(tile);
             }
         },
         subscribe_tile_placed(object, method) {this.callback_object = object; this.callback_method = method;},

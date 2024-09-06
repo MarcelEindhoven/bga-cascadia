@@ -28,6 +28,13 @@ describe('Framework', function () {
             format_block: sinon.fake.returns(block),
         };
         sut.setGameGUI(gamegui);
+
+        UI_element1 = {
+            paint: sinon.stub(),
+        };
+        UI_element2 = {
+            paint: sinon.stub(),
+        };
     });
     describe('Create token', function () {
         function act_default(category, id, type = 1) {
@@ -207,6 +214,46 @@ describe('Framework', function () {
             assert.equal(dojo.removeClass.getCall(0).args.length, 2);
             assert.equal(dojo.removeClass.getCall(0).args[0], id);
             assert.equal(dojo.removeClass.getCall(0).args[1], 'subscribe');
+        });
+    });
+    describe('Draw', function () {
+        function act_default() {
+            sut.control_will_be_returned_to_user();
+        };
+        it('No UI elements', function () {
+            // Arrange
+            // Act
+            act_default();
+            // Assert
+        });
+        it('UI elements, no resize', function () {
+            // Arrange
+            sut.add_ui_element(UI_element1);
+            // Act
+            act_default();
+            // Assert
+            sinon.assert.notCalled(UI_element1.paint);
+        });
+        it('UI elements, resize', function () {
+            // Arrange
+            sut.add_ui_element(UI_element1);
+            sut.resize(1, 2, 3);
+            sut.add_ui_element(UI_element2);
+            // Act
+            act_default();
+            // Assert
+            sinon.assert.calledOnce(UI_element1.paint);
+            sinon.assert.calledOnce(UI_element2.paint);
+        });
+        it('UI elements, resize Once', function () {
+            // Arrange
+            sut.add_ui_element(UI_element1);
+            sut.resize(1, 2, 3);
+            sut.control_will_be_returned_to_user();
+            // Act
+            act_default();
+            // Assert
+            sinon.assert.calledOnce(UI_element1.paint);
         });
     });
 

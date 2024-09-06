@@ -33,7 +33,7 @@ describe('Habitat', function () {
     describe('Place tile', function () {
         function act_default(x) {
             sut.place(x);
-            sut.refresh();
+            sut.paint();
         };
         it('Single tile', function () {
             // Arrange

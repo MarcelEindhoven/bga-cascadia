@@ -36,7 +36,7 @@ define(['dojo/_base/declare'], (declare) => {
                 this.framework.resize(this.id, this.minimum_size + this.x_maximum - this.x_minimum, this.minimum_size + this.y_maximum - this.y_minimum);
             }
         },
-        refresh() {
+        paint() {
             const y_centre = (this.y_maximum + this.y_minimum)/2;
             const x_centre = (this.x_maximum + this.x_minimum)/2;
             for (index in this.tiles) {
