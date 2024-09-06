@@ -20,7 +20,7 @@ define(['dojo/_base/declare'], (declare) => {
                     console.log ('call '+ id + ' method '+ subscription.method + 'index '+ index);
                     console.log(subscription.object);
                     method = subscription.object[subscription.method];
-                    method(subscription.token);
+                    method(subscription.object, subscription.token);
                 }
             }
         },

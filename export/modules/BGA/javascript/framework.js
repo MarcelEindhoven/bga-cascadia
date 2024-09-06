@@ -35,7 +35,11 @@ define(['dojo/_base/declare'], (declare) => {
         add_ui_element(UI_element) {
             this.ui_elements.push(UI_element);
         },
+        callback_control_will_be_returned_to_user(ths) {
+            ths.control_will_be_returned_to_user();
+        },
         control_will_be_returned_to_user() {
+            console.log (this);
             if (this.ui_dirty) {
                 for (index in this.ui_elements) {
                     ui_element = this.ui_elements[index];

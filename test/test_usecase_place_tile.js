@@ -68,6 +68,18 @@ describe('Use case select tile', function () {
             assert.equal(tile_handler.create.getCall(0).args[0].horizontal, 52);
             assert.equal(tile_handler.create.getCall(0).args[0].unique_id, unique_id+52+51);
         });
+        it('Original tile unchanged', function () {
+            // Arrange
+            unique_id = tile.unique_id;
+            vertical = tile.vertical;
+            horizontal = tile.horizontal;
+            // Act
+            act_default([{horizontal: 52, vertical: 51}], tile);
+            // Assert
+            assert.equal(tile.horizontal, horizontal);
+            assert.equal(tile.vertical, vertical);
+            assert.equal(tile.unique_id, unique_id);
+        });
         it('Propose tile', function () {
             // Arrange
             // Act
