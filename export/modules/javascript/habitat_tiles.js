@@ -21,8 +21,17 @@ define(['dojo/_base/declare'], (declare) => {
             if (this.hasMultipleTerrainTypes(tile)) {
                 this.framework.move(this.getSecondTerrainTypeID(tile.unique_id), tile_id);
             }
-            for (var wildlife_index in tile.supported_wildlife) {
-                this.framework.move(this.getSupportedWildlifeID(tile.unique_id, wildlife_index), tile_id);
+            if (tile.supported_wildlife[2] != undefined) {
+                this.framework.move(this.getSupportedWildlifeID(tile.unique_id, 0), tile_id, 0, -10);
+                this.framework.move(this.getSupportedWildlifeID(tile.unique_id, 1), tile_id, 10, 8);
+                this.framework.move(this.getSupportedWildlifeID(tile.unique_id, 2), tile_id, -10, 8);
+            }
+            else if (tile.supported_wildlife[1] != undefined){
+                this.framework.move(this.getSupportedWildlifeID(tile.unique_id, 0), tile_id, 0, -10);
+                this.framework.move(this.getSupportedWildlifeID(tile.unique_id, 1), tile_id, 0, 10);
+            }
+            else {
+                this.framework.move(this.getSupportedWildlifeID(tile.unique_id, 0), tile_id);
             }
         },
         move_and_rotate: function(tile, element, x, y) {
