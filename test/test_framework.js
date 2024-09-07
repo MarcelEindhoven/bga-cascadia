@@ -17,6 +17,7 @@ describe('Framework', function () {
             style: sinon.spy(),
             disconnect: sinon.spy(),
             query: sinon.stub().returns(query_result),
+            destroy: sinon.spy(),
         };
 
         sut.setDojo(dojo);
@@ -78,6 +79,21 @@ describe('Framework', function () {
             assert.equal(dojo.addClass.getCall(0).args[1], 'wildlife5');
         });
     });
+    describe('Destroy token', function () {
+            function act_default(id) {
+                sut.destroyToken(id);
+            };
+            it('format_block', function () {
+                // Arrange
+                id = 'ID ';
+                // Act
+                act_default(id);
+                // Assert
+                sinon.assert.calledOnce(dojo.destroy);
+                assert.equal(dojo.destroy.getCall(0).args.length, 1);
+                assert.equal(dojo.destroy.getCall(0).args[0], id);
+            });
+        });
     describe('Move token', function () {
         function act_default(id_to_move, destination_id, x = 0, y = 0) {
             sut.move(id_to_move, destination_id, x, y);

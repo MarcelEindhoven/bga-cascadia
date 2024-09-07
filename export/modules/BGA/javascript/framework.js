@@ -12,6 +12,9 @@ define(['dojo/_base/declare'], (declare) => {
             this.toolkit.place(block, 'tokens');
             this.toolkit.addClass(id, type);
         },
+        destroyToken(id) {
+            this.toolkit.destroy(id);
+        },
         move(id_to_move, destination_id, x = 0, y = 0){
             if (x != 0 || y != 0) {
                 this.dom.placeOnObjectPos(id_to_move, destination_id, x, y);
