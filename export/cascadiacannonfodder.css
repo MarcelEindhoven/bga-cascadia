@@ -119,16 +119,16 @@
     background-color: rgb(46, 12, 7);
 }
 .wildlife2 {
-    background-color: rgb(212, 116, 12);
+    background-color: rgb(212, 159, 12);
 }
 .wildlife3 {
-    background-color: rgb(219, 117, 180);
+    background-color: rgb(247, 5, 8);
 }
 .wildlife4 {
     background-color: rgb(101, 192, 214);
 }
 .wildlife5 {
-    background-color: rgb(233, 8, 17);
+    background-color: rgb(243, 93, 6);
 }
 .rotate0 {
     transform: rotate(0deg);
@@ -137,7 +137,7 @@
     transform: rotate(60deg);
 }
 .rotate2 {
-    trasform: rotate(120deg);
+    transform: rotate(120deg);
 }
 .rotate3 {
     transform: rotate(180deg);

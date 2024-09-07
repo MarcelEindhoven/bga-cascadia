@@ -37,8 +37,8 @@ class HabitatSetup {
 
     public function addStarterTile($player_id, $starter_tile) {
         $this->placeTile($starter_tile[0], $player_id, 50, 50, 0);
-        $this->placeTile($starter_tile[1], $player_id, 49, 51, 5);
-        $this->placeTile($starter_tile[2], $player_id, 51, 51, 0);
+        $this->placeTile($starter_tile[1], $player_id, 49, 51, 2);
+        $this->placeTile($starter_tile[2], $player_id, 51, 51, 3);
     }
 
     public function placeTile($tile, $player_id, $x, $y, $rotation) {
