@@ -26,7 +26,7 @@ describe('market', function () {
         };
         sut.set_token_subscriptions(token_subscriptions);
 
-        tile = {id: 2, terrain_types: [1], supported_wildlife: [2], horizontal: 50, vertical: 50};
+        tile = {id: 2, terrain_types: [1], supported_wildlife: [2], horizontal: 50, vertical: 50, unique_id: 'tile2'};
         other_tile = {id: 22, terrain_types: [1], supported_wildlife: [2], horizontal: 50, vertical: 51};
 
         expected_tile_id = 'tile' + tile.id;
@@ -75,6 +75,17 @@ describe('market', function () {
             assert.equal(token_subscriptions.subscribe.getCall(0).args[0], tile);
             assert.equal(token_subscriptions.subscribe.getCall(0).args[1], object);
             assert.equal(token_subscriptions.subscribe.getCall(0).args[2], method);
+        });
+        it('Blinking tile', function () {
+            // Arrange
+            object = token_subscriptions;
+            method = 'q';
+            // Act
+            act_default(tile, object, method);
+            // Assert
+            assert.equal(framework.classify.getCall(0).args.length, 2);
+            assert.equal(framework.classify.getCall(0).args[0], tile.unique_id);
+            assert.equal(framework.classify.getCall(0).args[1], 'selectable');
         });
     });
 });
