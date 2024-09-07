@@ -8,6 +8,13 @@ describe('Use case select tile', function () {
         player_id = 125;
         sut = new sut_module(player_id);
 
+        framework = {
+            classify: sinon.spy(),
+            mark_as_selectable: sinon.spy(),
+            resize: sinon.spy(),
+        };
+        sut.setFramework(framework);
+
         tile_handler = {
             create: sinon.spy(),
             unsubscribe: sinon.spy(),
@@ -91,6 +98,14 @@ describe('Use case select tile', function () {
             assert.equal(habitat.place.getCall(0).args[0].vertical, 51);
             assert.equal(habitat.place.getCall(0).args[0].horizontal, 52);
             assert.equal(habitat.place.getCall(0).args[0].unique_id, unique_id+52+51);
+        });
+        it('Mark as selectable tile', function () {
+            // Arrange
+            // Act
+            act_default([{horizontal: 52, vertical: 51}], tile);
+            // Assert
+            assert.equal(framework.mark_as_selectable.getCall(0).args.length, 1);
+            assert.equal(framework.mark_as_selectable.getCall(0).args[0], unique_id+52+51);
         });
         it('Subscribe', function () {
             // Arrange

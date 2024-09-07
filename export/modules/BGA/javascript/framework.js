@@ -23,7 +23,7 @@ define(['dojo/_base/declare'], (declare) => {
             this.toolkit.addClass(id, type);
         },
         mark_as_selectable(id) {
-            this.classify(id, selectable);
+            this.classify(id, 'selectable');
         },
         resize(id, width, height){
             this.toolkit.style(id, 'width', '' + width + 'px');

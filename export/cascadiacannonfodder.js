@@ -94,6 +94,7 @@ function (dojo, declare, framework, habitat_tiles, habitatClass, market, token_s
             this.place_tile.set_tile_handler(this.habitat_tiles);
             this.place_tile.set_token_subscriptions(this.token_subscriptions);
             this.place_tile.set_habitat(this.habitat[this.player_id]);
+            this.place_tile.setFramework(this.framework);
             this.market.subscribe_tile_selected(this.place_tile, 'callback_market_tile_selected');
             this.market.subscribe_tile_selected(this.framework, 'callback_control_will_be_returned_to_user');
             },

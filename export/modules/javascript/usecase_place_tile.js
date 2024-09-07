@@ -38,6 +38,8 @@ define(['dojo/_base/declare'], (declare) => {
                 this.tile_handler.create(proposed_tile);
 
                 this.habitat.place(proposed_tile);
+
+                this.framework.mark_as_selectable(proposed_tile.unique_id);
             }
         },
         subscribe_tile_placed(object, method) {this.callback_object = object; this.callback_method = method;},
