@@ -20,7 +20,7 @@ define(['dojo/_base/declare'], (declare) => {
             for (index in this.tiles) {
                 tile = this.tiles[index];
                 this.token_subscriptions.subscribe(tile, object, method);
-                this.framework.classify(tile.unique_id, 'selectable');
+                this.framework.mark_as_selectable(tile.unique_id);
             }
         },
     });

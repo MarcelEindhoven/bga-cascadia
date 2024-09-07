@@ -161,7 +161,7 @@ describe('Habitat tiles', function () {
             assert.equal(framework.move.getCall(3).args.length, 4);
             assert.equal(framework.move.getCall(3).args[0], 'field_wildlife2' + tile.unique_id);
             assert.equal(framework.move.getCall(3).args[1], expected_tile_id);
-            assert.equal(framework.move.getCall(3).args[2], -framework.move.getCall(2).args[3]);
+            assert.equal(framework.move.getCall(3).args[2], -framework.move.getCall(2).args[2]);
             assert.equal(framework.move.getCall(3).args[3], framework.move.getCall(2).args[3]);
         });
     });

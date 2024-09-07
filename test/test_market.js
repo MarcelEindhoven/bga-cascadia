@@ -10,6 +10,7 @@ describe('market', function () {
 
         framework = {
             classify: sinon.spy(),
+            mark_as_selectable: sinon.spy(),
             resize: sinon.spy(),
         };
         sut.setFramework(framework);
@@ -83,9 +84,8 @@ describe('market', function () {
             // Act
             act_default(tile, object, method);
             // Assert
-            assert.equal(framework.classify.getCall(0).args.length, 2);
-            assert.equal(framework.classify.getCall(0).args[0], tile.unique_id);
-            assert.equal(framework.classify.getCall(0).args[1], 'selectable');
+            assert.equal(framework.mark_as_selectable.getCall(0).args.length, 1);
+            assert.equal(framework.mark_as_selectable.getCall(0).args[0], tile.unique_id);
         });
     });
 });
