@@ -17,6 +17,7 @@ describe('Use case select tile', function () {
 
         tile_handler = {
             create: sinon.spy(),
+            mark_as_selectable: sinon.spy(),
             unsubscribe: sinon.spy(),
         };
         sut.set_tile_handler(tile_handler);
@@ -104,8 +105,8 @@ describe('Use case select tile', function () {
             // Act
             act_default([{horizontal: 52, vertical: 51}], tile);
             // Assert
-            assert.equal(framework.mark_as_selectable.getCall(0).args.length, 1);
-            assert.equal(framework.mark_as_selectable.getCall(0).args[0], unique_id+52+51);
+            assert.equal(tile_handler.mark_as_selectable.getCall(0).args.length, 1);
+            assert.equal(tile_handler.mark_as_selectable.getCall(0).args[0].unique_id, unique_id+52+51);
         });
         it('Subscribe', function () {
             // Arrange

@@ -15,6 +15,9 @@ define(['dojo/_base/declare'], (declare) => {
             }
             this.framework.subscribe(tile.unique_id, this.token_subscriptions, 'token_selected');
         },
+        mark_as_selectable: function(tile) {
+            this.framework.mark_as_selectable(tile.unique_id);
+        },
         move: function(tile, element, x = 0, y = 0) {
             tile_id = tile.unique_id;
             this.framework.move(tile_id, element, x, y);

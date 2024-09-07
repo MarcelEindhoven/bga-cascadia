@@ -16,6 +16,7 @@ describe('market', function () {
         sut.setFramework(framework);
 
         tile_handler = {
+            mark_as_selectable: sinon.spy(),
             move_and_rotate: sinon.spy(),
             move: sinon.spy(),
         };
@@ -84,8 +85,8 @@ describe('market', function () {
             // Act
             act_default(tile, object, method);
             // Assert
-            assert.equal(framework.mark_as_selectable.getCall(0).args.length, 1);
-            assert.equal(framework.mark_as_selectable.getCall(0).args[0], tile.unique_id);
+            assert.equal(tile_handler.mark_as_selectable.getCall(0).args.length, 1);
+            assert.equal(tile_handler.mark_as_selectable.getCall(0).args[0], tile);
         });
     });
 });
