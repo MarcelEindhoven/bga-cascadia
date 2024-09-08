@@ -15,8 +15,11 @@ define(['dojo/_base/declare'], (declare) => {
         setTileHandler(tile_handler){this.tile_handler = tile_handler;},
 
         place(tile) {
-            this.tiles[tile.id] = tile;
+            this.tiles[tile.unique_id] = tile;
             this.resize(tile);
+        },
+        remove(tile) {
+            delete this.tiles[tile.unique_id];
         },
         resize(tile) {
             const [x, y] = this.getAbsoluteCoordinates(tile.horizontal, tile.vertical);

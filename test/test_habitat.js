@@ -19,8 +19,8 @@ describe('Habitat', function () {
         };
         sut.setTileHandler(tile_handler);
 
-        tile = {id: 2, terrain_types: [1], supported_wildlife: [2], horizontal: 50, vertical: 50};
-        other_tile = {id: 22, terrain_types: [1], supported_wildlife: [2], horizontal: 50, vertical: 51};
+        tile = {id: 2, terrain_types: [1], supported_wildlife: [2], horizontal: 50, vertical: 50, unique_id: 'tile2'};
+        other_tile = {id: 2, terrain_types: [1], supported_wildlife: [2], horizontal: 50, vertical: 51, unique_id: 'tile22'};
 
         expected_tile_id = 'tile' + tile.id;
         expected_upper_half_id = 'upper_half' + tile.id;
@@ -69,6 +69,33 @@ describe('Habitat', function () {
             assert.equal(tile_handler.move_and_rotate.getCall(1).args[3], vertical_distance / 4);
             assert.equal(tile_handler.move_and_rotate.getCall(2).args[2], - horizontal_distance / 2);
             assert.equal(tile_handler.move_and_rotate.getCall(2).args[3], - vertical_distance / 4);
+        });
+    });
+    describe('Remove tile', function () {
+        function arrange_default(x) {
+            sut.place(x);
+        };
+        function act_default(x) {
+            sut.remove(x);
+        };
+        it('Single tile', function () {
+            // Arrange
+            arrange_default(tile);
+            // Act
+            act_default(tile);
+            // Assert
+            sut.paint();
+            sinon.assert.callCount(tile_handler.move_and_rotate, 0);
+        });
+        it('Single tile remains', function () {
+            // Arrange
+            arrange_default(other_tile);
+            arrange_default(tile);
+            // Act
+            act_default(tile);
+            // Assert
+            sut.paint();
+            sinon.assert.callCount(tile_handler.move_and_rotate, 1);
         });
     });
     describe('Resize', function () {

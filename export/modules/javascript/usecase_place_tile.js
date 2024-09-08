@@ -30,16 +30,16 @@ define(['dojo/_base/declare'], (declare) => {
             for (index in this.candidate_positions) {
                 candidate_position = this.candidate_positions[index];
 
-                var proposed_tile = Object.assign({}, tile);
-                proposed_tile.horizontal = candidate_position.horizontal, 
-                proposed_tile.vertical = candidate_position.vertical,
-                proposed_tile.unique_id = unique_id + candidate_position.horizontal + candidate_position.vertical
+                var candidate_tile = Object.assign({}, tile);
+                candidate_tile.horizontal = candidate_position.horizontal, 
+                candidate_tile.vertical = candidate_position.vertical,
+                candidate_tile.unique_id = unique_id + candidate_position.horizontal + candidate_position.vertical
 
-                this.tile_handler.create(proposed_tile);
+                this.tile_handler.create(candidate_tile);
 
-                this.habitat.place(proposed_tile);
+                this.habitat.place(candidate_tile);
 
-                this.tile_handler.mark_as_selectable(proposed_tile);
+                this.tile_handler.mark_as_selectable(candidate_tile);
             }
         },
         subscribe_tile_placed(object, method) {this.callback_object = object; this.callback_method = method;},
