@@ -8,6 +8,7 @@ describe('Habitat tiles', function () {
         sut = new sut_module();
         framework = {
             createToken: sinon.spy(),
+            destroyToken: sinon.spy(),
             move: sinon.spy(),
             classify: sinon.spy(),
             subscribe: sinon.spy(),
@@ -91,6 +92,45 @@ describe('Habitat tiles', function () {
             assert.equal(framework.subscribe.getCall(0).args[0], expected_tile_id);
             assert.equal(framework.subscribe.getCall(0).args[1], subscribe);
             assert.equal(framework.subscribe.getCall(0).args[2], 'token_selected');
+        });
+    });
+    describe('Destroy token', function () {
+        function act_default(tile) {
+            sut.destroy(tile);
+        };
+        it('createToken terrain_types[0]', function () {
+            // Arrange
+            // Act
+            act_default(tile);
+            // Assert
+            assert.equal(framework.destroyToken.getCall(0).args.length, 1);
+            assert.equal(framework.destroyToken.getCall(0).args[0], expected_tile_id);
+        });
+        it('destroyToken supported_wildlife[0]', function () {
+            // Arrange
+            // Act
+            act_default(tile);
+            // Assert
+            assert.equal(framework.destroyToken.getCall(1).args.length, 1);
+            assert.equal(framework.destroyToken.getCall(1).args[0], 'field_wildlife0' + tile.unique_id);
+        });
+        it('destroyToken terrain_types[1]', function () {
+            // Arrange
+            tile.terrain_types = [1, 3];
+            // Act
+            act_default(tile);
+            // Assert
+            assert.equal(framework.destroyToken.getCall(1).args.length, 1);
+            assert.equal(framework.destroyToken.getCall(1).args[0], expected_upper_half_id);
+        });
+        it('destroyToken supported_wildlife[2]', function () {
+            // Arrange
+            tile.supported_wildlife = [2, 4, 5];
+            // Act
+            act_default(tile);
+            // Assert
+            assert.equal(framework.destroyToken.getCall(3).args.length, 1);
+            assert.equal(framework.destroyToken.getCall(3).args[0], 'field_wildlife2' + tile.unique_id);
         });
     });
     describe('Move token 0, 0', function () {

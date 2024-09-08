@@ -83,7 +83,7 @@ describe('Framework', function () {
             function act_default(id) {
                 sut.destroyToken(id);
             };
-            it('format_block', function () {
+            it('destroy', function () {
                 // Arrange
                 id = 'ID ';
                 // Act

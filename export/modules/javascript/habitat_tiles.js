@@ -15,6 +15,15 @@ define(['dojo/_base/declare'], (declare) => {
             }
             this.framework.subscribe(tile.unique_id, this.token_subscriptions, 'token_selected');
         },
+        destroy(tile){
+            this.framework.destroyToken(tile.unique_id);
+            if (this.hasMultipleTerrainTypes(tile)) {
+                this.framework.destroyToken(this.getSecondTerrainTypeID(tile.unique_id));
+            }
+            for (var wildlife_index in tile.supported_wildlife) {
+                this.framework.destroyToken(this.getSupportedWildlifeID(tile.unique_id, wildlife_index));
+            }
+        },
         mark_as_selectable: function(tile) {
             this.framework.mark_as_selectable(tile.unique_id);
         },
