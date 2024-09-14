@@ -13,6 +13,7 @@ describe('Habitat tiles', function () {
             classify: sinon.spy(),
             subscribe: sinon.spy(),
         };
+        sut.dependencies.framework = framework;
         sut.setFramework(framework);
         subscribe = {
             createToken: sinon.spy(),

@@ -1,5 +1,6 @@
 define(['dojo/_base/declare'], (declare) => {
     return declare('cascadia.habitat_tiles', null, {
+        dependencies: {framework: null, token_subscriptions: null},
         constructor() {
         },
         setFramework(framework){this.framework = framework},
@@ -13,7 +14,6 @@ define(['dojo/_base/declare'], (declare) => {
             for (var wildlife_index in tile.supported_wildlife) {
                 this.framework.createToken('field_wildlife', this.getSupportedWildlifeID(tile.unique_id, wildlife_index), 'wildlife' + tile.supported_wildlife[wildlife_index]);
             }
-            console.log(tile);
             this.framework.subscribe(tile.unique_id, this.token_subscriptions, 'token_selected');
         },
         destroy(tile){
