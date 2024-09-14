@@ -11,6 +11,7 @@ describe('Habitat tile', function () {
             move: sinon.spy(),
             classify: sinon.spy(),
             subscribe: sinon.spy(),
+            add_ui_element: sinon.spy(),
         };
         token_subscriptions = {
             createToken: sinon.spy(),
@@ -104,6 +105,14 @@ describe('Habitat tile', function () {
             assert.equal(framework.subscribe.getCall(0).args[1], token_subscriptions);
             assert.equal(framework.subscribe.getCall(0).args[2], 'token_selected');
         });
+        it('Register', function () {
+            // Arrange
+            // Act
+            act_default(tile);
+            // Assert
+            assert.equal(framework.add_ui_element.getCall(0).args.length, 1);
+            assert.equal(framework.add_ui_element.getCall(0).args[0].unique_id, tile.unique_id);
+        });
     });
     describe('Destroy token', function () {
         function act_default(tile) {
@@ -143,6 +152,98 @@ describe('Habitat tile', function () {
             // Assert
             assert.equal(framework.destroyToken.getCall(3).args.length, 1);
             assert.equal(framework.destroyToken.getCall(3).args[0], 'field_wildlife2' + tile.unique_id);
+        });
+    });
+    describe('Move token 0, 0', function () {
+        function act_default(tile, element) {
+            sut.create(tile);
+            sut.move(element);
+            sut.paint();
+        };
+        it('expected_tile_id', function () {
+            // Arrange
+            // Act
+            act_default(tile, element);
+            // Assert
+            assert.equal(framework.move.getCall(0).args.length, 4);
+            assert.equal(framework.move.getCall(0).args[0], expected_tile_id);
+            assert.equal(framework.move.getCall(0).args[1], element);
+            assert.equal(framework.move.getCall(0).args[2], 0);
+            assert.equal(framework.move.getCall(0).args[3], 0);
+        });
+        it('expected_upper_half_id', function () {
+            // Arrange
+            tile.terrain_types = [1, 3];
+            // Act
+            act_default(tile, element);
+            // Assert
+            assert.equal(framework.move.getCall(1).args.length, 2);
+            assert.equal(framework.move.getCall(1).args[0], expected_upper_half_id);
+            assert.equal(framework.move.getCall(1).args[1], expected_tile_id);
+        });
+        it('field_wildlife0', function () {
+            // Arrange
+            // Act
+            act_default(tile, element);
+            // Assert
+            assert.equal(framework.move.getCall(1).args.length, 2);
+            assert.equal(framework.move.getCall(1).args[0], 'field_wildlife0' + tile.unique_id);
+            assert.equal(framework.move.getCall(1).args[1], expected_tile_id);
+        });
+        it('field_wildlife1', function () {
+            // Arrange
+            tile.supported_wildlife = [2, 5];
+            // Act
+            act_default(tile, element);
+            // Assert
+            assert.equal(framework.move.getCall(1).args.length, 4);
+            assert.equal(framework.move.getCall(1).args[0], 'field_wildlife0' + tile.unique_id);
+            assert.equal(framework.move.getCall(1).args[1], expected_tile_id);
+            assert.equal(framework.move.getCall(1).args[2], 0);
+            assert.equal(framework.move.getCall(1).args[3], -10);
+            assert.equal(framework.move.getCall(2).args.length, 4);
+            assert.equal(framework.move.getCall(2).args[0], 'field_wildlife1' + tile.unique_id);
+            assert.equal(framework.move.getCall(2).args[1], expected_tile_id);
+            assert.equal(framework.move.getCall(2).args[2], 0);
+            assert.equal(framework.move.getCall(2).args[3], -framework.move.getCall(1).args[3]);
+        });
+        it('field_wildlife2', function () {
+            // Arrange
+            tile.supported_wildlife = [2, 4, 5];
+            // Act
+            act_default(tile, element);
+            // Assert
+            assert.equal(framework.move.getCall(1).args.length, 4);
+            assert.equal(framework.move.getCall(1).args[0], 'field_wildlife0' + tile.unique_id);
+            assert.equal(framework.move.getCall(1).args[1], expected_tile_id);
+            assert.equal(framework.move.getCall(1).args[2], 0);
+            assert.equal(framework.move.getCall(1).args[3], -10);
+            assert.equal(framework.move.getCall(2).args.length, 4);
+            assert.equal(framework.move.getCall(2).args[0], 'field_wildlife1' + tile.unique_id);
+            assert.equal(framework.move.getCall(2).args[1], expected_tile_id);
+            assert.equal(framework.move.getCall(3).args.length, 4);
+            assert.equal(framework.move.getCall(3).args[0], 'field_wildlife2' + tile.unique_id);
+            assert.equal(framework.move.getCall(3).args[1], expected_tile_id);
+            assert.equal(framework.move.getCall(3).args[2], -framework.move.getCall(2).args[2]);
+            assert.equal(framework.move.getCall(3).args[3], framework.move.getCall(2).args[3]);
+        });
+    });
+    describe('Move token x, y', function () {
+        function act_default(tile, element, x = 0, y = 0) {
+            sut.create(tile);
+            sut.move(element, x, y);
+            sut.paint();
+        };
+        it('x, y', function () {
+            // Arrange
+            // Act
+            act_default(tile, element, x, y);
+            // Assert
+            assert.equal(framework.move.getCall(0).args.length, 4);
+            assert.equal(framework.move.getCall(0).args[0], expected_tile_id);
+            assert.equal(framework.move.getCall(0).args[1], element);
+            assert.equal(framework.move.getCall(0).args[2], x);
+            assert.equal(framework.move.getCall(0).args[3], y);
         });
     });
 });
