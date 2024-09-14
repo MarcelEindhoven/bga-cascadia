@@ -18,7 +18,6 @@ describe('Use case select tile', function () {
         tile_handler = {
             create: sinon.spy(),
             mark_as_selectable: sinon.spy(),
-            unsubscribe: sinon.spy(),
         };
         sut.set_tile_handler(tile_handler);
 
@@ -113,6 +112,10 @@ describe('Use case select tile', function () {
             // Act
             act_default([{horizontal: 50, vertical: 51}], tile);
             // Assert
+            assert.equal(token_subscriptions.subscribe.getCall(0).args.length, 3);
+            assert.equal(token_subscriptions.subscribe.getCall(0).args[0].unique_id, unique_id+50+51);
+            assert.equal(token_subscriptions.subscribe.getCall(0).args[1], sut);
+            assert.equal(token_subscriptions.subscribe.getCall(0).args[2], 'candidate_tile_selected');
         });
     });
 });

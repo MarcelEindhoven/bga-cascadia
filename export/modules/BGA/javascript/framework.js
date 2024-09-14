@@ -41,9 +41,7 @@ define(['dojo/_base/declare'], (declare) => {
         add_ui_element(UI_element) {
             this.ui_elements.push(UI_element);
         },
-        callback_control_will_be_returned_to_user(ths) {
-            ths.control_will_be_returned_to_user();
-        },
+        event_has_been_handled(event) {event.preventDefault(); event.stopPropagation();},
         control_will_be_returned_to_user() {
             console.log (this);
             if (this.ui_dirty) {

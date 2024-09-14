@@ -3,6 +3,7 @@ define(['dojo/_base/declare'], (declare) => {
         constructor() {
             this.subscriptions = [];
         },
+        setFramework(framework){this.framework = framework},
         subscribe(token, object, method) {
             subscription = {token: token, object: object, method: method};
             this.subscriptions.push(subscription);
@@ -15,8 +16,7 @@ define(['dojo/_base/declare'], (declare) => {
             for (index in this.subscriptions) {
                 subscription = this.subscriptions[index];
                 if (id == subscription.token.unique_id) {
-                    method = subscription.object[subscription.method];
-                    method(subscription.object, subscription.token);
+                    subscription.object[subscription.method](subscription.token);
                 }
             }
         },

@@ -3,7 +3,7 @@ var sinon = require('sinon');
 
 var sut_module = require('../export/modules/javascript/token_subscriptions.js');
 
-describe('Habitat tiles', function () {
+describe('Token subscriptions', function () {
     beforeEach(function() {
         sut = new sut_module();
 
@@ -13,6 +13,7 @@ describe('Habitat tiles', function () {
         callback_object2 = {
             token_selected: sinon.spy(),
         };
+        complete_object = {value: 5, internal_method: sinon.spy(), external_method: function (event) {this.internal_method();}}
 
         tile = {id: 2, terrain_types: [1], supported_wildlife: [2], unique_id: 'tile2'};
         other_tile = {id: 4, terrain_types: [1], supported_wildlife: [2], unique_id: 'tile4'};
@@ -47,6 +48,15 @@ describe('Habitat tiles', function () {
             // Assert
             sinon.assert.notCalled(callback_object.token_selected);
         });
+        it('Call back method can access object parameters', function () {
+            // Arrange
+            sut.subscribe(tile, complete_object, 'external_method');
+            event = {currentTarget: {id: tile.unique_id}};
+            // Act
+            sut.token_selected(event);
+            // Assert
+            sinon.assert.calledOnce(complete_object.internal_method);
+        });
         it('Event ID does matches subscription', function () {
             // Arrange
             sut.subscribe(tile, callback_object, 'token_selected');
@@ -54,9 +64,8 @@ describe('Habitat tiles', function () {
             // Act
             sut.token_selected(event);
             // Assert
-            assert.equal(callback_object.token_selected.getCall(0).args.length, 2);
-            assert.equal(callback_object.token_selected.getCall(0).args[0], callback_object);
-            assert.equal(callback_object.token_selected.getCall(0).args[1], tile);
+            assert.equal(callback_object.token_selected.getCall(0).args.length, 1);
+            assert.equal(callback_object.token_selected.getCall(0).args[0], tile);
         });
         it('Unsubscribe', function () {
             // Arrange
@@ -106,9 +115,7 @@ describe('Habitat tiles', function () {
             // Act
             sut.token_selected(event);
             // Assert
-            assert.equal(callback_object.token_selected.getCall(0).args.length, 2);
-            assert.equal(callback_object.token_selected.getCall(0).args[0], callback_object);
-            assert.equal(callback_object.token_selected.getCall(0).args[1], tile);
+            assert.equal(callback_object.token_selected.getCall(0).args[0], tile);
 
             sinon.assert.notCalled(callback_object2.token_selected);
         });
@@ -120,10 +127,8 @@ describe('Habitat tiles', function () {
             // Act
             sut.token_selected(event);
             // Assert
-            assert.equal(callback_object.token_selected.getCall(0).args[0], callback_object);
-            assert.equal(callback_object2.token_selected.getCall(0).args[0], callback_object2);
-            assert.equal(callback_object.token_selected.getCall(0).args[1], tile);
-            assert.equal(callback_object2.token_selected.getCall(0).args[1], tile);
+            assert.equal(callback_object.token_selected.getCall(0).args[0], tile);
+            assert.equal(callback_object2.token_selected.getCall(0).args[0], tile);
         });
     });
 });

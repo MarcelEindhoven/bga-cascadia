@@ -30,6 +30,7 @@ function (dojo, declare, framework, habitat_tiles, habitatClass, market, token_s
     return declare("bgagame.cascadiacannonfodder", ebg.core.gamegui, {
         constructor: function(){
             console.log('cascadiacannonfodder constructor');
+            console.log(dojo.version.toString());
               
             // Here, you can init the global variables of your user interface
             // Example:
@@ -39,6 +40,7 @@ function (dojo, declare, framework, habitat_tiles, habitatClass, market, token_s
             this.framework.setDojo(dojo);            
 
             this.token_subscriptions = new token_subscriptions();
+            this.token_subscriptions.setFramework(this.framework);
  
             this.habitat_tiles = new habitat_tiles();
             this.habitat_tiles.setFramework(this.framework);
@@ -95,8 +97,9 @@ function (dojo, declare, framework, habitat_tiles, habitatClass, market, token_s
             this.place_tile.set_token_subscriptions(this.token_subscriptions);
             this.place_tile.set_habitat(this.habitat[this.player_id]);
             this.place_tile.setFramework(this.framework);
-            this.market.subscribe_tile_selected(this.place_tile, 'callback_market_tile_selected');
-            this.market.subscribe_tile_selected(this.framework, 'callback_control_will_be_returned_to_user');
+            this.place_tile.subscribe_tile_placed(this, 'tile_placed');
+            this.market.subscribe_tile_selected(this.place_tile, 'market_tile_selected');
+            this.market.subscribe_tile_selected(this.framework, 'control_will_be_returned_to_user');
             },
         setupHabitat: function(habitat) {
             this.habitat = [];

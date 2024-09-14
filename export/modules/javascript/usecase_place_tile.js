@@ -9,22 +9,6 @@ define(['dojo/_base/declare'], (declare) => {
         set_token_subscriptions(token_subscriptions){this.token_subscriptions = token_subscriptions;},
         set_habitat(habitat){this.habitat = habitat;},
 
-        start(tiles) {
-            this.tiles = tiles;
-            for (index in this.tiles) {
-                tile = this.tiles[index];
-                this.framework.subscribe(tile, this, 'token_selected');
-            }
-        },
-        stop() {
-            for (index in this.tiles) {
-                tile = this.tiles[index];
-                this.framework.unsubscribe(tile, this, 'token_selected');
-            }
-        },
-        callback_market_tile_selected(ths, tile) {
-            ths.market_tile_selected(tile);
-        },
         market_tile_selected(tile) {
             unique_id = tile.unique_id;
             for (index in this.candidate_positions) {
@@ -40,6 +24,8 @@ define(['dojo/_base/declare'], (declare) => {
                 this.habitat.place(candidate_tile);
 
                 this.tile_handler.mark_as_selectable(candidate_tile);
+
+                this.token_subscriptions.subscribe(candidate_tile, this, 'candidate_tile_selected');
             }
         },
         subscribe_tile_placed(object, method) {this.callback_object = object; this.callback_method = method;},
