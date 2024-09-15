@@ -18,7 +18,7 @@
 define([
     "dojo","dojo/_base/declare",
     g_gamethemeurl + 'modules/BGA/javascript/framework.js',
-    g_gamethemeurl + 'modules/javascript/habitat_tiles.js',
+    g_gamethemeurl + 'modules/javascript/habitat_tile.js',
     g_gamethemeurl + 'modules/javascript/habitat.js',
     g_gamethemeurl + 'modules/javascript/market.js',
     g_gamethemeurl + 'modules/javascript/token_subscriptions.js',
@@ -26,7 +26,7 @@ define([
     "ebg/core/gamegui",
     "ebg/counter"
 ],
-function (dojo, declare, framework, habitat_tiles, habitatClass, market, token_subscriptions, usecase_place_tile) {
+function (dojo, declare, framework, habitat_tile_class, habitatClass, market, token_subscriptions, usecase_place_tile) {
     return declare("bgagame.cascadiacannonfodder", ebg.core.gamegui, {
         constructor: function(){
             console.log('cascadiacannonfodder constructor');
@@ -80,10 +80,10 @@ function (dojo, declare, framework, habitat_tiles, habitatClass, market, token_s
             // TODO: Set up your game interface here, according to "gamedatas"
             // Setup game notifications to handle (see "setupNotifications" method below)
             this.setupNotifications();
-            this.setupHabitat(gamedatas.habitat);
-            this.marketSetup(gamedatas.market);
+            //this.setupHabitat(gamedatas.habitat);
+            //this.marketSetup(gamedatas.market);
 
-            this.prototyping(gamedatas);
+            //this.prototyping(gamedatas);
 
             console.log( "Ending game setup" );
         },
