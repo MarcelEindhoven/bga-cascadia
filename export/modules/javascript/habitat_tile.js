@@ -92,6 +92,9 @@ define(['dojo/_base/declare'], (declare) => {
         },
         paint_rotation() {
             if (this.hasMultipleTerrainTypes() && (this.rotation != undefined) && (this.class_rotation != 'rotate' + this.rotation)) {
+                if (this.class_rotation != undefined) {
+                    this.framework.remove_css_class(this.getSecondTerrainTypeID(), this.class_rotation);
+                }
                 this.class_rotation = 'rotate' + this.rotation;
                 this.framework.add_css_class(this.getSecondTerrainTypeID(), this.class_rotation);
             }

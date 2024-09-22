@@ -282,6 +282,19 @@ describe('Habitat tile', function () {
             // Assert
             sinon.assert.notCalled(framework.add_css_class);
         });
+        it('Paint with rotation and multiple terrain types', function () {
+            // Arrange
+            tile.rotation = 3;
+            tile.terrain_types = [2, 3];
+            assert_default(tile);
+            // Act
+            act_default();
+            // Assert
+            sinon.assert.callCount(framework.add_css_class, 1);
+            assert.equal(framework.add_css_class.getCall(0).args.length, 2);
+            assert.equal(framework.add_css_class.getCall(0).args[0], sut.getSecondTerrainTypeID());
+            assert.equal(framework.add_css_class.getCall(0).args[1], 'rotate3');
+        });
         it('Paint again', function () {
             // Arrange
             tile.rotation = 3;
@@ -292,6 +305,24 @@ describe('Habitat tile', function () {
             sut.paint();
             // Assert
             sinon.assert.callCount(framework.add_css_class, 1);
+        });
+        it('Remove CSS class after change in rotation', function () {
+            // Arrange
+            tile.rotation = 5;
+            tile.terrain_types = [2, 3];
+            assert_default(tile);
+            // Act
+            act_default();
+            sut.rotation = 0;
+            sut.paint();
+            // Assert
+            sinon.assert.callCount(framework.add_css_class, 2);
+            assert.equal(framework.add_css_class.getCall(1).args[0], sut.getSecondTerrainTypeID());
+            assert.equal(framework.add_css_class.getCall(1).args[1], 'rotate0');
+            sinon.assert.callCount(framework.remove_css_class, 1);
+            assert.equal(framework.remove_css_class.getCall(0).args.length, 2);
+            assert.equal(framework.remove_css_class.getCall(0).args[0], sut.getSecondTerrainTypeID());
+            assert.equal(framework.remove_css_class.getCall(0).args[1], 'rotate5');
         });
     });
 });
