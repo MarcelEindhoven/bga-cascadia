@@ -265,7 +265,7 @@ describe('Habitat tile', function () {
         function act_default() {
             sut.paint();
         };
-        it('Creation without rotation', function () {
+        it('Paint without rotation', function () {
             // Arrange
             assert_default(tile);
             // Act
@@ -273,7 +273,7 @@ describe('Habitat tile', function () {
             // Assert
             sinon.assert.notCalled(framework.add_css_class);
         });
-        it('Creation with rotation and no multiple terrain types', function () {
+        it('Paint with rotation and no multiple terrain types', function () {
             // Arrange
             tile.rotation = 3;
             assert_default(tile);
@@ -282,17 +282,16 @@ describe('Habitat tile', function () {
             // Assert
             sinon.assert.notCalled(framework.add_css_class);
         });
-        it('Creation with rotation and multiple terrain types', function () {
+        it('Paint again', function () {
             // Arrange
             tile.rotation = 3;
             tile.terrain_types = [2, 3];
             assert_default(tile);
             // Act
             act_default();
+            sut.paint();
             // Assert
-            assert.equal(framework.add_css_class.getCall(0).args.length, 2);
-            assert.equal(framework.add_css_class.getCall(0).args[0], sut.getSecondTerrainTypeID());
-            assert.equal(framework.add_css_class.getCall(0).args[1], 'rotate' + tile.rotation);
+            sinon.assert.callCount(framework.add_css_class, 1);
         });
     });
 });

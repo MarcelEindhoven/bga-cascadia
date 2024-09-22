@@ -66,25 +66,34 @@ define(['dojo/_base/declare'], (declare) => {
             this.y = y;
         },
         paint: function() {
-            tile_id = tile.unique_id;
-            this.framework.move(tile_id, this.element, this.x, this.y);
+            this.paint_terrain();
+            this.paint_wildlife();
+            this.paint_rotation();
+        },
+        paint_terrain() {
+            this.framework.move(tile.unique_id, this.element, this.x, this.y);
             if (this.hasMultipleTerrainTypes()) {
-                this.framework.move(this.getSecondTerrainTypeID(), tile_id);
+                this.framework.move(this.getSecondTerrainTypeID(), tile.unique_id);
             }
+        },
+        paint_wildlife() {
             if (tile.supported_wildlife[2] != undefined) {
-                this.framework.move(this.getSupportedWildlifeID(0), tile_id, 0, -10);
-                this.framework.move(this.getSupportedWildlifeID(1), tile_id, 10, 8);
-                this.framework.move(this.getSupportedWildlifeID(2), tile_id, -10, 8);
+                this.framework.move(this.getSupportedWildlifeID(0), tile.unique_id, 0, -10);
+                this.framework.move(this.getSupportedWildlifeID(1), tile.unique_id, 10, 8);
+                this.framework.move(this.getSupportedWildlifeID(2), tile.unique_id, -10, 8);
             }
             else if (tile.supported_wildlife[1] != undefined){
-                this.framework.move(this.getSupportedWildlifeID(0), tile_id, 0, -10);
-                this.framework.move(this.getSupportedWildlifeID(1), tile_id, 0, 10);
+                this.framework.move(this.getSupportedWildlifeID(0), tile.unique_id, 0, -10);
+                this.framework.move(this.getSupportedWildlifeID(1), tile.unique_id, 0, 10);
             }
             else {
-                this.framework.move(this.getSupportedWildlifeID(0), tile_id);
+                this.framework.move(this.getSupportedWildlifeID(0), tile.unique_id);
             }
-            if (this.hasMultipleTerrainTypes() && (this.rotation != undefined)) {
-                this.framework.add_css_class(this.getSecondTerrainTypeID(), 'rotate' + this.rotation);
+        },
+        paint_rotation() {
+            if (this.hasMultipleTerrainTypes() && (this.rotation != undefined) && (this.class_rotation != 'rotate' + this.rotation)) {
+                this.class_rotation = 'rotate' + this.rotation;
+                this.framework.add_css_class(this.getSecondTerrainTypeID(), this.class_rotation);
             }
         },
         getSecondTerrainTypeID: function () {
