@@ -1,5 +1,9 @@
 define(['dojo/_base/declare'], (declare) => {
     return declare('cascadia.usecase_setup', null, {
+        /**
+         * habitat_tile_factory.create()
+         * habitat_factory.create(player_id)
+         */
         constructor(dependencies) {
             this.clone(dependencies);
             this.habitats = {};

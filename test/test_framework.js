@@ -244,7 +244,7 @@ describe('Framework', function () {
         });
         it('UI elements, no resize', function () {
             // Arrange
-            sut.add_ui_element(UI_element1);
+            sut.subscribe_paint(UI_element1);
             // Act
             act_default();
             // Assert
@@ -252,9 +252,9 @@ describe('Framework', function () {
         });
         it('UI elements, resize', function () {
             // Arrange
-            sut.add_ui_element(UI_element1);
+            sut.subscribe_paint(UI_element1);
             sut.resize(1, 2, 3);
-            sut.add_ui_element(UI_element2);
+            sut.subscribe_paint(UI_element2);
             // Act
             act_default();
             // Assert
@@ -263,7 +263,7 @@ describe('Framework', function () {
         });
         it('UI elements, resize Once', function () {
             // Arrange
-            sut.add_ui_element(UI_element1);
+            sut.subscribe_paint(UI_element1);
             sut.resize(1, 2, 3);
             sut.control_will_be_returned_to_user();
             // Act

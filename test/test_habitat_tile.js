@@ -11,7 +11,7 @@ describe('Habitat tile', function () {
             move: sinon.spy(),
             classify: sinon.spy(),
             subscribe: sinon.spy(),
-            add_ui_element: sinon.spy(),
+            subscribe_paint: sinon.spy(),
         };
         token_subscriptions = {
             createToken: sinon.spy(),
@@ -110,8 +110,8 @@ describe('Habitat tile', function () {
             // Act
             act_default(tile);
             // Assert
-            assert.equal(framework.add_ui_element.getCall(0).args.length, 1);
-            assert.equal(framework.add_ui_element.getCall(0).args[0].unique_id, tile.unique_id);
+            assert.equal(framework.subscribe_paint.getCall(0).args.length, 1);
+            assert.equal(framework.subscribe_paint.getCall(0).args[0].unique_id, tile.unique_id);
         });
     });
     describe('Destroy token', function () {

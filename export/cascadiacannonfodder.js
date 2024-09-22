@@ -114,13 +114,13 @@ function (dojo, declare, framework, habitat_tile_class, habitatClass, market, to
                     this.habitat[player_index].place(tile);
                     //this.habitat_tiles.subscribe(tile, this, 'habitat_selected1');
                 }
-                this.framework.add_ui_element(this.habitat[player_index]);
+                this.framework.subscribe_paint(this.habitat[player_index]);
             }
         },
         marketSetup: function(market) {
             this.marketSetupWildlife(market.wildlife);
             this.marketSetupHabitat(market.habitat);
-            this.framework.add_ui_element(this.market);
+            this.framework.subscribe_paint(this.market);
         },
         marketSetupWildlife: function(wildlife) {
             for (var index in wildlife) {

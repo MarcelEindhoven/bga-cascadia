@@ -1,10 +1,32 @@
+/**
+ * A tile is displayed as a stack of tokens
+ * Use case create:
+ * tile = habitat_tile(dependencies, tile_specification);
+ * tile.subscribe_selected(object, method);
+ * 
+ * Use case move:
+ * tile.move(HTML ID, x = 0, y = 0);
+ * 
+ * Use case give control back to user:
+ * tile.paint();
+ */
 define(['dojo/_base/declare'], (declare) => {
     return declare('cascadia.habitat_tile', null, {
-        dependencies: {framework: null, token_subscriptions: null},
+        /**
+         * Dependencies
+         * framework.createToken
+         * framework.destroyToken
+         * framework.subscribe
+         * framework.subscribe_paint
+         * framework.unsubscribe_paint
+         * framework.move
+         * framework.add_css_class
+         * framework.remove_css_class
+         */
         constructor(dependencies) {
             this.clone(dependencies);
         },
-        tile_example: {id: 2, terrain_types: [1], supported_wildlife: [2], unique_id: 'tile2',},
+        // tile_example: {terrain_types: [1], supported_wildlife: [2], unique_id: 'tile2',},
         create(tile){
             this.clone(tile);
             this.framework.createToken('field', this.unique_id, 'field' + this.terrain_types[0]);
@@ -15,7 +37,7 @@ define(['dojo/_base/declare'], (declare) => {
                 this.framework.createToken('field_wildlife', this.getSupportedWildlifeID(wildlife_index), 'wildlife' + this.supported_wildlife[wildlife_index]);
             }
             this.framework.subscribe(this.unique_id, this.token_subscriptions, 'token_selected');
-            this.framework.add_ui_element(this);
+            this.framework.subscribe_paint(this);
         },
         clone(properties){
             for (var property in properties) {

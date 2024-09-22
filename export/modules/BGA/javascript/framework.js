@@ -38,7 +38,7 @@ define(['dojo/_base/declare'], (declare) => {
             this.toolkit.query('.subscribe').connect('onclick', object, method);
             this.toolkit.removeClass(id, 'subscribe');
         },
-        add_ui_element(UI_element) {
+        subscribe_paint(UI_element) {
             this.ui_elements.push(UI_element);
         },
         event_has_been_handled(event) {event.preventDefault(); event.stopPropagation();},
