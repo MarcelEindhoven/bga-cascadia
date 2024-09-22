@@ -1,5 +1,5 @@
 /**
- * Habitat size and habitat element relative coordinates
+ * Habitat html size and habitat element relative coordinates
  * Use cases place permanent/proposed tile, remove proposed tile
  */
 define(['dojo/_base/declare'], (declare) => {
@@ -27,8 +27,6 @@ define(['dojo/_base/declare'], (declare) => {
                 this[property] = properties[property];
             }
         },
-        setFramework(framework){this.framework = framework},
-        setTileHandler(tile_handler){this.tile_handler = tile_handler;},
 
         // tile_example = {unique_id:1, horizontal: 50, vertical: 50, move: function(this.id, x , y)}
         place(tile) {
@@ -40,22 +38,24 @@ define(['dojo/_base/declare'], (declare) => {
         },
         resize(tile) {
             const [x, y] = this.getAbsoluteCoordinates(tile.horizontal, tile.vertical);
-            console.log(x, y);
             if ( (y < this.y_minimum) || (y > this.y_maximum) || (x < this.x_minimum) || (x > this.x_maximum)) {
-                if (x > this.x_maximum) {
-                    this.x_maximum = x;
-                }
-                if (x < this.x_minimum) {
-                    this.x_minimum = x;                    
-                }
-                if (y > this.y_maximum) {
-                    this.y_maximum = y;
-                }
-                if (y < this.y_minimum) {
-                    this.y_minimum = y;
-                }
+                this.adjust_boundaries(x, y);
                 this.framework.resize(this.id, this.minimum_size + this.x_maximum - this.x_minimum, this.minimum_size + this.y_maximum - this.y_minimum);
                 this.relocate_tiles();
+            }
+        },
+        adjust_boundaries(x, y) {
+            if (x > this.x_maximum) {
+                this.x_maximum = x;
+            }
+            if (x < this.x_minimum) {
+                this.x_minimum = x;                    
+            }
+            if (y > this.y_maximum) {
+                this.y_maximum = y;
+            }
+            if (y < this.y_minimum) {
+                this.y_minimum = y;
             }
         },
         relocate_tiles() {
@@ -64,7 +64,6 @@ define(['dojo/_base/declare'], (declare) => {
             for (index in this.tiles) {
                 tile = this.tiles[index];
                 const [x, y] = this.getAbsoluteCoordinates(tile.horizontal, tile.vertical);
-                console.log(x - x_centre, y - y_centre);
                 tile.move(this.id, x - x_centre, y - y_centre);
             }
         },

@@ -1,5 +1,5 @@
 /**
- * A tile is displayed as a stack of tokens
+ * A tile is displayed as a stack of html tokens with css classes
  * Use case create:
  * tile = habitat_tile(dependencies, tile_specification);
  * tile.subscribe_selected(object, method);
@@ -23,12 +23,14 @@ define(['dojo/_base/declare'], (declare) => {
          * framework.add_css_class
          * framework.remove_css_class
          */
-        constructor(dependencies) {
+        constructor(dependencies, tile) {
             this.clone(dependencies);
+            this.create(tile);
         },
-        // tile_example: {terrain_types: [1], supported_wildlife: [2], unique_id: 'tile2',},
+        // tile_example: {terrain_types: [1], supported_wildlife: [2], unique_id: 'tile2', rotation: 5},
         create(tile){
             this.clone(tile);
+
             this.framework.createToken('field', this.unique_id, 'field' + this.terrain_types[0]);
             if (this.hasMultipleTerrainTypes()) {
                 this.framework.createToken('upper_half', this.getSecondTerrainTypeID(), 'field' + this.terrain_types[1]);
@@ -36,7 +38,7 @@ define(['dojo/_base/declare'], (declare) => {
             for (var wildlife_index in this.supported_wildlife) {
                 this.framework.createToken('field_wildlife', this.getSupportedWildlifeID(wildlife_index), 'wildlife' + this.supported_wildlife[wildlife_index]);
             }
-            this.framework.subscribe(this.unique_id, this.token_subscriptions, 'token_selected');
+            
             this.framework.subscribe_paint(this);
         },
         clone(properties){
@@ -45,6 +47,8 @@ define(['dojo/_base/declare'], (declare) => {
             }
         },
         destroy(){
+            this.framework.unsubscribe_paint(this);
+
             this.framework.destroyToken(this.unique_id);
             if (this.hasMultipleTerrainTypes()) {
                 this.framework.destroyToken(this.getSecondTerrainTypeID());
@@ -52,6 +56,9 @@ define(['dojo/_base/declare'], (declare) => {
             for (var wildlife_index in this.supported_wildlife) {
                 this.framework.destroyToken(this.getSupportedWildlifeID(wildlife_index));
             }
+        },
+        subscribe_selected(object, method) {
+            this.framework.subscribe(this.unique_id, object, method);
         },
         move: function(element, x = 0, y = 0) {
             this.element = element;
@@ -75,6 +82,9 @@ define(['dojo/_base/declare'], (declare) => {
             }
             else {
                 this.framework.move(this.getSupportedWildlifeID(0), tile_id);
+            }
+            if (this.hasMultipleTerrainTypes() && (this.rotation != undefined)) {
+                this.framework.add_css_class(this.getSecondTerrainTypeID(), 'rotate' + this.rotation);
             }
         },
         getSecondTerrainTypeID: function () {

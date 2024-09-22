@@ -12,15 +12,13 @@ describe('Habitat tile', function () {
             classify: sinon.spy(),
             subscribe: sinon.spy(),
             subscribe_paint: sinon.spy(),
+            unsubscribe_paint: sinon.spy(),
+            add_css_class: sinon.spy(),
+            remove_css_class: sinon.spy(),
         };
         token_subscriptions = {
-            createToken: sinon.spy(),
-            move: sinon.spy(),
-            classify: sinon.spy(),
-            subscribe: sinon.spy(),
         };
-        dependencies = {framework: framework, token_subscriptions: token_subscriptions},
-        sut = new sut_module(dependencies);
+        dependencies = {framework: framework},
 
         callback_object = {
             token_selected: sinon.spy(),
@@ -51,7 +49,7 @@ describe('Habitat tile', function () {
     });
     describe('Create token', function () {
         function act_default(tile) {
-            sut.create(tile);
+            sut = new sut_module(dependencies, tile);
         };
         it('createToken terrain_types[0]', function () {
             // Arrange
@@ -95,16 +93,6 @@ describe('Habitat tile', function () {
             assert.equal(framework.createToken.getCall(3).args[1], 'field_wildlife2' + tile.unique_id);
             assert.equal(framework.createToken.getCall(3).args[2], 'wildlife' + tile.supported_wildlife[2]);
         });
-        it('subscribe', function () {
-            // Arrange
-            // Act
-            act_default(tile);
-            // Assert
-            assert.equal(framework.subscribe.getCall(0).args.length, 3);
-            assert.equal(framework.subscribe.getCall(0).args[0], expected_tile_id);
-            assert.equal(framework.subscribe.getCall(0).args[1], token_subscriptions);
-            assert.equal(framework.subscribe.getCall(0).args[2], 'token_selected');
-        });
         it('Register', function () {
             // Arrange
             // Act
@@ -114,9 +102,25 @@ describe('Habitat tile', function () {
             assert.equal(framework.subscribe_paint.getCall(0).args[0].unique_id, tile.unique_id);
         });
     });
+    describe('subscribe_selected', function () {
+        function act_default(tile, token_subscriptions, token_selected) {
+            sut = new sut_module(dependencies, tile);
+            sut.subscribe_selected(token_subscriptions, token_selected);
+        };
+        it('subscribe', function () {
+            // Arrange
+            // Act
+            act_default(tile, token_subscriptions, 'token_selected');
+            // Assert
+            assert.equal(framework.subscribe.getCall(0).args.length, 3);
+            assert.equal(framework.subscribe.getCall(0).args[0], expected_tile_id);
+            assert.equal(framework.subscribe.getCall(0).args[1], token_subscriptions);
+            assert.equal(framework.subscribe.getCall(0).args[2], 'token_selected');
+        });
+    });
     describe('Destroy token', function () {
         function act_default(tile) {
-            sut.create(tile);
+            sut = new sut_module(dependencies, tile);
             sut.destroy();
         };
         it('createToken terrain_types[0]', function () {
@@ -153,10 +157,18 @@ describe('Habitat tile', function () {
             assert.equal(framework.destroyToken.getCall(3).args.length, 1);
             assert.equal(framework.destroyToken.getCall(3).args[0], 'field_wildlife2' + tile.unique_id);
         });
+        it('unRegister', function () {
+            // Arrange
+            // Act
+            act_default(tile);
+            // Assert
+            assert.equal(framework.unsubscribe_paint.getCall(0).args.length, 1);
+            assert.equal(framework.unsubscribe_paint.getCall(0).args[0].unique_id, tile.unique_id);
+        });
     });
     describe('Move token 0, 0', function () {
         function act_default(tile, element) {
-            sut.create(tile);
+            sut = new sut_module(dependencies, tile);
             sut.move(element);
             sut.paint();
         };
@@ -230,7 +242,7 @@ describe('Habitat tile', function () {
     });
     describe('Move token x, y', function () {
         function act_default(tile, element, x = 0, y = 0) {
-            sut.create(tile);
+            sut = new sut_module(dependencies, tile);
             sut.move(element, x, y);
             sut.paint();
         };
@@ -244,6 +256,43 @@ describe('Habitat tile', function () {
             assert.equal(framework.move.getCall(0).args[1], element);
             assert.equal(framework.move.getCall(0).args[2], x);
             assert.equal(framework.move.getCall(0).args[3], y);
+        });
+    });
+    describe('Rotation', function () {
+        function assert_default(tile) {
+            sut = new sut_module(dependencies, tile);
+        };
+        function act_default() {
+            sut.paint();
+        };
+        it('Creation without rotation', function () {
+            // Arrange
+            assert_default(tile);
+            // Act
+            act_default();
+            // Assert
+            sinon.assert.notCalled(framework.add_css_class);
+        });
+        it('Creation with rotation and no multiple terrain types', function () {
+            // Arrange
+            tile.rotation = 3;
+            assert_default(tile);
+            // Act
+            act_default();
+            // Assert
+            sinon.assert.notCalled(framework.add_css_class);
+        });
+        it('Creation with rotation and multiple terrain types', function () {
+            // Arrange
+            tile.rotation = 3;
+            tile.terrain_types = [2, 3];
+            assert_default(tile);
+            // Act
+            act_default();
+            // Assert
+            assert.equal(framework.add_css_class.getCall(0).args.length, 2);
+            assert.equal(framework.add_css_class.getCall(0).args[0], sut.getSecondTerrainTypeID());
+            assert.equal(framework.add_css_class.getCall(0).args[1], 'rotate' + tile.rotation);
         });
     });
 });
