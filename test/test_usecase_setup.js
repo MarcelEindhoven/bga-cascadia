@@ -4,8 +4,7 @@ var sinon = require('sinon');
 var sut_module = require('../export/modules/javascript/usecase_setup.js');
 
 class habitat_tile_class {
-    constructor(x) {habitat_tile_constructor (x);this.value_from_constructor = x;}
-    create(tile) {tile_create(tile);}
+    constructor(x, y) {habitat_tile_constructor (x, y);this.value_from_constructor = x;}
 };
 
 class habitat_class {
@@ -13,7 +12,7 @@ class habitat_class {
     place(tile) {place_tile(tile);}
 };
 
-describe('Use case select tile', function () {
+describe('Use case Setup', function () {
     beforeEach(function() {
         player_id = 125;
 
@@ -24,7 +23,7 @@ describe('Use case select tile', function () {
         };
         
         // Note that the following statement also calls constructor
-        habitat_tile_factory = {class:habitat_tile_class, dependencies: 9, create: function() {return new this.class(this.dependencies);}};
+        habitat_tile_factory = {class:habitat_tile_class, dependencies: 9, create: function(tile_specification) {return new this.class(this.dependencies, tile_specification);}};
         habitat_factory = {class:habitat_class, dependencies: 7, create: function(player_id) {return new this.class(this.dependencies, player_id);}};
 
         dependencies = {framework: framework, habitat_tile_factory: habitat_tile_factory, habitat_factory: habitat_factory};
@@ -84,13 +83,7 @@ describe('Use case select tile', function () {
             act_default({23: [tile]});
             // Assert
             assert.equal(habitat_tile_constructor.getCall(0).args[0], habitat_tile_factory.dependencies);
-        });
-        it('Create tile', function () {
-            // Arrange
-            // Act
-            act_default({23: [tile]});
-            // Assert
-            assert.equal(tile_create.getCall(0).args[0], tile);
+            assert.equal(habitat_tile_constructor.getCall(0).args[1], tile);
         });
         it('Place tile', function () {
             // Arrange
