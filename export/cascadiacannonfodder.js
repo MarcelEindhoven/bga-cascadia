@@ -89,7 +89,7 @@ function (dojo, declare, framework, habitat_tile_class, habitatClass, market, to
         },
         prototyping: function(gamedatas) {
 
-            this.framework.control_will_be_returned_to_user(this.framework);
+            this.framework.control_may_be_returned_to_user(this.framework);
 
             this.place_tile = new usecase_place_tile();
             this.place_tile.set_candidate_positions([{horizontal: 50, vertical: 53}]);
@@ -99,7 +99,7 @@ function (dojo, declare, framework, habitat_tile_class, habitatClass, market, to
             this.place_tile.setFramework(this.framework);
             this.place_tile.subscribe_tile_placed(this, 'tile_placed');
             this.market.subscribe_tile_selected(this.place_tile, 'market_tile_selected');
-            this.market.subscribe_tile_selected(this.framework, 'control_will_be_returned_to_user');
+            this.market.subscribe_tile_selected(this.framework, 'control_may_be_returned_to_user');
             },
         setupHabitat: function(habitat) {
             this.habitat = [];

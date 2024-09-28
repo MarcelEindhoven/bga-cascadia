@@ -67,7 +67,7 @@ define(['dojo/_base/declare'], (declare) => {
         },
         paint: function() {
             this.paint_terrain();
-            this.paint_wildlife();
+            this.paint_supported_wildlife();
             this.paint_rotation();
         },
         paint_terrain() {
@@ -76,7 +76,7 @@ define(['dojo/_base/declare'], (declare) => {
                 this.framework.move(this.getSecondTerrainTypeID(), tile.unique_id);
             }
         },
-        paint_wildlife() {
+        paint_supported_wildlife() {
             if (tile.supported_wildlife[2] != undefined) {
                 this.framework.move(this.getSupportedWildlifeID(0), tile.unique_id, 0, -10);
                 this.framework.move(this.getSupportedWildlifeID(1), tile.unique_id, 10, 8);

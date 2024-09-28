@@ -9,7 +9,7 @@ describe('Use case select tile', function () {
         sut = new sut_module(player_id);
 
         framework = {
-            classify: sinon.spy(),
+            add_css_class: sinon.spy(),
             mark_as_selectable: sinon.spy(),
             resize: sinon.spy(),
         };

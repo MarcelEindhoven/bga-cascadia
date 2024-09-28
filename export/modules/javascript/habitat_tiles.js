@@ -50,7 +50,7 @@ define(['dojo/_base/declare'], (declare) => {
         move_and_rotate: function(tile, element, x, y) {
             this.move(tile, element, x, y);
             if (this.hasMultipleTerrainTypes(tile)) {
-                this.framework.classify(this.getSecondTerrainTypeID(tile.unique_id), 'rotate' + tile.rotation);
+                this.framework.add_css_class(this.getSecondTerrainTypeID(tile.unique_id), 'rotate' + tile.rotation);
             }
         },
         getSecondTerrainTypeID: function (id) {

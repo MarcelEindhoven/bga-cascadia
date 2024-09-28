@@ -8,7 +8,7 @@ describe('Habitat', function () {
         player_id = 125;
 
         framework = {
-            classify: sinon.spy(),
+            add_css_class: sinon.spy(),
             resize: sinon.spy(),
         };
         dependencies = {framework: framework};

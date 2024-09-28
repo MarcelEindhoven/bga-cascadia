@@ -18,7 +18,7 @@ describe('Use case select tile', function () {
         player_id = 125;
 
         framework = {
-            classify: sinon.spy(),
+            add_css_class: sinon.spy(),
             mark_as_selectable: sinon.spy(),
             resize: sinon.spy(),
         };

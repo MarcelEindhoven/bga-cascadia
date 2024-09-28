@@ -10,7 +10,7 @@ describe('Habitat tiles', function () {
             createToken: sinon.spy(),
             destroyToken: sinon.spy(),
             move: sinon.spy(),
-            classify: sinon.spy(),
+            add_css_class: sinon.spy(),
             subscribe: sinon.spy(),
         };
         sut.dependencies.framework = framework;
@@ -18,7 +18,7 @@ describe('Habitat tiles', function () {
         subscribe = {
             createToken: sinon.spy(),
             move: sinon.spy(),
-            classify: sinon.spy(),
+            add_css_class: sinon.spy(),
             subscribe: sinon.spy(),
         };
         sut.set_token_subscriptions(subscribe);
@@ -242,7 +242,7 @@ describe('Habitat tiles', function () {
             // Act
             act_default(tile, element, x, y);
             // Assert
-            sinon.assert.notCalled(framework.classify);
+            sinon.assert.notCalled(framework.add_css_class);
         });
         it('Rotate', function () {
             // Arrange
@@ -251,9 +251,9 @@ describe('Habitat tiles', function () {
             // Act
             act_default(tile, element, x, y);
             // Assert
-            assert.equal(framework.classify.getCall(0).args.length, 2);
-            assert.equal(framework.classify.getCall(0).args[0], expected_upper_half_id);
-            assert.equal(framework.classify.getCall(0).args[1], 'rotate' + tile.rotation);
+            assert.equal(framework.add_css_class.getCall(0).args.length, 2);
+            assert.equal(framework.add_css_class.getCall(0).args[0], expected_upper_half_id);
+            assert.equal(framework.add_css_class.getCall(0).args[1], 'rotate' + tile.rotation);
         });
     });
 });

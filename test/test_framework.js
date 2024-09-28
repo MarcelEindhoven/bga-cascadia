@@ -129,19 +129,32 @@ describe('Framework', function () {
     });
     describe('Classify token', function () {
         function act_default(id, type) {
-            sut.classify(id, type);
+            sut.add_css_class(id, type);
         };
-        it('colour', function () {
+        it('addClass', function () {
             // Arrange
             id = 'ID';
-            type = 'wildlife5';
+            type = 'upper_half5';
             // Act
             act_default(id, type);
             // Assert
             sinon.assert.calledOnce(dojo.addClass);
             assert.equal(dojo.addClass.getCall(0).args.length, 2);
             assert.equal(dojo.addClass.getCall(0).args[0], id);
-            assert.equal(dojo.addClass.getCall(0).args[1], 'wildlife5');
+            assert.equal(dojo.addClass.getCall(0).args[1], type);
+        });
+        it('removeClass', function () {
+            // Arrange
+            id = 'ID';
+            type = 'upper_half6';
+            // Act
+            act_default(id, type);
+            sut.remove_css_class(id, type);
+            // Assert
+            sinon.assert.calledOnce(dojo.removeClass);
+            assert.equal(dojo.removeClass.getCall(0).args.length, 2);
+            assert.equal(dojo.removeClass.getCall(0).args[0], id);
+            assert.equal(dojo.removeClass.getCall(0).args[1], type);
         });
     });
     describe('Resize', function () {
@@ -232,9 +245,9 @@ describe('Framework', function () {
             assert.equal(dojo.removeClass.getCall(0).args[1], 'subscribe');
         });
     });
-    describe('Draw', function () {
+    describe('Paint', function () {
         function act_default() {
-            sut.control_will_be_returned_to_user();
+            sut.control_may_be_returned_to_user();
         };
         it('No UI elements', function () {
             // Arrange
@@ -242,18 +255,9 @@ describe('Framework', function () {
             act_default();
             // Assert
         });
-        it('UI elements, no resize', function () {
+        it('UI elements', function () {
             // Arrange
             sut.subscribe_paint(UI_element1);
-            // Act
-            act_default();
-            // Assert
-            sinon.assert.notCalled(UI_element1.paint);
-        });
-        it('UI elements, resize', function () {
-            // Arrange
-            sut.subscribe_paint(UI_element1);
-            sut.resize(1, 2, 3);
             sut.subscribe_paint(UI_element2);
             // Act
             act_default();
@@ -261,15 +265,24 @@ describe('Framework', function () {
             sinon.assert.calledOnce(UI_element1.paint);
             sinon.assert.calledOnce(UI_element2.paint);
         });
-        it('UI elements, resize Once', function () {
+        it('UI element', function () {
             // Arrange
             sut.subscribe_paint(UI_element1);
-            sut.resize(1, 2, 3);
-            sut.control_will_be_returned_to_user();
             // Act
             act_default();
             // Assert
             sinon.assert.calledOnce(UI_element1.paint);
+        });
+        it('UI elements', function () {
+            // Arrange
+            sut.subscribe_paint(UI_element1);
+            sut.subscribe_paint(UI_element2);
+            // Act
+            sut.unsubscribe_paint(UI_element1);
+            act_default();
+            // Assert
+            sinon.assert.notCalled(UI_element1.paint);
+            sinon.assert.calledOnce(UI_element2.paint);
         });
     });
 

@@ -9,7 +9,7 @@ describe('Habitat tile', function () {
             createToken: sinon.spy(),
             destroyToken: sinon.spy(),
             move: sinon.spy(),
-            classify: sinon.spy(),
+            add_css_class: sinon.spy(),
             subscribe: sinon.spy(),
             subscribe_paint: sinon.spy(),
             unsubscribe_paint: sinon.spy(),

@@ -2,7 +2,6 @@ define(['dojo/_base/declare'], (declare) => {
     return declare('cascadia.framework', null, {
         constructor() {
             this.ui_elements = [];
-            this.ui_dirty = false;
         },
         setDojo(toolkit){this.toolkit = toolkit},
         setGameGUI(dom){this.dom = dom},
@@ -22,16 +21,18 @@ define(['dojo/_base/declare'], (declare) => {
                 this.dom.placeOnObject(id_to_move, destination_id);
             }
         },
-        classify(id, type){
+        add_css_class(id, type){
             this.toolkit.addClass(id, type);
         },
+        remove_css_class(id, type){
+            this.toolkit.removeClass(id, type);
+        },
         mark_as_selectable(id) {
-            this.classify(id, 'selectable');
+            this.add_css_class(id, 'selectable');
         },
         resize(id, width, height){
             this.toolkit.style(id, 'width', '' + width + 'px');
             this.toolkit.style(id, 'height', '' + height + 'px');
-            this.ui_dirty = true;
         },
         subscribe(id, object, method) {
             this.toolkit.addClass(id, 'subscribe');
@@ -41,16 +42,14 @@ define(['dojo/_base/declare'], (declare) => {
         subscribe_paint(UI_element) {
             this.ui_elements.push(UI_element);
         },
+        unsubscribe_paint(UI_element) {
+            this.ui_elements.splice(this.ui_elements.indexOf(UI_element), 1);
+        },
         event_has_been_handled(event) {event.preventDefault(); event.stopPropagation();},
-        control_will_be_returned_to_user() {
-            console.log (this);
-            if (this.ui_dirty) {
-                for (index in this.ui_elements) {
-                    ui_element = this.ui_elements[index];
-                    ui_element.paint();
-                }
-    
-                this.ui_dirty = false;
+        control_may_be_returned_to_user() {
+            for (index in this.ui_elements) {
+                ui_element = this.ui_elements[index];
+                ui_element.paint();
             }
         },
     });
