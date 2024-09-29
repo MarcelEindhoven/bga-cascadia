@@ -18,6 +18,7 @@ define(['dojo/_base/declare'], (declare) => {
         },
         setup(gamedatas) {
             this.setup_habitats(gamedatas.habitat);
+            this.setup_market_tiles(gamedatas.market.habitat);
         },
         // Habitats
         setup_habitats(specification) {

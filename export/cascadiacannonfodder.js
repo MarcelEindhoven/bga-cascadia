@@ -84,7 +84,7 @@ function (dojo, declare, framework, habitat_tile_class, habitat_class, market, t
 
             //this.prototyping(gamedatas);
     
-            this.usecase_setup = new usecase_setup({framework: this.framework, habitat_tile_factory: this.habitat_tile_factory, habitat_factory: this.habitat_factory});
+            this.usecase_setup = new usecase_setup({framework: this.framework, market: this.market, habitat_tile_factory: this.habitat_tile_factory, habitat_factory: this.habitat_factory});
             this.usecase_setup.setup(gamedatas);
 
             this.framework.control_may_be_returned_to_user();

@@ -8,6 +8,7 @@
  * tile.move(HTML ID, x = 0, y = 0);
  * 
  * Use case give control back to user:
+ * Precondition: tile.move has been called at least once
  * tile.paint();
  */
 define(['dojo/_base/declare'], (declare) => {

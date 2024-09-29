@@ -9,6 +9,7 @@ define(['dojo/_base/declare'], (declare) => {
 
         place(tile) {
             this.tiles[tile.id] = tile;
+            tile.move('habitat_' + tile.location_arg);
         },
         paint() {
             for (index in this.tiles) {
