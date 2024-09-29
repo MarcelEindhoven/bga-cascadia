@@ -80,7 +80,6 @@ function (dojo, declare, framework, habitat_tile_class, habitat_class, market, t
             // TODO: Set up your game interface here, according to "gamedatas"
             // Setup game notifications to handle (see "setupNotifications" method below)
             this.setupNotifications();
-            //this.setupHabitat(gamedatas.habitat);
             //this.marketSetup(gamedatas.market);
 
             //this.prototyping(gamedatas);
@@ -105,22 +104,6 @@ function (dojo, declare, framework, habitat_tile_class, habitat_class, market, t
             this.market.subscribe_tile_selected(this.place_tile, 'market_tile_selected');
             this.market.subscribe_tile_selected(this.framework, 'control_may_be_returned_to_user');
             },
-        setupHabitat: function(habitat) {
-            this.habitat = [];
-            for (var player_index in habitat) {
-                this.habitat[player_index] = new habitatClass(player_index);
-                this.habitat[player_index].setFramework(this.framework);
-                this.habitat[player_index].setTileHandler(this.habitat_tiles);
-                player_habitat = habitat[player_index];
-                for (var index in player_habitat) {
-                    tile = player_habitat[index];
-                    this.habitat_tiles.create(tile);
-                    this.habitat[player_index].place(tile);
-                    //this.habitat_tiles.subscribe(tile, this, 'habitat_selected1');
-                }
-                this.framework.subscribe_paint(this.habitat[player_index]);
-            }
-        },
         marketSetup: function(market) {
             this.marketSetupWildlife(market.wildlife);
             this.marketSetupHabitat(market.habitat);

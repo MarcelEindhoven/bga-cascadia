@@ -21,12 +21,16 @@ describe('Use case Setup', function () {
             mark_as_selectable: sinon.spy(),
             resize: sinon.spy(),
         };
+        market = {
+            place: sinon.spy(),
+            populate: sinon.spy(),
+        };
         
         // Note that the following statement also calls constructor
         habitat_tile_factory = {class:habitat_tile_class, dependencies: 9, create: function(tile_specification) {return new this.class(this.dependencies, tile_specification);}};
         habitat_factory = {class:habitat_class, dependencies: 7, create: function(player_id) {return new this.class(this.dependencies, player_id);}};
 
-        dependencies = {framework: framework, habitat_tile_factory: habitat_tile_factory, habitat_factory: habitat_factory};
+        dependencies = {framework: framework, market: market, habitat_tile_factory: habitat_tile_factory, habitat_factory: habitat_factory};
         habitat_tile_constructor = sinon.spy();
         tile_create = sinon.spy();
         habitat_constructor = sinon.spy();
@@ -52,8 +56,7 @@ describe('Use case Setup', function () {
     });
     describe('Habitats', function () {
         function act_default(data) {
-            gamedatas = {habitat: data};
-            sut.setup(gamedatas);
+            sut.setup_habitats(data);
         };
         it('No habitats', function () {
             // Arrange
@@ -91,6 +94,32 @@ describe('Use case Setup', function () {
             act_default({23: [tile]});
             // Assert
             assert.equal(place_tile.getCall(0).args[0].value_from_constructor, habitat_tile_factory.dependencies);
+        });
+    });
+    describe('Market tiles', function () {
+        function act_default(data) {
+            sut.setup_market_tiles(data);
+        };
+        it('No tiles', function () {
+            // Arrange
+            // Act
+            act_default({});
+            // Assert
+        });
+        it('habitat tile constructor', function () {
+            // Arrange
+            // Act
+            act_default(['tile']);
+            // Assert
+            assert.equal(habitat_tile_constructor.getCall(0).args[0], habitat_tile_factory.dependencies);
+            assert.equal(habitat_tile_constructor.getCall(0).args[1], 'tile');
+        });
+        it('Place tile', function () {
+            // Arrange
+            // Act
+            act_default(['tile']);
+            // Assert
+            assert.equal(market.place.getCall(0).args[0].value_from_constructor, habitat_tile_factory.dependencies);
         });
     });
 });

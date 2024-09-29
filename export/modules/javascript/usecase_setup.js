@@ -5,6 +5,7 @@ define(['dojo/_base/declare'], (declare) => {
          * t = habitat_tile_factory.create(tile_specification)
          * h = habitat_factory.create(player_id)
          * h.place(t)
+         * market.place(t)
          */
         constructor(dependencies) {
             this.clone(dependencies);
@@ -18,18 +19,24 @@ define(['dojo/_base/declare'], (declare) => {
         setup(gamedatas) {
             this.setup_habitats(gamedatas.habitat);
         },
+        // Habitats
         setup_habitats(specification) {
             for (player_id in specification)
                 this.setup_single_habitat(player_id, specification);
         },
         setup_single_habitat(player_id, specification) {
             this.habitats[player_id] = this.habitat_factory.create(player_id);
-            this.fill_single_habitat(this.habitats[player_id], specification[player_id]);
-        },
-        fill_single_habitat(habitat, player_tile_specifications) {
-            for (var index in player_tile_specifications)
-                habitat.place(this.habitat_tile_factory.create(player_tile_specifications[index]));
+            this.fill_with_tiles(this.habitats[player_id], specification[player_id]);
         },
         get_habitats(){console.log (this.habitats);return this.habitats;},
+        // Market
+        setup_market_tiles(tile_specifications) {
+            this.fill_with_tiles(this.market, tile_specifications);
+        },
+        // Common
+        fill_with_tiles(habitat, tile_specifications) {
+            for (var index in tile_specifications)
+                habitat.place(this.habitat_tile_factory.create(tile_specifications[index]));
+        },
     });
 });
