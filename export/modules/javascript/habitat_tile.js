@@ -31,6 +31,7 @@ define(['dojo/_base/declare'], (declare) => {
         create(tile){
             this.clone(tile);
 
+            // Note that the primary field token has the same unique_id as the tile, which is used in the subscribe
             this.framework.createToken('field', this.unique_id, 'field' + this.terrain_types[0]);
             if (this.hasMultipleTerrainTypes()) {
                 this.framework.createToken('upper_half', this.getSecondTerrainTypeID(), 'field' + this.terrain_types[1]);
@@ -71,23 +72,23 @@ define(['dojo/_base/declare'], (declare) => {
             this.paint_rotation();
         },
         paint_terrain() {
-            this.framework.move(tile.unique_id, this.element, this.x, this.y);
+            this.framework.move(this.unique_id, this.element, this.x, this.y);
             if (this.hasMultipleTerrainTypes()) {
-                this.framework.move(this.getSecondTerrainTypeID(), tile.unique_id);
+                this.framework.move(this.getSecondTerrainTypeID(), this.unique_id);
             }
         },
         paint_supported_wildlife() {
-            if (tile.supported_wildlife[2] != undefined) {
-                this.framework.move(this.getSupportedWildlifeID(0), tile.unique_id, 0, -10);
-                this.framework.move(this.getSupportedWildlifeID(1), tile.unique_id, 10, 8);
-                this.framework.move(this.getSupportedWildlifeID(2), tile.unique_id, -10, 8);
+            if (this.supported_wildlife[2] != undefined) {
+                this.framework.move(this.getSupportedWildlifeID(0), this.unique_id, 0, -10);
+                this.framework.move(this.getSupportedWildlifeID(1), this.unique_id, 10, 8);
+                this.framework.move(this.getSupportedWildlifeID(2), this.unique_id, -10, 8);
             }
-            else if (tile.supported_wildlife[1] != undefined){
-                this.framework.move(this.getSupportedWildlifeID(0), tile.unique_id, 0, -10);
-                this.framework.move(this.getSupportedWildlifeID(1), tile.unique_id, 0, 10);
+            else if (this.supported_wildlife[1] != undefined){
+                this.framework.move(this.getSupportedWildlifeID(0), this.unique_id, 0, -10);
+                this.framework.move(this.getSupportedWildlifeID(1), this.unique_id, 0, 10);
             }
             else {
-                this.framework.move(this.getSupportedWildlifeID(0), tile.unique_id);
+                this.framework.move(this.getSupportedWildlifeID(0), this.unique_id);
             }
         },
         paint_rotation() {

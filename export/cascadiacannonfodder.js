@@ -22,11 +22,12 @@ define([
     g_gamethemeurl + 'modules/javascript/habitat.js',
     g_gamethemeurl + 'modules/javascript/market.js',
     g_gamethemeurl + 'modules/javascript/token_subscriptions.js',
+    g_gamethemeurl + 'modules/javascript/usecase_setup.js',
     g_gamethemeurl + 'modules/javascript/usecase_place_tile.js',
     "ebg/core/gamegui",
     "ebg/counter"
 ],
-function (dojo, declare, framework, habitat_tile_class, habitatClass, market, token_subscriptions, usecase_place_tile) {
+function (dojo, declare, framework, habitat_tile_class, habitat_class, market, token_subscriptions, usecase_setup, usecase_place_tile) {
     return declare("bgagame.cascadiacannonfodder", ebg.core.gamegui, {
         constructor: function(){
             console.log('cascadiacannonfodder constructor');
@@ -41,10 +42,9 @@ function (dojo, declare, framework, habitat_tile_class, habitatClass, market, to
 
             this.token_subscriptions = new token_subscriptions();
             this.token_subscriptions.setFramework(this.framework);
- 
-            this.habitat_tiles = new habitat_tiles();
-            this.habitat_tiles.setFramework(this.framework);
-            this.habitat_tiles.set_token_subscriptions(this.token_subscriptions);
+
+            this.habitat_tile_factory = {class:habitat_tile_class, dependencies: {framework: this.framework}, create: function(tile_specification) {return new this.class(this.dependencies, tile_specification);}};
+            this.habitat_factory = {class:habitat_class, dependencies: {framework: this.framework}, create: function(player_id) {return new this.class(this.dependencies, player_id);}};
 
             this.market = new market();
             this.market.setFramework(this.framework);
@@ -84,12 +84,16 @@ function (dojo, declare, framework, habitat_tile_class, habitatClass, market, to
             //this.marketSetup(gamedatas.market);
 
             //this.prototyping(gamedatas);
+    
+            this.usecase_setup = new usecase_setup({framework: this.framework, habitat_tile_factory: this.habitat_tile_factory, habitat_factory: this.habitat_factory});
+            this.usecase_setup.setup(gamedatas);
+
+            this.framework.control_may_be_returned_to_user();
 
             console.log( "Ending game setup" );
         },
         prototyping: function(gamedatas) {
 
-            this.framework.control_may_be_returned_to_user(this.framework);
 
             this.place_tile = new usecase_place_tile();
             this.place_tile.set_candidate_positions([{horizontal: 50, vertical: 53}]);

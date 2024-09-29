@@ -15,6 +15,7 @@ define(['dojo/_base/declare'], (declare) => {
             this.toolkit.destroy(id);
         },
         move(id_to_move, destination_id, x = 0, y = 0){
+            console.log ('move '+ id_to_move + ', '+ destination_id + ', '+ x + ', ' + y);
             if (x != 0 || y != 0) {
                 this.dom.placeOnObjectPos(id_to_move, destination_id, x, y);
             } else {

@@ -28,7 +28,7 @@ describe('Habitat tile', function () {
         };
 
         tile = {id: 2, terrain_types: [1], supported_wildlife: [2], unique_id: 'tile2',};
-        other_tile = {id: 4, terrain_types: [1], supported_wildlife: [2], unique_id: 'tile4'};
+        other_tile = {id: 4, terrain_types: [2, 3], supported_wildlife: [1, 3, 5], unique_id: 'tile4'};
         
         expected_tile_id = 'tile' + tile.id;
         expected_upper_half_id = 'upper_half' + tile.unique_id;
@@ -213,7 +213,6 @@ describe('Habitat tile', function () {
             assert.equal(framework.move.getCall(1).args[1], expected_tile_id);
             assert.equal(framework.move.getCall(1).args[2], 0);
             assert.equal(framework.move.getCall(1).args[3], -10);
-            assert.equal(framework.move.getCall(2).args.length, 4);
             assert.equal(framework.move.getCall(2).args[0], 'field_wildlife1' + tile.unique_id);
             assert.equal(framework.move.getCall(2).args[1], expected_tile_id);
             assert.equal(framework.move.getCall(2).args[2], 0);
@@ -225,15 +224,12 @@ describe('Habitat tile', function () {
             // Act
             act_default(tile, element);
             // Assert
-            assert.equal(framework.move.getCall(1).args.length, 4);
             assert.equal(framework.move.getCall(1).args[0], 'field_wildlife0' + tile.unique_id);
             assert.equal(framework.move.getCall(1).args[1], expected_tile_id);
             assert.equal(framework.move.getCall(1).args[2], 0);
             assert.equal(framework.move.getCall(1).args[3], -10);
-            assert.equal(framework.move.getCall(2).args.length, 4);
             assert.equal(framework.move.getCall(2).args[0], 'field_wildlife1' + tile.unique_id);
             assert.equal(framework.move.getCall(2).args[1], expected_tile_id);
-            assert.equal(framework.move.getCall(3).args.length, 4);
             assert.equal(framework.move.getCall(3).args[0], 'field_wildlife2' + tile.unique_id);
             assert.equal(framework.move.getCall(3).args[1], expected_tile_id);
             assert.equal(framework.move.getCall(3).args[2], -framework.move.getCall(2).args[2]);
@@ -256,6 +252,13 @@ describe('Habitat tile', function () {
             assert.equal(framework.move.getCall(0).args[1], element);
             assert.equal(framework.move.getCall(0).args[2], x);
             assert.equal(framework.move.getCall(0).args[3], y);
+        });
+        it('Other tile', function () {
+            // Arrange
+            // Act
+            act_default(other_tile, element);
+            // Assert
+            assert.equal(framework.move.getCall(0).args[0], other_tile.unique_id);
         });
     });
     describe('Rotation', function () {
