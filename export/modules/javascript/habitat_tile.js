@@ -59,7 +59,7 @@ define(['dojo/_base/declare'], (declare) => {
             }
         },
         subscribe_selected(object, method) {
-            this.framework.subscribe(this.unique_id, object, method);
+            this.framework.permanent_subscribe(this.unique_id, object, method);
         },
         move: function(element, x = 0, y = 0) {
             this.element = element;

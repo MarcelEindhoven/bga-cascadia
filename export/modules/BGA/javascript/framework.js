@@ -35,7 +35,7 @@ define(['dojo/_base/declare'], (declare) => {
             this.toolkit.style(id, 'width', '' + width + 'px');
             this.toolkit.style(id, 'height', '' + height + 'px');
         },
-        subscribe(id, object, method) {
+        permanent_subscribe(id, object, method) {
             this.toolkit.addClass(id, 'subscribe');
             this.toolkit.query('.subscribe').connect('onclick', object, method);
             this.toolkit.removeClass(id, 'subscribe');

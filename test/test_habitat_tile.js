@@ -10,7 +10,7 @@ describe('Habitat tile', function () {
             destroyToken: sinon.spy(),
             move: sinon.spy(),
             add_css_class: sinon.spy(),
-            subscribe: sinon.spy(),
+            permanent_subscribe: sinon.spy(),
             subscribe_paint: sinon.spy(),
             unsubscribe_paint: sinon.spy(),
             add_css_class: sinon.spy(),
@@ -112,10 +112,10 @@ describe('Habitat tile', function () {
             // Act
             act_default(tile, token_subscriptions, 'token_selected');
             // Assert
-            assert.equal(framework.subscribe.getCall(0).args.length, 3);
-            assert.equal(framework.subscribe.getCall(0).args[0], expected_tile_id);
-            assert.equal(framework.subscribe.getCall(0).args[1], token_subscriptions);
-            assert.equal(framework.subscribe.getCall(0).args[2], 'token_selected');
+            assert.equal(framework.permanent_subscribe.getCall(0).args.length, 3);
+            assert.equal(framework.permanent_subscribe.getCall(0).args[0], expected_tile_id);
+            assert.equal(framework.permanent_subscribe.getCall(0).args[1], token_subscriptions);
+            assert.equal(framework.permanent_subscribe.getCall(0).args[2], 'token_selected');
         });
     });
     describe('Destroy token', function () {

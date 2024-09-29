@@ -190,7 +190,7 @@ describe('Framework', function () {
     });
     describe('Subscribe', function () {
         function act_default(id, object, method) {
-            sut.subscribe(id, object, method);
+            sut.permanent_subscribe(id, object, method);
         };
         it('addClass', function () {
             // Arrange
