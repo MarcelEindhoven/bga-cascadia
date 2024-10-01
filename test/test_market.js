@@ -28,8 +28,10 @@ describe('market', function () {
         };
         sut.set_token_subscriptions(token_subscriptions);
 
-        tile = {move: sinon.spy(), id: 2, terrain_types: [1], supported_wildlife: [2], horizontal: 50, vertical: 50, unique_id: 'tile2'};
-        other_tile = {move: sinon.spy(), id: 22, terrain_types: [1], supported_wildlife: [2], horizontal: 50, vertical: 51};
+        tile = {move: sinon.spy(), id: 2, location_arg: 2, terrain_types: [1], supported_wildlife: [2], unique_id: 'tile2'};
+        other_tile = {move: sinon.spy(), id: 22, location_arg: 1, terrain_types: [1], supported_wildlife: [2], horizontal: 50, vertical: 51};
+
+        wildlife = {move: sinon.spy(), id: 2, location_arg: 3, unique_id: 'wildlife2'};
 
         expected_tile_id = 'tile' + tile.id;
         expected_upper_half_id = 'upper_half' + tile.id;
@@ -50,6 +52,19 @@ describe('market', function () {
             // Assert
             assert.equal(tile.move.getCall(0).args.length, 1);
             assert.equal(tile.move.getCall(0).args[0], 'habitat_' + tile.location_arg);
+        });
+    });
+    describe('Place wildlife', function () {
+        function act_default(x) {
+            sut.populate(x);
+        };
+        it('Single wildlife', function () {
+            // Arrange
+            // Act
+            act_default(wildlife);
+            // Assert
+            assert.equal(wildlife.move.getCall(0).args.length, 1);
+            assert.equal(wildlife.move.getCall(0).args[0], 'wildlife_' + wildlife.location_arg);
         });
     });
     describe('Subscribe tile', function () {

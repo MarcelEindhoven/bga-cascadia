@@ -19,6 +19,7 @@ define(['dojo/_base/declare'], (declare) => {
         setup(gamedatas) {
             this.setup_habitats(gamedatas.habitat);
             this.setup_market_tiles(gamedatas.market.habitat);
+            this.setup_market_wildlife(gamedatas.market.wildlife);
         },
         // Habitats
         setup_habitats(specification) {
@@ -31,13 +32,20 @@ define(['dojo/_base/declare'], (declare) => {
         },
         get_habitats(){console.log (this.habitats);return this.habitats;},
         // Market
+        setup_market_wildlife(wildlife_specifications) {
+            this.fill_with_wildlife(this.market, wildlife_specifications);
+        },
         setup_market_tiles(tile_specifications) {
             this.fill_with_tiles(this.market, tile_specifications);
         },
         // Common
-        fill_with_tiles(habitat, tile_specifications) {
+        fill_with_wildlife(wildlife_container, wildlife_specifications) {
+            for (var index in wildlife_specifications)
+                wildlife_container.populate(this.wildlife_factory.create(wildlife_specifications[index]));
+        },
+        fill_with_tiles(tile_container, tile_specifications) {
             for (var index in tile_specifications)
-                habitat.place(this.habitat_tile_factory.create(tile_specifications[index]));
+                tile_container.place(this.habitat_tile_factory.create(tile_specifications[index]));
         },
     });
 });

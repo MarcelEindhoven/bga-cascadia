@@ -19,6 +19,7 @@ define([
     "dojo","dojo/_base/declare",
     g_gamethemeurl + 'modules/BGA/javascript/framework.js',
     g_gamethemeurl + 'modules/javascript/habitat_tile.js',
+    g_gamethemeurl + 'modules/javascript/wildlife.js',
     g_gamethemeurl + 'modules/javascript/habitat.js',
     g_gamethemeurl + 'modules/javascript/market.js',
     g_gamethemeurl + 'modules/javascript/token_subscriptions.js',
@@ -27,7 +28,7 @@ define([
     "ebg/core/gamegui",
     "ebg/counter"
 ],
-function (dojo, declare, framework, habitat_tile_class, habitat_class, market, token_subscriptions, usecase_setup, usecase_place_tile) {
+function (dojo, declare, framework, habitat_tile_class, wildlife_class, habitat_class, market, token_subscriptions, usecase_setup, usecase_place_tile) {
     return declare("bgagame.cascadiacannonfodder", ebg.core.gamegui, {
         constructor: function(){
             console.log('cascadiacannonfodder constructor');
@@ -43,6 +44,7 @@ function (dojo, declare, framework, habitat_tile_class, habitat_class, market, t
             this.token_subscriptions = new token_subscriptions();
             this.token_subscriptions.setFramework(this.framework);
 
+            this.wildlife_factory = {class:wildlife_class, dependencies: {framework: this.framework}, create: function(tile_specification) {return new this.class(this.dependencies, tile_specification);}};
             this.habitat_tile_factory = {class:habitat_tile_class, dependencies: {framework: this.framework}, create: function(tile_specification) {return new this.class(this.dependencies, tile_specification);}};
             this.habitat_factory = {class:habitat_class, dependencies: {framework: this.framework}, create: function(player_id) {return new this.class(this.dependencies, player_id);}};
 
@@ -83,7 +85,7 @@ function (dojo, declare, framework, habitat_tile_class, habitat_class, market, t
 
             //this.prototyping(gamedatas);
     
-            this.usecase_setup = new usecase_setup({framework: this.framework, market: this.market, habitat_tile_factory: this.habitat_tile_factory, habitat_factory: this.habitat_factory});
+            this.usecase_setup = new usecase_setup({framework: this.framework, market: this.market, habitat_tile_factory: this.habitat_tile_factory, wildlife_factory: this.wildlife_factory, habitat_factory: this.habitat_factory});
             this.usecase_setup.setup(gamedatas);
 
             this.framework.control_may_be_returned_to_user();

@@ -3,6 +3,10 @@ var sinon = require('sinon');
 
 var sut_module = require('../export/modules/javascript/usecase_setup.js');
 
+class wildlife_class {
+    constructor(x, y) {wildlife_constructor (x, y);this.value_from_constructor = x;}
+};
+
 class habitat_tile_class {
     constructor(x, y) {habitat_tile_constructor (x, y);this.value_from_constructor = x;}
 };
@@ -28,9 +32,11 @@ describe('Use case Setup', function () {
         
         // Note that the following statement also calls constructor
         habitat_tile_factory = {class:habitat_tile_class, dependencies: 9, create: function(tile_specification) {return new this.class(this.dependencies, tile_specification);}};
+        wildlife_factory = {class:wildlife_class, dependencies: 9, create: function(tile_specification) {return new this.class(this.dependencies, tile_specification);}};
         habitat_factory = {class:habitat_class, dependencies: 7, create: function(player_id) {return new this.class(this.dependencies, player_id);}};
 
-        dependencies = {framework: framework, market: market, habitat_tile_factory: habitat_tile_factory, habitat_factory: habitat_factory};
+        dependencies = {framework: framework, market: market, wildlife_factory: wildlife_factory, habitat_tile_factory: habitat_tile_factory, habitat_factory: habitat_factory};
+        wildlife_constructor = sinon.spy();
         habitat_tile_constructor = sinon.spy();
         tile_create = sinon.spy();
         habitat_constructor = sinon.spy();
@@ -120,6 +126,32 @@ describe('Use case Setup', function () {
             act_default(['tile']);
             // Assert
             assert.equal(market.place.getCall(0).args[0].value_from_constructor, habitat_tile_factory.dependencies);
+        });
+    });
+    describe('Market wildlifes', function () {
+        function act_default(data) {
+            sut.setup_market_wildlife(data);
+        };
+        it('No wildlifes', function () {
+            // Arrange
+            // Act
+            act_default({});
+            // Assert
+        });
+        it('wildlife constructor', function () {
+            // Arrange
+            // Act
+            act_default(['wildlife']);
+            // Assert
+            assert.equal(wildlife_constructor.getCall(0).args[0], wildlife_factory.dependencies);
+            assert.equal(wildlife_constructor.getCall(0).args[1], 'wildlife');
+        });
+        it('Place wildlife', function () {
+            // Arrange
+            // Act
+            act_default(['wildlife']);
+            // Assert
+            assert.equal(market.populate.getCall(0).args[0].value_from_constructor, wildlife_factory.dependencies);
         });
     });
 });
