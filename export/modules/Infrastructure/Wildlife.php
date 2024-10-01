@@ -52,7 +52,7 @@ class CurrentWildlifeTerritory {
     public function get(): array {
         $wildlife_per_player = [];
         foreach ($this->players as $player_id => $player) {
-            $wildlife_per_player[$player_id] = CurrentTerritory::unpackPositions($this->deck->getCardsInLocation($player_id));
+            $wildlife_per_player[$player_id] = CurrentWildlife::unpackTypes(CurrentTerritory::unpackPositions($this->deck->getCardsInLocation($player_id)));
         }
         return $wildlife_per_player;
     }
@@ -71,7 +71,22 @@ class CurrentWildlifeMarket {
     }
 
     public function get(): array {
-        return $this->deck->getCardsInLocation('market');
+        return CurrentWildlife::unpackTypes($this->deck->getCardsInLocation('market'));
+    }
+}
+
+class CurrentWildlife {
+    static public function unpackTypes($cards): array {
+        $unpacked_cards = [];
+        foreach ($cards as $card) {
+            $unpacked_cards[] = CurrentWildlife::unpackType($card);
+        }
+        return $unpacked_cards;
+    }
+
+    static protected function unpackType($card): array {
+        $card['unique_id'] = 'wildlife' . $card['id'];
+        return $card;
     }
 }
 ?>

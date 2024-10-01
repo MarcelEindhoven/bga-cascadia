@@ -48,7 +48,6 @@ function (dojo, declare, framework, habitat_tile_class, habitat_class, market, t
 
             this.market = new market();
             this.market.setFramework(this.framework);
-            this.market.setTileHandler(this.habitat_tiles);
             this.market.set_token_subscriptions(this.token_subscriptions);
         },
         
@@ -114,15 +113,6 @@ function (dojo, declare, framework, habitat_tile_class, habitat_class, market, t
                 w = wildlife[index];
                 this.framework.createToken('wildlife', 'wildlife' + w.id, 'wildlife' + w.type);
                 this.framework.move('wildlife' + w.id, 'wildlife_' + w.location_arg);
-            }
-        },
-        marketSetupHabitat: function(habitat) {
-            for (var index in habitat) {
-                tile = habitat[index];
-                this.habitat_tiles.create(tile);
-                this.market.place(tile);
-                this.framework.subscribe(tile.unique_id, this.token_subscriptions, 'token_selected');
-//                this.habitat_tiles.subscribe(tile, this, 'habitat_selected');
             }
         },
         habitat_selected: function(tile) {

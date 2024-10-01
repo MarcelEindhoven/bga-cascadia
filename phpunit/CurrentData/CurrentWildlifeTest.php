@@ -53,8 +53,8 @@ class CurrentWildlifeTest extends TestCase{
     protected function createCardAndExpected($type, $x, $y, $rotation) {
         $location_argument = $rotation * 10000 + $y*100 + $x;
         return [
-            ['type' => $type, 'location' => CurrentWildlifeTest::DEFAULT_PLAYER_ID, 'location_arg' => $location_argument],
-            ['type' => $type, 'location' => CurrentWildlifeTest::DEFAULT_PLAYER_ID, 'location_arg' => $location_argument, CurrentTerritory::X => $x, CurrentTerritory::Y => $y, 'rotation' => $rotation],
+            ['id' => 5, 'type' => $type, 'location' => CurrentWildlifeTest::DEFAULT_PLAYER_ID, 'location_arg' => $location_argument],
+            ['id' => 5, 'type' => $type, 'location' => CurrentWildlifeTest::DEFAULT_PLAYER_ID, 'location_arg' => $location_argument, CurrentTerritory::X => $x, CurrentTerritory::Y => $y, 'rotation' => $rotation, 'unique_id' => 'wildlife' . 5],
         ];
     }
 }

@@ -20,7 +20,7 @@ class CurrentMarketTest extends TestCase{
     protected string $deck_name = 'habitat';
 
     /**
-     * @dataProvider marketProvider
+     * @dataProvider marketHabitatProvider
      */
     public function test_habitat_is_retrieved_and_unpacked($retrieved_cards, $expected_cards) {
         // Arrange
@@ -30,7 +30,6 @@ class CurrentMarketTest extends TestCase{
         $this->sut->setDecks([$this->deck_name => $this->mock_cards, 'wildlife' => $this->mock_cards_wildlife]);
 
         $this->mock_cards->expects($this->exactly(1))->method('getCardsInLocation')->with('market')->willReturn($retrieved_cards);
-        $this->mock_cards_wildlife->expects($this->exactly(1))->method('getCardsInLocation')->with('market')->willReturn($retrieved_cards);
 
         // Act
         $cards = $this->sut->get();
@@ -38,17 +37,17 @@ class CurrentMarketTest extends TestCase{
         $this->assertEquals($expected_cards, $cards);
     }
 
-    public function marketProvider(): array {
+    public function marketHabitatProvider(): array {
         list($card1, $expected1) = $this->createCardAndExpectedHabitat([], [], 1);
         list($card2, $expected2) = $this->createCardAndExpectedHabitat([1], [1], 3);
         list($card3, $expected3) = $this->createCardAndExpectedHabitat([1, 4, 5], [1, 5], 2);
         return [
             [[], [$this->deck_name => [], 'wildlife' => []]],
-            [[$card1], [$this->deck_name => [$expected1], 'wildlife' => [$card1]]],
-            [[$card2], [$this->deck_name => [$expected2], 'wildlife' => [$card2]]],
-            [[$card1, $card3], [$this->deck_name => [$expected1, $expected3], 'wildlife' => [$card1, $card3]]],
+            [[$card1], [$this->deck_name => [$expected1], 'wildlife' => []]],
+            [[$card2], [$this->deck_name => [$expected2], 'wildlife' => []]],
+            [[$card1, $card3], [$this->deck_name => [$expected1, $expected3], 'wildlife' => []]],
             // Sort according to location argument
-            [[$card3, $card2, $card1], [$this->deck_name => [$expected1, $expected3, $expected2], 'wildlife' => [$card1, $card3, $card2]]],
+            [[$card3, $card2, $card1], [$this->deck_name => [$expected1, $expected3, $expected2], 'wildlife' => []]],
         ];
     }
 
@@ -58,6 +57,41 @@ class CurrentMarketTest extends TestCase{
         return [
             ['id' => 5, 'type' => $type, 'type_arg' => $type_arg, 'location_arg' => $market_index, ],
             ['id' => 5, 'type' => $type, 'type_arg' => $type_arg, 'location_arg' => $market_index, 'terrain_types' => $terrain_types, 'supported_wildlife' => $supported_wildlife, 'unique_id' => 'tile' . 5, ],
+        ];
+    }
+
+    /**
+     * @dataProvider marketWildlifeProvider
+     */
+    public function test_wildlife_is_retrieved_and_unpacked($retrieved_cards, $expected_cards) {
+        // Arrange
+        $this->sut = new CurrentMarket();
+        $this->mock_cards = $this->createMock(\NieuwenhovenGames\BGA\FrameworkInterfaces\Deck::class);
+        $this->mock_cards_wildlife = $this->createMock(\NieuwenhovenGames\BGA\FrameworkInterfaces\Deck::class);
+        $this->sut->setDecks([$this->deck_name => $this->mock_cards, 'wildlife' => $this->mock_cards_wildlife]);
+
+        $this->mock_cards_wildlife->expects($this->exactly(1))->method('getCardsInLocation')->with('market')->willReturn($retrieved_cards);
+
+        // Act
+        $cards = $this->sut->get();
+        // Assert
+        $this->assertEquals($expected_cards, $cards);
+    }
+
+    public function marketWildlifeProvider(): array {
+        list($card1, $expected1) = $this->createCardAndExpectedWildlife(1, 0);
+        list($card2, $expected2) = $this->createCardAndExpectedWildlife(4, 3);
+        return [
+            [[], [$this->deck_name => [], 'wildlife' => []]],
+            [[$card1], [$this->deck_name => [], 'wildlife' => [$expected1]]],
+            [[$card2], [$this->deck_name => [], 'wildlife' => [$expected2]]],
+        ];
+    }
+
+    protected function createCardAndExpectedWildlife($type, $market_index) {
+        return [
+            ['id' => 5, 'type' => $type, 'location_arg' => $market_index, ],
+            ['id' => 5, 'type' => $type, 'location_arg' => $market_index, 'unique_id' => 'wildlife' . 5, ],
         ];
     }
 }
