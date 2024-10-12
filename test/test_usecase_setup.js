@@ -14,6 +14,7 @@ class habitat_tile_class {
 class habitat_class {
     constructor(x, player_id) {habitat_constructor (x, player_id);this.value_from_constructor = x;}
     place(tile) {place_tile(tile);}
+    populate(tile) {populate(tile);}
 };
 
 describe('Use case Setup', function () {
@@ -41,10 +42,12 @@ describe('Use case Setup', function () {
         tile_create = sinon.spy();
         habitat_constructor = sinon.spy();
         place_tile = sinon.spy();
+        populate = sinon.spy();
 
         habitat = {
             place: sinon.spy(),
             remove: sinon.spy(),
+            populate: sinon.spy(),
         };
 
         token_subscriptions = {
@@ -100,6 +103,24 @@ describe('Use case Setup', function () {
             act_default({23: [tile]});
             // Assert
             assert.equal(place_tile.getCall(0).args[0].value_from_constructor, habitat_tile_factory.dependencies);
+        });
+    });
+    describe('Habitat wildlife', function () {
+        beforeEach(function() {
+            sut.setup_habitats({23: [tile], 25: [tile]});
+            sut.populate_habitats({23: [tile], 25: [tile]});
+        });
+        it('Constructor is being called', function () {
+            // Arrange
+            // Act
+            // Assert
+            sinon.assert.callCount(wildlife_constructor, 2);
+        });
+        it('populate is being called', function () {
+            // Arrange
+            // Act
+            // Assert
+            sinon.assert.callCount(populate, 2);
         });
     });
     describe('Market tiles', function () {

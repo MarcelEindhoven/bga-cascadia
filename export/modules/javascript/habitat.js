@@ -11,6 +11,7 @@ define(['dojo/_base/declare'], (declare) => {
         /**
          * Dependencies
          * framework.resize
+         * tile/wildlife.move
          */
         this.clone(dependencies);
 
@@ -28,6 +29,10 @@ define(['dojo/_base/declare'], (declare) => {
             }
         },
 
+        populate(wildlife) {
+            this.tiles[tile.unique_id] = wildlife;
+            this.relocate_tiles();
+        },
         // tile_example = {unique_id:1, horizontal: 50, vertical: 50, move: function(this.id, x , y)}
         place(tile) {
             this.tiles[tile.unique_id] = tile;

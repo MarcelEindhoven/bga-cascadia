@@ -93,7 +93,6 @@ describe('wildlife wildlife', function () {
             // Act
             act_default(wildlife, element);
             // Assert
-            assert.equal(framework.move.getCall(0).args.length, 2);
             assert.equal(framework.move.getCall(0).args[0], expected_wildlife_id);
             assert.equal(framework.move.getCall(0).args[1], element);
         });
