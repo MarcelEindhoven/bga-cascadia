@@ -3,35 +3,41 @@ var sinon = require('sinon');
 
 var sut_module = require('../export/modules/javascript/usecase_place_tile.js');
 
+class habitat_tile_class {
+    constructor(x, y) {
+        habitat_tile_constructor (x, y);
+        this.clone(y);
+    }
+    clone(properties){
+        for (var property in properties) {
+            this[property] = properties[property];
+        }
+    }
+};
+
 describe('Use case select tile', function () {
     beforeEach(function() {
-        player_id = 125;
-        sut = new sut_module(player_id);
-
-        framework = {
-            add_css_class: sinon.spy(),
-            mark_as_selectable: sinon.spy(),
-            resize: sinon.spy(),
-        };
-        sut.setFramework(framework);
-
-        tile_handler = {
-            create: sinon.spy(),
-            mark_as_selectable: sinon.spy(),
-        };
-        sut.set_tile_handler(tile_handler);
-
-        habitat = {
-            place: sinon.spy(),
-            remove: sinon.spy(),
-        };
-        sut.set_habitat(habitat);
-
         token_subscriptions = {
             subscribe: sinon.spy(),
             unsubscribe: sinon.spy(),
         };
-        sut.set_token_subscriptions(token_subscriptions);
+
+        habitat = {
+            place: sinon.spy(),
+            remove: sinon.spy(),
+            populate: sinon.spy(),
+        };
+
+        market = {
+            subscribe_tile_selected: sinon.spy(),
+            unsubscribe_tile_selected: sinon.spy(),
+        };
+        habitat_tile_constructor = sinon.spy();
+
+        habitat_tile_factory = {class:habitat_tile_class, dependencies: 9, create: function(tile_specification) {return new this.class(this.dependencies, tile_specification);}};
+
+        dependencies = {token_subscriptions: token_subscriptions, market: market, habitat_tile_factory: habitat_tile_factory, habitat: habitat};
+        sut = new sut_module(dependencies);
 
         callback_object = {
             tile_placed: sinon.spy(),
@@ -40,17 +46,65 @@ describe('Use case select tile', function () {
         tile = {id: 2, terrain_types: [1], supported_wildlife: [2], horizontal: 50, vertical: 50, unique_id: 'tile2'};
         expected_candidate_tile = {horizontal: 50, vertical: 51};
     });
-    describe('Candidate Tile selected', function () {
-        function act_default(object, method, tile) {
+    describe('Subscribe', function () {
+        function act_default(object, method) {
             sut.subscribe_tile_placed(object, method);
-            sut.candidate_tile_selected(tile);
         };
-        it('tile_placed', function () {
+        it('First subscribe, market subscribe', function () {
             // Arrange
             // Act
-            act_default(callback_object, 'tile_placed', tile);
+            act_default(callback_object, 'tile_placed');
             // Assert
-            assert.equal(callback_object.tile_placed.getCall(0).args.length, 1);
+            assert.equal(market.subscribe_tile_selected.getCall(0).args[0], sut);
+            assert.equal(market.subscribe_tile_selected.getCall(0).args[1], 'market_tile_selected');
+        });
+        it('Second subscribe, only one market subscribe', function () {
+            // Arrange
+            // Act
+            act_default(callback_object, 'tile_placed');
+            act_default(callback_object, 'Another method');
+            // Assert
+            sinon.assert.callCount(market.subscribe_tile_selected, 1);
+        });
+    });
+    describe('Candidate Tile selected', function () {
+        beforeEach(function() {
+            sut.set_candidate_positions([{horizontal: 50, vertical: 51}, {horizontal: 50, vertical: 52}]);
+            sut.subscribe_tile_placed(callback_object, 'tile_placed');
+            sut.market_tile_selected(tile);
+        });
+        function act_default(tile) {
+            sut.candidate_tile_selected(tile);
+        };
+        it('Callback', function () {
+            // Arrange
+            // Act
+            act_default(tile);
+            // Assert
+            assert.equal(callback_object.tile_placed.getCall(0).args[0], tile);
+        });
+        it('market unsubscribe', function () {
+            // Arrange
+            // Act
+            act_default(tile);
+            // Assert
+            sinon.assert.callCount(market.unsubscribe_tile_selected, 1);
+            assert.equal(market.unsubscribe_tile_selected.getCall(0).args[0], sut);
+            assert.equal(market.unsubscribe_tile_selected.getCall(0).args[1], 'market_tile_selected');
+        });
+        it('habitat cleanup', function () {
+            // Arrange
+            // Act
+            act_default(tile);
+            // Assert
+            sinon.assert.callCount(habitat.remove, 2);
+        });
+        it('token_subscriptions cleanup', function () {
+            // Arrange
+            // Act
+            act_default(tile);
+            // Assert
+            sinon.assert.callCount(token_subscriptions.unsubscribe, 2);
         });
     });
     describe('Market Tile selected', function () {
@@ -70,12 +124,11 @@ describe('Use case select tile', function () {
             // Act
             act_default([{horizontal: 52, vertical: 51}], tile);
             // Assert
-            assert.equal(tile_handler.create.getCall(0).args.length, 1);
-            assert.equal(tile_handler.create.getCall(0).args[0].vertical, 51);
-            assert.equal(tile_handler.create.getCall(0).args[0].horizontal, 52);
-            assert.equal(tile_handler.create.getCall(0).args[0].unique_id, unique_id+52+51);
-            assert.equal(tile_handler.create.getCall(0).args[0].terrain_types, tile.terrain_types);
-            assert.equal(tile_handler.create.getCall(0).args[0].supported_wildlife, tile.supported_wildlife);
+            assert.equal(habitat_tile_constructor.getCall(0).args[1].vertical, 51);
+            assert.equal(habitat_tile_constructor.getCall(0).args[1].horizontal, 52);
+            assert.equal(habitat_tile_constructor.getCall(0).args[1].unique_id, unique_id+52+51);
+            assert.equal(habitat_tile_constructor.getCall(0).args[1].terrain_types, tile.terrain_types);
+            assert.equal(habitat_tile_constructor.getCall(0).args[1].supported_wildlife, tile.supported_wildlife);
         });
         it('Original tile unchanged', function () {
             // Arrange
@@ -94,28 +147,27 @@ describe('Use case select tile', function () {
             // Act
             act_default([{horizontal: 52, vertical: 51}], tile);
             // Assert
-            assert.equal(habitat.place.getCall(0).args.length, 1);
             assert.equal(habitat.place.getCall(0).args[0].vertical, 51);
             assert.equal(habitat.place.getCall(0).args[0].horizontal, 52);
             assert.equal(habitat.place.getCall(0).args[0].unique_id, unique_id+52+51);
-        });
-        it('Mark as selectable tile', function () {
-            // Arrange
-            // Act
-            act_default([{horizontal: 52, vertical: 51}], tile);
-            // Assert
-            assert.equal(tile_handler.mark_as_selectable.getCall(0).args.length, 1);
-            assert.equal(tile_handler.mark_as_selectable.getCall(0).args[0].unique_id, unique_id+52+51);
         });
         it('Subscribe', function () {
             // Arrange
             // Act
             act_default([{horizontal: 50, vertical: 51}], tile);
             // Assert
-            assert.equal(token_subscriptions.subscribe.getCall(0).args.length, 3);
             assert.equal(token_subscriptions.subscribe.getCall(0).args[0].unique_id, unique_id+50+51);
             assert.equal(token_subscriptions.subscribe.getCall(0).args[1], sut);
             assert.equal(token_subscriptions.subscribe.getCall(0).args[2], 'candidate_tile_selected');
+        });
+        it('Multiple candidate positions', function () {
+            // Arrange
+            // Act
+            act_default([{horizontal: 50, vertical: 51}, {horizontal: 50, vertical: 51}], tile);
+            // Assert
+            sinon.assert.callCount(token_subscriptions.subscribe, 2);
+            sinon.assert.callCount(habitat.place, 2);
+            sinon.assert.callCount(habitat_tile_constructor, 2);
         });
     });
 });

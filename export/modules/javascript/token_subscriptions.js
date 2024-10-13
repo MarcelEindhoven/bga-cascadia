@@ -1,5 +1,17 @@
 define(['dojo/_base/declare'], (declare) => {
     return declare('cascadia.token_subscriptions', null, {
+        /**
+         * Use case subscribe(token, object, method)
+         * token.mark_as_selectable if only subscription for that token
+         * 
+         * Use case unsubscribe(token, object, method)
+         * token.unmark_as_selectable if no more subscriptions for that token
+         * 
+         * Note that each subscribe must be followed by an unsubscribe
+         * 
+         * Use case token selected
+         * subscription.object[subscription.method](subscription.token);
+         */
         constructor() {
             this.subscriptions = [];
         },

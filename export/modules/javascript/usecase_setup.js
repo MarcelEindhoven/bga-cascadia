@@ -1,6 +1,10 @@
 define(['dojo/_base/declare'], (declare) => {
     return declare('cascadia.usecase_setup', null, {
         /**
+         * Use case:
+         * u = usecase_setup(dependencies);
+         * u.setup(gamedatas);
+         * 
          * Dependencies:
          * t = habitat_tile_factory.create(tile_specification)
          * h = habitat_factory.create(player_id)
@@ -21,7 +25,7 @@ define(['dojo/_base/declare'], (declare) => {
         },
         setup(gamedatas) {
             this.setup_habitats(gamedatas.habitat);
-            // To do: setup wildlife
+            this.populate_habitats(gamedatas.wildlife);
             this.setup_market_tiles(gamedatas.market.habitat);
             this.setup_market_wildlife(gamedatas.market.wildlife);
         },

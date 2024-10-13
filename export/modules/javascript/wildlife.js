@@ -32,7 +32,7 @@ define(['dojo/_base/declare'], (declare) => {
         create(wildlife){
             this.clone(wildlife);
 
-            // Note that the primary field token has the same id as the wildlife, which is used in the subscribe
+            // Note that the field token has the same id as the wildlife, which is used in the subscribe
             this.framework.createToken('wildlife', this.unique_id, 'wildlife' + this.type);
             
             this.framework.subscribe_paint(this);
