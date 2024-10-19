@@ -5,22 +5,7 @@ var sut_module = require('../export/modules/javascript/market.js');
 
 describe('market', function () {
     beforeEach(function() {
-        player_id = 125;
-        sut = new sut_module(player_id);
-
-        framework = {
-            add_css_class: sinon.spy(),
-            mark_as_selectable: sinon.spy(),
-            resize: sinon.spy(),
-        };
-        sut.setFramework(framework);
-
-        tile_handler = {
-            mark_as_selectable: sinon.spy(),
-            move_and_rotate: sinon.spy(),
-            move: sinon.spy(),
-        };
-        sut.setTileHandler(tile_handler);
+        sut = new sut_module();
 
         token_subscriptions = {
             subscribe: sinon.spy(),
@@ -67,7 +52,7 @@ describe('market', function () {
             assert.equal(wildlife.move.getCall(0).args[0], 'wildlife_' + wildlife.location_arg);
         });
     });
-    describe('Subscribe tile', function () {
+    describe('Subscribe', function () {
         function act_default(x, object, method) {
             sut.place(x);
             sut.subscribe_tile_selected(object, method);
@@ -91,15 +76,23 @@ describe('market', function () {
             assert.equal(token_subscriptions.subscribe.getCall(0).args[1], object);
             assert.equal(token_subscriptions.subscribe.getCall(0).args[2], method);
         });
-        it('Blinking tile', function () {
+    });
+    describe('Unsubscribe', function () {
+        function act_default(x, object, method) {
+            sut.place(x);
+            sut.unsubscribe_tile_selected(object, method);
+        };
+        it('Single tile', function () {
             // Arrange
             object = token_subscriptions;
             method = 'q';
             // Act
             act_default(tile, object, method);
             // Assert
-            assert.equal(tile_handler.mark_as_selectable.getCall(0).args.length, 1);
-            assert.equal(tile_handler.mark_as_selectable.getCall(0).args[0], tile);
+            assert.equal(token_subscriptions.unsubscribe.getCall(0).args.length, 3);
+            assert.equal(token_subscriptions.unsubscribe.getCall(0).args[0], tile);
+            assert.equal(token_subscriptions.unsubscribe.getCall(0).args[1], object);
+            assert.equal(token_subscriptions.unsubscribe.getCall(0).args[2], method);
         });
     });
 });

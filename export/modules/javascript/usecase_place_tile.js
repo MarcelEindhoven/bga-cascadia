@@ -1,12 +1,12 @@
 define(['dojo/_base/declare'], (declare) => {
     return declare('cascadia.usecase_place_tile', null, {
         /**
-         * First, subscribe to the market tiles, which must be undone at the end
-         * When a market tile is selected, create one candidate tile for each candidate position
-         * Each candidate tile is placed in the active player habitat and must be removed when the candidate tile is destroyed
+         * First, subscribe to the market tiles (This allows the player to select a market tile), which must be undone at the end
+         * When the player selects a market tile, create one candidate tile for each candidate position (Candidate positions have been calculated by the server)
+         * Each candidate tile is placed in the active player habitat on its candidate position and must be removed when the candidate tile is destroyed
          * Subscribe to each candidate tile selection, which must be unsubscribed when the candidate tile is destroyed
-         * When a candidate tile is selected, the use case ends and the (single) subscriber to this use case is notified
-         * When a second market tile is selected, first destroy the existing candidate tiles
+         * When the player selects a candidate tile, the use case ends and the (single) subscriber to this use case is notified
+         * When again the player selects a market tile, first destroy the existing candidate tiles
          * 
          * Use case User may select a tile:
          * u = usecase_place_tile(dependencies);
@@ -30,7 +30,7 @@ define(['dojo/_base/declare'], (declare) => {
          * Sub Use case destroy candidate tiles
          * token_subscriptions.unsubscribe(candidate_tile)
          * habitat.remove(candidate_tile);
-         * Destroy candidate tile
+         * Destroy candidate tile (To be determined how)
          * 
          * Use case Market tile selected again:
          * u.market_tile_selected(tile);
