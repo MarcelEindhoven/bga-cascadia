@@ -9,7 +9,7 @@ define(['dojo/_base/declare'], (declare) => {
          * When a second market tile is selected, first destroy the existing candidate tiles
          * 
          * Use case User may select a tile:
-         * u = usecase_setup(dependencies);
+         * u = usecase_place_tile(dependencies);
          * u.set_candidate_positions(candidate_positions);
          * u.subscribe_tile_placed(object, method);
          * market.subscribe_tile_selected(this, market_tile_selected); for first subscription
@@ -50,6 +50,8 @@ define(['dojo/_base/declare'], (declare) => {
         set_candidate_positions(candidate_positions){this.candidate_positions = Object.assign({}, candidate_positions)},
 
         market_tile_selected(tile) {
+            this.destroy_candidate_tiles();
+
             unique_id = tile.unique_id;
             for (index in this.candidate_positions) {
                 candidate_position = this.candidate_positions[index];
@@ -70,17 +72,22 @@ define(['dojo/_base/declare'], (declare) => {
         subscribe_tile_placed(object, method) {
             if (! this.callback_object)
                 market.subscribe_tile_selected(this, 'market_tile_selected');
-            // Note that so far single subscription is supported
-            this.callback_object = object; this.callback_method = method;
+            // Note that so far single subscription is supported, despite the previous if statement
+            this.callback_object = object;
+            this.callback_method = method;
         },
         candidate_tile_selected(tile) {
             market.unsubscribe_tile_selected(this, 'market_tile_selected');
+            this.destroy_candidate_tiles();
+            this.callback_object[this.callback_method](tile);
+        },
+        destroy_candidate_tiles() {
             for (index in this.candidate_tiles) {
                 candidate_tile = this.candidate_tiles[index];
                 this.habitat.remove(candidate_tile);
                 this.token_subscriptions.unsubscribe(candidate_tile, this, 'candidate_tile_selected');
             }
-                this.callback_object[this.callback_method](tile);
+            this.candidate_tiles = [];
         },
     });
 });

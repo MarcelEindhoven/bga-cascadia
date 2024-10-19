@@ -169,5 +169,25 @@ describe('Use case select tile', function () {
             sinon.assert.callCount(habitat.place, 2);
             sinon.assert.callCount(habitat_tile_constructor, 2);
         });
+        it('Market Tile selected again, so cleanup previous candidate tiles', function () {
+            // Arrange
+            // Act
+            act_default([{horizontal: 50, vertical: 51}, {horizontal: 50, vertical: 51}], tile);
+            sut.market_tile_selected(tile);
+            // Assert
+            sinon.assert.callCount(token_subscriptions.unsubscribe, 2);
+            sinon.assert.callCount(habitat.remove, 2);
+            sinon.assert.callCount(market.unsubscribe_tile_selected, 0);
+        });
+        it('Market Tile selected again, so remove previous candidate tiles from object', function () {
+            // Arrange
+            // Act
+            act_default([{horizontal: 50, vertical: 51}, {horizontal: 50, vertical: 51}], tile);
+            sut.market_tile_selected(tile);
+            sut.market_tile_selected(tile);
+            // Assert
+            sinon.assert.callCount(token_subscriptions.unsubscribe, 4);
+            sinon.assert.callCount(habitat.remove, 4);
+        });
     });
 });
