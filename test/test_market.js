@@ -17,20 +17,12 @@ describe('market', function () {
         other_tile = {move: sinon.spy(), id: 22, location_arg: 1, terrain_types: [1], supported_wildlife: [2], horizontal: 50, vertical: 51};
 
         wildlife = {move: sinon.spy(), id: 2, location_arg: 3, unique_id: 'wildlife2'};
-
-        expected_tile_id = 'tile' + tile.id;
-        expected_upper_half_id = 'upper_half' + tile.id;
-
-        element = 'test ';
-        minimum_size = 50;
-        vertical_distance = 80;
-        horizontal_distance = 24;
     });
     describe('Place tile', function () {
         function act_default(x) {
             sut.place(x);
         };
-        it('Single tile', function () {
+        it('When the server places an object in the market, pass the row and column as one ID to the object which takes care of the actual placement on the board', function () {
             // Arrange
             // Act
             act_default(tile);
@@ -43,7 +35,7 @@ describe('market', function () {
         function act_default(x) {
             sut.populate(x);
         };
-        it('Single wildlife', function () {
+        it('When the server places an object in the market, pass the row and column as one ID to the object which takes care of the actual placement on the board', function () {
             // Arrange
             // Act
             act_default(wildlife);
@@ -57,14 +49,14 @@ describe('market', function () {
             sut.place(x);
             sut.subscribe_tile_selected(object, method);
         };
-        it('no tile', function () {
+        it('Empty market has no effect when a subscribe is called', function () {
             // Arrange
             // Act
             sut.subscribe_tile_selected();
             // Assert
             sinon.assert.notCalled(token_subscriptions.subscribe);
         });
-        it('Single tile', function () {
+        it('Each market tile must become selectable by the player', function () {
             // Arrange
             object = token_subscriptions;
             method = 'q';
@@ -82,7 +74,7 @@ describe('market', function () {
             sut.place(x);
             sut.unsubscribe_tile_selected(object, method);
         };
-        it('Single tile', function () {
+        it('Each market tile must be unsubscribed when the subscriber is no longer interested', function () {
             // Arrange
             object = token_subscriptions;
             method = 'q';
