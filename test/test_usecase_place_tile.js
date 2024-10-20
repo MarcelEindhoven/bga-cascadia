@@ -13,6 +13,9 @@ class habitat_tile_class {
             this[property] = properties[property];
         }
     }
+    destroy() {
+        habitat_tile_destroy();
+    }
 };
 
 describe('Use case select tile', function () {
@@ -33,6 +36,7 @@ describe('Use case select tile', function () {
             unsubscribe_tile_selected: sinon.spy(),
         };
         habitat_tile_constructor = sinon.spy();
+        habitat_tile_destroy = sinon.spy();
 
         habitat_tile_factory = {class:habitat_tile_class, dependencies: 9, create: function(tile_specification) {return new this.class(this.dependencies, tile_specification);}};
 
@@ -43,8 +47,7 @@ describe('Use case select tile', function () {
             tile_placed: sinon.spy(),
         };
 
-        tile = {id: 2, terrain_types: [1], supported_wildlife: [2], horizontal: 50, vertical: 50, unique_id: 'tile2'};
-        expected_candidate_tile = {horizontal: 50, vertical: 51};
+        tile = {id: 2, terrain_types: [1], supported_wildlife: [2], horizontal: 50, vertical: 50, unique_id: 'tile2', destroy: habitat_tile_destroy};
     });
     describe('Subscribe', function () {
         function act_default(object, method) {
@@ -177,6 +180,7 @@ describe('Use case select tile', function () {
             // Assert
             sinon.assert.callCount(token_subscriptions.unsubscribe, 2);
             sinon.assert.callCount(habitat.remove, 2);
+            sinon.assert.callCount(tile.destroy, 2);
             sinon.assert.callCount(market.unsubscribe_tile_selected, 0);
         });
         it('Market Tile selected again, so remove previous candidate tiles from object', function () {

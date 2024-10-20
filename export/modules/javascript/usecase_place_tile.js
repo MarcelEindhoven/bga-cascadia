@@ -30,7 +30,7 @@ define(['dojo/_base/declare'], (declare) => {
          * Sub Use case destroy candidate tiles
          * token_subscriptions.unsubscribe(candidate_tile)
          * habitat.remove(candidate_tile);
-         * Destroy candidate tile (To be determined how)
+         * habitat_tile.destroy();
          * 
          * Use case Market tile selected again:
          * u.market_tile_selected(tile);
@@ -86,6 +86,7 @@ define(['dojo/_base/declare'], (declare) => {
                 candidate_tile = this.candidate_tiles[index];
                 this.habitat.remove(candidate_tile);
                 this.token_subscriptions.unsubscribe(candidate_tile, this, 'candidate_tile_selected');
+                candidate_tile.destroy();
             }
             this.candidate_tiles = [];
         },

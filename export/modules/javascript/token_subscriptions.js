@@ -15,7 +15,6 @@ define(['dojo/_base/declare'], (declare) => {
         constructor() {
             this.subscriptions = [];
         },
-        setFramework(framework){this.framework = framework},
         subscribe(token, object, method) {
             if (! this.is_token_in_subscriptions(token))
                 token.mark_as_selectable();
