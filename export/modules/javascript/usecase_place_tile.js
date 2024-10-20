@@ -7,68 +7,20 @@ define(['dojo/_base/declare'], (declare) => {
          * Subscribe to each candidate tile selection, which must be unsubscribed when the candidate tile is destroyed
          * When the player selects a candidate tile, the use case ends and the (single) subscriber to this use case is notified
          * When again the player selects a market tile, first destroy the existing candidate tiles
-         * 
-         * Use case User may select a tile:
+         */
+
+        /**
+         * Use case User must select a market tile:
          * u = usecase_place_tile(dependencies);
          * u.set_candidate_positions(candidate_positions);
          * u.subscribe_tile_placed(object, method);
-         * market.subscribe_tile_selected(this, market_tile_selected); for first subscription
-         * 
-         * Use case Market tile selected:
-         * u.market_tile_selected(tile);
-         * Create, place and subscribe candidate tiles for each candidate position
-         * habitat_tile_factory.create(tile_specification);
-         * habitat.place(candidate_tile);
-         * token_subscriptions.subscribe(candidate_tile, this, 'candidate_tile_selected');
-         * 
-         * Use case Candidate tile selected, this ends the use case:
-         * u.candidate_tile_selected(tile);
-         * object[method] (selected tile);
-         * Invoke sub use case Destroy candidate tiles
-         * market.unsubscribe_tile_selected
-         * 
-         * Sub Use case destroy candidate tiles
-         * token_subscriptions.unsubscribe(candidate_tile)
-         * habitat.remove(candidate_tile);
-         * habitat_tile.destroy();
-         * 
-         * Use case Market tile selected again:
-         * u.market_tile_selected(tile);
-         * Invoke sub use case Destroy candidate tiles
-         * Invoke sub use case Market tile selected
          */
         constructor(dependencies) {
-            this.clone(dependencies);
+            this.overrule(this, dependencies);
             this.candidate_positions = [];
             this.candidate_tiles = [];
         },
-        clone(properties){
-            for (var property in properties) {
-                this[property] = properties[property];
-            }
-        },
-        set_candidate_positions(candidate_positions){this.candidate_positions = Object.assign({}, candidate_positions)},
-
-        market_tile_selected(tile) {
-            this.destroy_candidate_tiles();
-
-            unique_id = tile.unique_id;
-            for (index in this.candidate_positions) {
-                candidate_position = this.candidate_positions[index];
-
-                var candidate_specification = Object.assign({}, tile);
-                candidate_specification.horizontal = candidate_position.horizontal, 
-                candidate_specification.vertical = candidate_position.vertical,
-                candidate_specification.unique_id = unique_id + candidate_position.horizontal + candidate_position.vertical
-
-                var candidate_tile = this.habitat_tile_factory.create(candidate_specification);
-                this.candidate_tiles.push(candidate_tile);
-
-                this.habitat.place(candidate_tile);
-
-                this.token_subscriptions.subscribe(candidate_tile, this, 'candidate_tile_selected');
-            }
-        },
+        set_candidate_positions(candidate_positions) {this.candidate_positions = this.get_clone(candidate_positions);},
         subscribe_tile_placed(object, method) {
             if (! this.callback_object)
                 market.subscribe_tile_selected(this, 'market_tile_selected');
@@ -76,19 +28,71 @@ define(['dojo/_base/declare'], (declare) => {
             this.callback_object = object;
             this.callback_method = method;
         },
+
+        /**
+         * Use case Market tile selected (possibly again):
+         */
+        market_tile_selected(market_tile) {
+            this.destroy_candidate_tiles();
+            this.create_candidate_tiles_from(market_tile);
+        },
+        create_candidate_tiles_from(market_tile){
+            for (index in this.candidate_positions)
+                this.create_candidate_tile_from(this.get_candidate_specification(market_tile, this.candidate_positions[index]));
+        },
+        get_candidate_specification(market_tile, candidate_position) {
+            var specification = this.get_clone(market_tile);
+
+            this.overrule(specification, candidate_position);
+
+            specification.unique_id = this.create_unique_id_from(market_tile, candidate_position);
+
+            return specification;
+        },
+        get_clone(object) {
+            return Object.assign({}, object);
+        },
+        create_unique_id_from(tile, position) {
+            return tile.unique_id + position.horizontal + position.vertical;;
+        },
+        create_candidate_tile_from(candidate_specification) {
+            var candidate_tile = this.habitat_tile_factory.create(candidate_specification);
+            this.candidate_tiles.push(candidate_tile);
+
+            this.habitat.place(candidate_tile);
+
+            this.token_subscriptions.subscribe(candidate_tile, this, 'candidate_tile_selected');
+        },
+
+        overrule(object, properties) {
+            for (var property in properties) {
+                object[property] = properties[property];
+            }
+        },
+
+        /**
+         * Use case Candidate tile selected, this ends the place tile use case
+         */
         candidate_tile_selected(tile) {
             market.unsubscribe_tile_selected(this, 'market_tile_selected');
+
             this.destroy_candidate_tiles();
+
             this.callback_object[this.callback_method](tile);
         },
+
+        /**
+         * Sub Use case destroy candidate tiles, which is the opposite of create candidate tiles
+         */
         destroy_candidate_tiles() {
-            for (index in this.candidate_tiles) {
-                candidate_tile = this.candidate_tiles[index];
-                this.habitat.remove(candidate_tile);
-                this.token_subscriptions.unsubscribe(candidate_tile, this, 'candidate_tile_selected');
-                candidate_tile.destroy();
-            }
+            for (index in this.candidate_tiles)
+                this.destroy_candidate_tile(this.candidate_tiles[index]);
             this.candidate_tiles = [];
+        },
+        destroy_candidate_tile(tile) {
+            this.habitat.remove(tile);
+            this.token_subscriptions.unsubscribe(tile, this, 'candidate_tile_selected');
+            tile.destroy();
         },
     });
 });
