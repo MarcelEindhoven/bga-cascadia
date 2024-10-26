@@ -23,7 +23,7 @@ define(['dojo/_base/declare'], (declare) => {
         set_candidate_positions(candidate_positions) {this.candidate_positions = this.get_clone(candidate_positions);},
         subscribe_tile_placed(object, method) {
             if (! this.callback_object)
-                market.subscribe_tile_selected(this, 'market_tile_selected');
+                this.market.subscribe_tile_selected(this, 'market_tile_selected');
             // Note that so far single subscription is supported, despite the previous if statement
             this.callback_object = object;
             this.callback_method = method;
