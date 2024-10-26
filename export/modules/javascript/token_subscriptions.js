@@ -30,9 +30,8 @@ define(['dojo/_base/declare'], (declare) => {
         is_token_in_subscriptions(token) {
             for (index in this.subscriptions) {
                 subscription = this.subscriptions[index];
-                if (token.unique_id == subscription.token.unique_id) {
+                if (token.unique_id == subscription.token.unique_id)
                     return true;
-                }
             }
             return false;
         },

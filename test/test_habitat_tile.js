@@ -9,7 +9,6 @@ describe('Habitat tile', function () {
             createToken: sinon.spy(),
             destroyToken: sinon.spy(),
             move: sinon.spy(),
-            add_css_class: sinon.spy(),
             permanent_subscribe: sinon.spy(),
             subscribe_paint: sinon.spy(),
             unsubscribe_paint: sinon.spy(),
@@ -236,6 +235,29 @@ describe('Habitat tile', function () {
             assert.equal(framework.move.getCall(3).args[3], framework.move.getCall(2).args[3]);
         });
     });
+    describe('Selectable', function () {
+        beforeEach(function() {
+            sut = new sut_module(dependencies, tile);
+        });
+        it('Adds a CSS class when it becomes selectable', function () {
+            // Arrange
+            // Act
+            sut.mark_as_selectable();
+            // Assert
+            sinon.assert.callCount(framework.add_css_class, 1);
+            assert.equal(framework.add_css_class.getCall(0).args[0], tile.unique_id);
+            assert.equal(framework.add_css_class.getCall(0).args[1], 'selectable');
+        });
+        it('Removes a CSS class when it becomes unselectable', function () {
+            // Arrange
+            // Act
+            sut.unmark_as_selectable();
+            // Assert
+            sinon.assert.callCount(framework.remove_css_class, 1);
+            assert.equal(framework.remove_css_class.getCall(0).args[0], tile.unique_id);
+            assert.equal(framework.remove_css_class.getCall(0).args[1], 'selectable');
+        });
+    });
     describe('Move token x, y', function () {
         function act_default(tile, element, x = 0, y = 0) {
             sut = new sut_module(dependencies, tile);
@@ -262,7 +284,7 @@ describe('Habitat tile', function () {
         });
     });
     describe('Rotation', function () {
-        function assert_default(tile) {
+        function arrange_default(tile) {
             sut = new sut_module(dependencies, tile);
         };
         function act_default() {
@@ -270,7 +292,7 @@ describe('Habitat tile', function () {
         };
         it('Paint without rotation', function () {
             // Arrange
-            assert_default(tile);
+            arrange_default(tile);
             // Act
             act_default();
             // Assert
@@ -279,7 +301,7 @@ describe('Habitat tile', function () {
         it('Paint with rotation and no multiple terrain types', function () {
             // Arrange
             tile.rotation = 3;
-            assert_default(tile);
+            arrange_default(tile);
             // Act
             act_default();
             // Assert
@@ -289,7 +311,7 @@ describe('Habitat tile', function () {
             // Arrange
             tile.rotation = 3;
             tile.terrain_types = [2, 3];
-            assert_default(tile);
+            arrange_default(tile);
             // Act
             act_default();
             // Assert
@@ -302,7 +324,7 @@ describe('Habitat tile', function () {
             // Arrange
             tile.rotation = 3;
             tile.terrain_types = [2, 3];
-            assert_default(tile);
+            arrange_default(tile);
             // Act
             act_default();
             sut.paint();
@@ -313,7 +335,7 @@ describe('Habitat tile', function () {
             // Arrange
             tile.rotation = 5;
             tile.terrain_types = [2, 3];
-            assert_default(tile);
+            arrange_default(tile);
             // Act
             act_default();
             sut.rotation = 0;

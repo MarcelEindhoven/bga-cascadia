@@ -24,13 +24,16 @@ define(['dojo/_base/declare'], (declare) => {
          * framework.add_css_class
          * framework.remove_css_class
          */
-        constructor(dependencies, tile) {
-            this.clone(dependencies);
-            this.create(tile);
+        /**
+         * Create and subscribe
+         */
+        constructor(dependencies, tile_specification) {
+            this.overrule(dependencies);
+            this.create_from(tile_specification);
         },
-        // tile_example: {terrain_types: [1], supported_wildlife: [2], unique_id: 'tile2', rotation: 5},
-        create(tile){
-            this.clone(tile);
+        // tile_specification_example: {terrain_types: [1], supported_wildlife: [2], unique_id: 'tile_specification2', rotation: 5},
+        create_from(tile_specification){
+            this.overrule(tile_specification);
 
             // Note that the primary field token has the same unique_id as the tile, which is used in the subscribe
             this.framework.createToken('field', this.unique_id, 'field' + this.terrain_types[0]);
@@ -43,11 +46,28 @@ define(['dojo/_base/declare'], (declare) => {
             
             this.framework.subscribe_paint(this);
         },
-        clone(properties){
+        overrule(properties){
             for (var property in properties) {
                 this[property] = properties[property];
             }
         },
+        subscribe_selected(object, method) {
+            this.framework.permanent_subscribe(this.unique_id, object, method);
+        },
+
+        /**
+         * Selectable
+         */
+        mark_as_selectable() {
+            this.framework.add_css_class(this.unique_id, 'selectable');
+        },
+        unmark_as_selectable() {
+            this.framework.remove_css_class(this.unique_id, 'selectable');
+        },
+
+        /**
+         * Opposite of create
+         */
         destroy(){
             this.framework.unsubscribe_paint(this);
 
@@ -59,14 +79,19 @@ define(['dojo/_base/declare'], (declare) => {
                 this.framework.destroyToken(this.getSupportedWildlifeID(wildlife_index));
             }
         },
-        subscribe_selected(object, method) {
-            this.framework.permanent_subscribe(this.unique_id, object, method);
-        },
+
+        /**
+         * Specify parameters used in paint
+         */
         move: function(element, x = 0, y = 0) {
             this.element = element;
             this.x = x;
             this.y = y;
         },
+
+        /**
+         * Put tile on the board (required first time and after any layout change)
+         */
         paint: function() {
             this.paint_terrain();
             this.paint_supported_wildlife();
@@ -101,6 +126,10 @@ define(['dojo/_base/declare'], (declare) => {
                 this.framework.add_css_class(this.getSecondTerrainTypeID(), this.class_rotation);
             }
         },
+
+        /**
+         * Utility functions
+         */
         getSecondTerrainTypeID: function () {
             return 'upper_half'+ this.unique_id;
         },
