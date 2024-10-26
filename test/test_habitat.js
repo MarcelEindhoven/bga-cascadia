@@ -91,7 +91,7 @@ describe('Habitat', function () {
             act_default(tile);
             // Assert
             sinon.assert.callCount(tile.move, 1);
-            sinon.assert.callCount(other_tile.move, 1);
+            sinon.assert.callCount(other_tile.move, 2);
         });
     });
     describe('Resize', function () {

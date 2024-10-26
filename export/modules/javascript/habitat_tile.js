@@ -24,6 +24,7 @@ define(['dojo/_base/declare'], (declare) => {
          * framework.add_css_class
          * framework.remove_css_class
          */
+
         /**
          * Create and subscribe
          */
@@ -56,11 +57,16 @@ define(['dojo/_base/declare'], (declare) => {
         },
 
         /**
-         * Selectable
+         * Use case select market tile to place in habitat
+         * This tile should be marked as selectable if it can be selected by the player
+         * This tile should be unmarked as selectable when it can no longer be selected by the player (when the use case stops)
          */
         mark_as_selectable() {
             this.framework.add_css_class(this.unique_id, 'selectable');
         },
+        /**
+         * Precondition: tile was previously marked as selectable
+         */
         unmark_as_selectable() {
             this.framework.remove_css_class(this.unique_id, 'selectable');
         },

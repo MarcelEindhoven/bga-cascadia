@@ -11,6 +11,10 @@ define(['dojo/_base/declare'], (declare) => {
          * 
          * Use case player selects a token
          * subscription.object[subscription.method](subscription.token); for each subscription that matches unique_id
+         * 
+         * Each token must have the attribute unique_id and the following methods
+         * - mark_as_selectable
+         * - unmark_as_selectable
          */
         constructor() {
             this.subscriptions = [];
@@ -28,11 +32,9 @@ define(['dojo/_base/declare'], (declare) => {
                 token.unmark_as_selectable();
         },
         is_token_in_subscriptions(token) {
-            for (index in this.subscriptions) {
-                subscription = this.subscriptions[index];
-                if (token.unique_id == subscription.token.unique_id)
+            for (index in this.subscriptions)
+                if (token.unique_id == this.subscriptions[index].token.unique_id)
                     return true;
-            }
             return false;
         },
         token_selected(event) {

@@ -31,46 +31,47 @@ define(['dojo/_base/declare'], (declare) => {
 
         populate(wildlife) {
             this.tiles[tile.unique_id] = wildlife;
-            this.relocate_tiles();
+            this.relocate(wildlife);
         },
         // tile_example = {unique_id:1, horizontal: 50, vertical: 50, move: function(this.id, x , y)}
         place(tile) {
             this.tiles[tile.unique_id] = tile;
-            this.resize(tile);
+            this.resize_if_tile_outside_boundary(tile);
         },
         remove(tile) {
             delete this.tiles[tile.unique_id];
         },
-        resize(tile) {
+        resize_if_tile_outside_boundary(tile) {
             const [x, y] = this.getAbsoluteCoordinates(tile.horizontal, tile.vertical);
             if ( (y < this.y_minimum) || (y > this.y_maximum) || (x < this.x_minimum) || (x > this.x_maximum)) {
-                this.adjust_boundaries(x, y);
+                this.adjust_boundary(x, y);
                 this.framework.resize(this.id, this.minimum_size + this.x_maximum - this.x_minimum, this.minimum_size + this.y_maximum - this.y_minimum);
                 this.relocate_tiles();
             }
         },
-        adjust_boundaries(x, y) {
-            if (x > this.x_maximum) {
-                this.x_maximum = x;
+        adjust_boundary(new_x, new_y) {
+            if (new_x > this.x_maximum) {
+                this.x_maximum = new_x;
             }
-            if (x < this.x_minimum) {
-                this.x_minimum = x;                    
+            if (new_x < this.x_minimum) {
+                this.x_minimum = new_x;                    
             }
-            if (y > this.y_maximum) {
-                this.y_maximum = y;
+            if (new_y > this.y_maximum) {
+                this.y_maximum = new_y;
             }
-            if (y < this.y_minimum) {
-                this.y_minimum = y;
+            if (new_y < this.y_minimum) {
+                this.y_minimum = new_y;
             }
         },
         relocate_tiles() {
+            for (index in this.tiles)
+                this.relocate(this.tiles[index]);
+        },
+        relocate(tile_or_wildlife) {
             const y_centre = (this.y_maximum + this.y_minimum)/2;
             const x_centre = (this.x_maximum + this.x_minimum)/2;
-            for (index in this.tiles) {
-                tile = this.tiles[index];
-                const [x, y] = this.getAbsoluteCoordinates(tile.horizontal, tile.vertical);
-                tile.move(this.id, x - x_centre, y - y_centre);
-            }
+            const [x, y] = this.getAbsoluteCoordinates(tile_or_wildlife.horizontal, tile_or_wildlife.vertical);
+            tile_or_wildlife.move(this.id, x - x_centre, y - y_centre);
         },
         getAbsoluteCoordinates(horizontal, vertical) {
             x = horizontal* this.horizontal_distance;
