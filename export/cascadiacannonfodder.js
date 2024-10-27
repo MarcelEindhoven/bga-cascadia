@@ -80,9 +80,8 @@ function (dojo, declare, framework, habitat_tile_class, wildlife_class, habitat_
             // TODO: Set up your game interface here, according to "gamedatas"
             // Setup game notifications to handle (see "setupNotifications" method below)
             this.setupNotifications();
-            //this.marketSetup(gamedatas.market);
-
-            //this.prototyping(gamedatas);
+    
+            this.prototyping(gamedatas);
     
             this.usecase_setup = new usecase_setup({framework: this.framework, market: this.market, habitat_tile_factory: this.habitat_tile_factory, wildlife_factory: this.wildlife_factory, habitat_factory: this.habitat_factory});
             this.usecase_setup.setup(gamedatas);
@@ -90,53 +89,11 @@ function (dojo, declare, framework, habitat_tile_class, wildlife_class, habitat_
             console.log (this.habitat);
             console.log (this.player_id);
 
-            this.place_tile = new usecase_place_tile({market: this.market, habitat: this.habitat[this.player_id], token_subscriptions: this.token_subscriptions, habitat_tile_factory: this.habitat_tile_factory});
-            this.place_tile.set_candidate_positions([{horizontal: 50, vertical: 53}]);
-            this.place_tile.subscribe_tile_placed(this, 'tile_placed');
-            this.market.subscribe_tile_selected(this.framework, 'control_may_be_returned_to_user');
-
             this.framework.control_may_be_returned_to_user();
 
             console.log( "Ending game setup" );
         },
         prototyping: function(gamedatas) {
-
-
-            this.place_tile = new usecase_place_tile();
-            this.place_tile.set_candidate_positions([{horizontal: 50, vertical: 53}]);
-            this.place_tile.set_tile_handler(this.habitat_tiles);
-            this.place_tile.set_token_subscriptions(this.token_subscriptions);
-            this.place_tile.set_habitat(this.habitat[this.player_id]);
-            this.place_tile.setFramework(this.framework);
-            this.place_tile.subscribe_tile_placed(this, 'tile_placed');
-            this.market.subscribe_tile_selected(this.place_tile, 'market_tile_selected');
-            this.market.subscribe_tile_selected(this.framework, 'control_may_be_returned_to_user');
-            },
-        marketSetup: function(market) {
-            this.marketSetupWildlife(market.wildlife);
-            this.marketSetupHabitat(market.habitat);
-            this.framework.subscribe_paint(this.market);
-        },
-        marketSetupWildlife: function(wildlife) {
-            for (var index in wildlife) {
-                w = wildlife[index];
-                this.framework.createToken('wildlife', 'wildlife' + w.id, 'wildlife' + w.type);
-                this.framework.move('wildlife' + w.id, 'wildlife_' + w.location_arg);
-            }
-        },
-        habitat_selected: function(tile) {
-            console.log('habitat_selected');
-            console.log(tile);
-        },
-        habitat_selected1: function(tile) {
-            console.log('habitat_selected1');
-            console.log(tile);
-        },
-        tile_placed: function(tile) {
-            console.log('tile_placed');
-            console.log(tile);
-            this.market.unsubscribe_tile_selected(this.framework, 'control_may_be_returned_to_user');
-            delete this.place_tile;
         },
 
         ///////////////////////////////////////////////////
@@ -151,9 +108,7 @@ function (dojo, declare, framework, habitat_tile_class, wildlife_class, habitat_
             
             switch( stateName )
             {
-            
             /* Example:
-            
             case 'myGameState':
             
                 // Show some HTML block at this game state
@@ -161,11 +116,24 @@ function (dojo, declare, framework, habitat_tile_class, wildlife_class, habitat_
                 
                 break;
            */
-           
-           
-            case 'dummmy':
+
+            case 'playerTurn':
+                if (this.isCurrentPlayerActive())
+                    this.place_tile();
                 break;
             }
+        },
+        place_tile() {
+            this.place_tile = new usecase_place_tile({market: this.market, habitat: this.habitat[this.player_id], token_subscriptions: this.token_subscriptions, habitat_tile_factory: this.habitat_tile_factory});
+            this.place_tile.set_candidate_positions([{horizontal: 50, vertical: 53}]);
+            this.place_tile.subscribe_tile_placed(this, 'tile_placed');
+            this.market.subscribe_tile_selected(this.framework, 'control_may_be_returned_to_user');
+        },
+        tile_placed: function(tile) {
+            console.log('tile_placed');
+            console.log(tile);
+            this.market.unsubscribe_tile_selected(this.framework, 'control_may_be_returned_to_user');
+            delete this.place_tile;
         },
 
         // onLeavingState: this method is called each time we are leaving a game state.
