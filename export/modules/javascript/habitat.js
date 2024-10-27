@@ -7,17 +7,17 @@ define(['dojo/_base/declare'], (declare) => {
         minimum_size : 50,
         vertical_distance : 80,
         horizontal_distance : 24,
-        constructor(dependencies, id) {
         /**
          * Dependencies
          * framework.resize
          * tile/wildlife.move
          */
+        constructor(dependencies, id) {
             this.clone(dependencies);
 
             this.id = '' + id;
 
-            this.tiles = [];
+            this.tiles_and_wildlife = [];
             this.x_minimum = 5000000;
             this.x_maximum = 0;
             this.y_minimum = 5000000;
@@ -29,27 +29,31 @@ define(['dojo/_base/declare'], (declare) => {
             }
         },
 
+        remove(tile_or_wildlife) {
+            delete this.tiles_and_wildlife[tile_or_wildlife.unique_id];
+        },
+
         populate(wildlife) {
-            this.tiles[tile.unique_id] = wildlife;
-            this.relocate(wildlife);
+            this.place(wildlife);
         },
         // tile_example = {unique_id:1, horizontal: 50, vertical: 50, move: function(this.id, x , y)}
         place(tile) {
-            this.tiles[tile.unique_id] = tile;
             this.resize_if_tile_outside_boundary(tile);
-        },
-        remove(tile) {
-            delete this.tiles[tile.unique_id];
+            this.tiles_and_wildlife[tile.unique_id] = tile;
+            this.relocate(tile);
         },
         resize_if_tile_outside_boundary(tile) {
             const [x, y] = this.getAbsoluteCoordinates(tile.horizontal, tile.vertical);
-            if ( (y < this.y_minimum) || (y > this.y_maximum) || (x < this.x_minimum) || (x > this.x_maximum)) {
-                this.adjust_boundary(x, y);
-                this.framework.resize(this.id, this.minimum_size + this.x_maximum - this.x_minimum, this.minimum_size + this.y_maximum - this.y_minimum);
-                this.relocate_tiles();
-            } else {
-                this.relocate(tile);
-            }
+            if ( this.is_resize_needed(x, y) )
+                this.resize(x, y);
+        },
+        resize(new_x, new_y) {
+            this.adjust_boundary(new_x, new_y);
+            this.framework.resize(this.id, this.minimum_size + this.x_maximum - this.x_minimum, this.minimum_size + this.y_maximum - this.y_minimum);
+            this.relocate_tiles();
+        },
+        is_resize_needed(new_x, new_y) {
+            return (new_y < this.y_minimum) || (new_y > this.y_maximum) || (new_x < this.x_minimum) || (new_x > this.x_maximum);
         },
         adjust_boundary(new_x, new_y) {
             if (new_x > this.x_maximum) {
@@ -66,8 +70,8 @@ define(['dojo/_base/declare'], (declare) => {
             }
         },
         relocate_tiles() {
-            for (index in this.tiles)
-                this.relocate(this.tiles[index]);
+            for (index in this.tiles_and_wildlife)
+                this.relocate(this.tiles_and_wildlife[index]);
         },
         relocate(tile_or_wildlife) {
             const y_centre = (this.y_maximum + this.y_minimum)/2;
