@@ -28,6 +28,11 @@ class DataSourcesFactory {
         return $this;
     }
 
+    public function setActivePlayerId($active_player_id): DataSourcesFactory {
+        $this->active_player_id = $active_player_id;
+        return $this;
+    }
+
     public function getSources(): array {
         $sources['scoring_card'] = CurrentScoringCards::create($this->decks['scoring_card']);
 

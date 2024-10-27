@@ -124,16 +124,16 @@ function (dojo, declare, framework, habitat_tile_class, wildlife_class, habitat_
             }
         },
         place_tile() {
-            this.place_tile = new usecase_place_tile({market: this.market, habitat: this.habitat[this.player_id], token_subscriptions: this.token_subscriptions, habitat_tile_factory: this.habitat_tile_factory});
-            this.place_tile.set_candidate_positions([{horizontal: 50, vertical: 53}]);
-            this.place_tile.subscribe_tile_placed(this, 'tile_placed');
+            this.usecase_place_tile = new usecase_place_tile({market: this.market, habitat: this.habitat[this.player_id], token_subscriptions: this.token_subscriptions, habitat_tile_factory: this.habitat_tile_factory});
+            this.usecase_place_tile.set_candidate_positions([{horizontal: 50, vertical: 53}]);
+            this.usecase_place_tile.subscribe_tile_placed(this, 'tile_placed');
             this.market.subscribe_tile_selected(this.framework, 'control_may_be_returned_to_user');
         },
         tile_placed: function(tile) {
             console.log('tile_placed');
             console.log(tile);
             this.market.unsubscribe_tile_selected(this.framework, 'control_may_be_returned_to_user');
-            delete this.place_tile;
+            delete this.usecase_place_tile;
         },
 
         // onLeavingState: this method is called each time we are leaving a game state.
