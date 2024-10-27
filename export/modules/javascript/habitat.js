@@ -13,7 +13,7 @@ define(['dojo/_base/declare'], (declare) => {
          * framework.resize
          * tile/wildlife.move
          */
-        this.clone(dependencies);
+            this.clone(dependencies);
 
             this.id = '' + id;
 
@@ -47,6 +47,8 @@ define(['dojo/_base/declare'], (declare) => {
                 this.adjust_boundary(x, y);
                 this.framework.resize(this.id, this.minimum_size + this.x_maximum - this.x_minimum, this.minimum_size + this.y_maximum - this.y_minimum);
                 this.relocate_tiles();
+            } else {
+                this.relocate(tile);
             }
         },
         adjust_boundary(new_x, new_y) {

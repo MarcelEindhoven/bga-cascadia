@@ -44,7 +44,8 @@ function (dojo, declare, framework, habitat_tile_class, wildlife_class, habitat_
             this.token_subscriptions = new token_subscriptions();
 
             this.wildlife_factory = {class:wildlife_class, dependencies: {framework: this.framework}, create: function(tile_specification) {return new this.class(this.dependencies, tile_specification);}};
-            this.habitat_tile_factory = {class:habitat_tile_class, dependencies: {framework: this.framework}, create: function(tile_specification) {return new this.class(this.dependencies, tile_specification);}};
+            this.habitat_tile_factory = {class:habitat_tile_class, dependencies: {framework: this.framework}, token_subscriptions: this.token_subscriptions, 
+                create: function(tile_specification) {tile = new this.class(this.dependencies, tile_specification); tile.subscribe_selected(this.token_subscriptions, 'token_selected'); return tile;}};
             this.habitat_factory = {class:habitat_class, dependencies: {framework: this.framework}, create: function(player_id) {return new this.class(this.dependencies, player_id);}};
 
             this.market = new market();
@@ -86,10 +87,13 @@ function (dojo, declare, framework, habitat_tile_class, wildlife_class, habitat_
             this.usecase_setup = new usecase_setup({framework: this.framework, market: this.market, habitat_tile_factory: this.habitat_tile_factory, wildlife_factory: this.wildlife_factory, habitat_factory: this.habitat_factory});
             this.usecase_setup.setup(gamedatas);
             this.habitat = this.usecase_setup.get_habitats();
+            console.log (this.habitat);
+            console.log (this.player_id);
 
             this.place_tile = new usecase_place_tile({market: this.market, habitat: this.habitat[this.player_id], token_subscriptions: this.token_subscriptions, habitat_tile_factory: this.habitat_tile_factory});
             this.place_tile.set_candidate_positions([{horizontal: 50, vertical: 53}]);
             this.place_tile.subscribe_tile_placed(this, 'tile_placed');
+            this.market.subscribe_tile_selected(this.framework, 'control_may_be_returned_to_user');
 
             this.framework.control_may_be_returned_to_user();
 
@@ -131,6 +135,8 @@ function (dojo, declare, framework, habitat_tile_class, wildlife_class, habitat_
         tile_placed: function(tile) {
             console.log('tile_placed');
             console.log(tile);
+            this.market.unsubscribe_tile_selected(this.framework, 'control_may_be_returned_to_user');
+            delete this.place_tile;
         },
 
         ///////////////////////////////////////////////////

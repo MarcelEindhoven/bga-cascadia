@@ -15,7 +15,7 @@ define(['dojo/_base/declare'], (declare) => {
             this.toolkit.destroy(id);
         },
         move(id_to_move, destination_id, x = 0, y = 0){
-            console.log ('move '+ id_to_move + ', '+ destination_id + ', '+ x + ', ' + y);
+            //console.log ('move '+ id_to_move + ', '+ destination_id + ', '+ x + ', ' + y);
             if (x != 0 || y != 0) {
                 this.dom.placeOnObjectPos(id_to_move, destination_id, x, y);
             } else {
@@ -48,6 +48,7 @@ define(['dojo/_base/declare'], (declare) => {
         },
         event_has_been_handled(event) {event.preventDefault(); event.stopPropagation();},
         control_may_be_returned_to_user() {
+            console.log ('control_may_be_returned_to_user');
             for (index in this.ui_elements) {
                 ui_element = this.ui_elements[index];
                 ui_element.paint();

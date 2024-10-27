@@ -65,6 +65,14 @@ describe('Habitat', function () {
             assert.equal(other_tile.move.getCall(0).args[1], - horizontal_distance / 2);
             assert.equal(other_tile.move.getCall(0).args[2], - vertical_distance / 4);
         });
+        it('Always moves tile, also when there is no resize', function () {
+            // Arrange
+            // Act
+            act_default(tile);
+            act_default(tile);
+            // Assert
+            sinon.assert.callCount(tile.move, 2);
+        });
     });
     describe('Remove tile', function () {
         function arrange_default(x) {

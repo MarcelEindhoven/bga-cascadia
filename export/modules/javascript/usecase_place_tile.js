@@ -74,7 +74,7 @@ define(['dojo/_base/declare'], (declare) => {
          * Use case Candidate tile selected, this ends the place tile use case
          */
         candidate_tile_selected(tile) {
-            market.unsubscribe_tile_selected(this, 'market_tile_selected');
+            this.market.unsubscribe_tile_selected(this, 'market_tile_selected');
 
             this.destroy_candidate_tiles();
 

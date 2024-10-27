@@ -27,6 +27,7 @@ define(['dojo/_base/declare'], (declare) => {
             this.subscriptions.push(subscription);
         },
         unsubscribe(token, object, method) {
+            console.log(token);
             this.subscriptions = this.subscriptions.filter(e => e.method != method || e.object !== object || e.token !== token);
             if (! this.is_token_in_subscriptions(token))
                 token.unmark_as_selectable();
