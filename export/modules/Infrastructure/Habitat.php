@@ -7,6 +7,9 @@ namespace NieuwenhovenGames\Cascadia;
  */
 include_once(__DIR__.'/../BGA/FrameworkInterfaces/Deck.php');
 
+/**
+ * Convert setup tile specifications into database
+ */
 class HabitatSetup {
     protected array $definitions = [];
 
@@ -53,6 +56,9 @@ class HabitatSetup {
     }
 }
 
+/**
+ * Convert habitat database into one habitat per player
+ */
 class CurrentHabitatTerritory {
     protected array $players;
 
@@ -80,6 +86,9 @@ class CurrentHabitatTerritory {
     }
 }
 
+/**
+ * Convert database location argument into rotation and habitat position
+ */
 class CurrentTerritory {
     const X = 'horizontal';
     const Y = 'vertical';
@@ -103,6 +112,9 @@ class CurrentTerritory {
     }
 }
 
+/**
+ * Convert habitat database entries into habitat tiles without rotation or position
+ */
 class CurrentHabitatMarket {
     static public function create($deck): CurrentHabitatMarket {
         $object = new CurrentHabitatMarket();
@@ -119,6 +131,9 @@ class CurrentHabitatMarket {
     }
 }
 
+/**
+ * Convert database entries with type and type argument into habitat tiles
+ */
 class CurrentHabitat {
     static public function unpackTypes($cards): array {
         $unpacked_cards = [];
