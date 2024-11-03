@@ -34,11 +34,11 @@ class AdjacentPositions {
     public function set_tiles($tiles) {
         foreach ($tiles as $tile) {
             $h = $tile['horizontal'];
-            $v = $tile['horizontal'];
+            $v = $tile['vertical'];
             $special = ($h %2 == 0) ? 1 : -1;
 
-            $this->add_position(['horizontal' => $h, 'vertical' => $v - 1]);
-            $this->add_position(['horizontal' => $h, 'vertical' => $v + 1]);
+            $this->add_position(['horizontal' => $h + 2, 'vertical' => $v]);
+            $this->add_position(['horizontal' => $h - 2, 'vertical' => $v]);
             $this->add_position(['horizontal' => $h + 1, 'vertical' => $v]);
             $this->add_position(['horizontal' => $h + 1, 'vertical' => $v + $special]);
             $this->add_position(['horizontal' => $h - 1, 'vertical' => $v]);

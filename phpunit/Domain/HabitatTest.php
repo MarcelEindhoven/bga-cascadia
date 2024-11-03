@@ -28,31 +28,24 @@ class HabitatTest extends TestCase{
         
     }
     public function adjacentPositionsProvider(): array {
-        $tile5050 = ['horizontal' => 50, 'vertical' => 50];
-        $tile5051 = ['horizontal' => 50, 'vertical' => 51];
-        $tile5049 = ['horizontal' => 50, 'vertical' => 49];
-        $tile5150 = ['horizontal' => 51, 'vertical' => 50];
-        $tile5151 = ['horizontal' => 51, 'vertical' => 51];
-        $tile4950 = ['horizontal' => 49, 'vertical' => 50];
-        $tile4951 = ['horizontal' => 49, 'vertical' => 51];
-
         $tile33 = ['horizontal' => 3, 'vertical' => 3];
-        $tile32 = ['horizontal' => 3, 'vertical' => 2];
+        $tile54 = ['horizontal' => 5, 'vertical' => 4];
         $tile34 = ['horizontal' => 3, 'vertical' => 4];
         $tile22 = ['horizontal' => 2, 'vertical' => 2];
         $tile23 = ['horizontal' => 2, 'vertical' => 3];
-        $tile42 = ['horizontal' => 4, 'vertical' => 2];
+        $tile24 = ['horizontal' => 2, 'vertical' => 4];
         $tile43 = ['horizontal' => 4, 'vertical' => 3];
+        $tile14 = ['horizontal' => 1, 'vertical' => 4];
 
         $tile13 = ['horizontal' => 1, 'vertical' => 3];
-        $tile12 = ['horizontal' => 1, 'vertical' => 2];
-        $tile21 = ['horizontal' => 2, 'vertical' => 1];
+        $tile44 = ['horizontal' => 4, 'vertical' => 4];
+        $tile03 = ['horizontal' => 0, 'vertical' => 3];
 
         return [
             [[], []],
-            [[$tile5050], [$tile5051, $tile5049, $tile5151, $tile5150, $tile4951, $tile4950]],
-            [[$tile33], [$tile32, $tile34, $tile22, $tile23, $tile42, $tile43]],
-            [[$tile33, $tile22], [$tile32, $tile34, $tile23, $tile42, $tile43, $tile13, $tile12, $tile21]],
+            [[$tile23], [$tile03, $tile43, $tile13, $tile33, $tile14, $tile34]],
+            [[$tile34], [$tile14, $tile54, $tile23, $tile24, $tile43, $tile44]],
+            [[$tile23, $tile34], [$tile03, $tile43, $tile13, $tile33, $tile14, $tile54, $tile24, $tile44]],
         ];
     }
 }
