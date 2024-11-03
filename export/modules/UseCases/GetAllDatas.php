@@ -8,6 +8,9 @@ namespace NieuwenhovenGames\Cascadia;
 
 class GetAllDatas {
     protected array $sources = [];
+    /**
+     * Usage: all_data = GetAllDatas(sources from data sources factory)->get();
+     */
     static public function create($sources): GetAllDatas {
         $object = new GetAllDatas();
         $object->setSources($sources);

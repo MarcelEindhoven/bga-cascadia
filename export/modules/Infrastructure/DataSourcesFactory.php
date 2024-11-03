@@ -38,8 +38,9 @@ class DataSourcesFactory {
 
         $sources['wildlife'] = CurrentWildlifeTerritory::create($this->decks['wildlife']);
         $sources['wildlife']->setPlayers($this->players);
-        $sources['habitat'] = CurrentHabitatTerritory::create($this->decks['habitat']);
-        $sources['habitat']->setPlayers($this->players);
+        $sources['habitats'] = CurrentHabitatTerritory::create($this->decks['habitat']);
+        $sources['habitats']->setPlayers($this->players);
+        // $sources['candidate_positions'] = 
 
         $sources['market'] = CurrentMarket::create($this->decks);
 

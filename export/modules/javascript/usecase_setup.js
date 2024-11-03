@@ -24,7 +24,7 @@ define(['dojo/_base/declare'], (declare) => {
             }
         },
         setup(gamedatas) {
-            this.setup_habitats(gamedatas.habitat);
+            this.setup_habitats(gamedatas.habitats);
             this.populate_habitats(gamedatas.wildlife);
             this.setup_market_tiles(gamedatas.market.habitat);
             this.setup_market_wildlife(gamedatas.market.wildlife);
