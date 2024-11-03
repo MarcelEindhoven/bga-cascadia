@@ -25,13 +25,18 @@ class GetAllDatas {
         return $this;
     }
 
-    public function setActivePlayerId($active_player_id): GetAllDatas {
+    public function set_active_player_id($active_player_id): GetAllDatas {
         $this->active_player_id = $active_player_id;
         return $this;
     }
 
+    public function set_current_player_id($current_player_id): GetAllDatas {
+        $this->current_player_id = $current_player_id;
+        return $this;
+    }
+
     public function get(): array {
-        $this->results['adjacent_positions'] = Habitat::create($this->results['habitats'][$this->active_player_id])->get_adjacent_positions();
+        $this->results['adjacent_positions'] = Habitat::create($this->results['habitats'][$this->current_player_id])->get_adjacent_positions();
 
         return $this->results;
     }

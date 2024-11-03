@@ -134,7 +134,7 @@ class CascadiaCannonFodder extends Table
         $sql = "SELECT player_id id, player_score score, player_coins coins FROM player ";
         $players = $this->getCollectionFromDb( $sql );
 
-        $result = \NieuwenhovenGames\Cascadia\GetAllDatas::create($this->decks, $players)->setActivePlayerId($this->getActivePlayerId())->get();
+        $result = \NieuwenhovenGames\Cascadia\GetAllDatas::create($this->decks, $players)->set_active_player_id($this->getActivePlayerId())->set_current_player_id($this->getCurrentPlayerId())->get();
         $this->gamestate->isPlayerActive($current_player_id);
     
         $result['players'] = $players;
