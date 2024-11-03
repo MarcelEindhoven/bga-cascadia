@@ -134,6 +134,16 @@ function (dojo, declare, framework, habitat_tile_class, wildlife_class, habitat_
             console.log(tile);
             this.market.unsubscribe_tile_selected(this.framework, 'control_may_be_returned_to_user');
             delete this.usecase_place_tile;
+            this.call('place_tile', {placed_tile_horizontal: tile.horizontal, placed_tile_vertical: tile.vertical, placed_tile_unique_id: tile.unique_id, });
+        },
+        call: function(action, args, handler) {
+            console.log(action);
+            if (!args) {
+                args = {};
+            }
+            args.lock = true;
+
+            this.ajaxcall("/" + this.game_name + "/" + this.game_name + "/" + action + ".html", args, this, (result) => { }, handler);
         },
 
         // onLeavingState: this method is called each time we are leaving a game state.

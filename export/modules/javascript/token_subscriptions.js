@@ -40,8 +40,10 @@ define(['dojo/_base/declare'], (declare) => {
         },
         token_selected(event) {
             id_selected_token = event.currentTarget.id;
-            for (index in this.subscriptions) {
-                subscription = this.subscriptions[index];
+            // Copy array to allow unsubscribe from callback
+            subscriptions = Array.from(this.subscriptions);
+            for (index in subscriptions) {
+                subscription = subscriptions[index];
                 if (id_selected_token == subscription.token.unique_id) {
                     subscription.object[subscription.method](subscription.token);
                 }

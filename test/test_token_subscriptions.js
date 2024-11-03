@@ -9,6 +9,7 @@ describe('Token subscriptions', function () {
 
         callback_object = {
             token_selected: sinon.spy(),
+            unsubscribe: function (event) {sut.unsubscribe(tile, callback_object, 'unsubscribe');},
         };
         callback_object2 = {
             token_selected: sinon.spy(),
@@ -160,6 +161,14 @@ describe('Token subscriptions', function () {
             sut.unsubscribe(tile, callback_object, 'token_selected');
             // Assert
             sinon.assert.notCalled(tile.unmark_as_selectable);
+        });
+        it('handles unsubscribe from a callback in the middle of the token_selected for loop without undefined reading token error', function () {
+            // Arrange
+            sut.subscribe(tile, callback_object, 'unsubscribe');
+            sut.subscribe(tile, callback_object, 'token_selected');
+            // Act
+            sut.token_selected(event);
+            // Assert
         });
     });
 });

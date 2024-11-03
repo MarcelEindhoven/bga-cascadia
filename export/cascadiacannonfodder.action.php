@@ -41,6 +41,21 @@
   	
   	// TODO: defines your action entry points there
 
+    public function place_tile() {
+      $this->setAjaxMode();     
+      self::trace(__FUNCTION__);
+
+      // Retrieve arguments
+      // Note: these arguments correspond to what has been sent through the javascript "ajaxcall" method
+      $horizontal = $this->getArg( "placed_tile_horizontal", AT_posint, true );
+      $vertical = $this->getArg( "placed_tile_vertical", AT_posint, true );
+      $placed_tile_unique_id = $this->getArg( "placed_tile_unique_id", AT_alphanum, true );
+
+      // Then, call the appropriate method in your game logic, like "playCard" or "myAction"
+      // $this->game->myAction( $arg1, $arg2 );
+
+      $this->ajaxResponse( );
+    }
 
     /*
     
