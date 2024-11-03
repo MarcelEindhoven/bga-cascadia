@@ -15,19 +15,19 @@ class HabitatTest extends TestCase{
     protected Habitat $sut;
 
     /**
-     * @dataProvider candidatePositionsProvider
+     * @dataProvider adjacentPositionsProvider
      */
-    public function testCandidatePositions($retrieved_cards, $expected_cards) {
+    public function testAdjacentPositions($retrieved_cards, $expected_cards) {
         // Arrange
         $this->sut = Habitat::create($retrieved_cards);
 
         // Act
-        $cards = $this->sut->getCandidatePositionsSource()->get();
+        $cards = $this->sut->getAdjacentPositionsSource()->get();
         // Assert
         $this->assertEqualsCanonicalizing($expected_cards, $cards);
         
     }
-    public function candidatePositionsProvider(): array {
+    public function adjacentPositionsProvider(): array {
         $tile5050 = ['horizontal' => 50, 'vertical' => 50];
         $tile5051 = ['horizontal' => 50, 'vertical' => 51];
         $tile5049 = ['horizontal' => 50, 'vertical' => 49];

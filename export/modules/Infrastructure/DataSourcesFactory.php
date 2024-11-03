@@ -28,23 +28,15 @@ class DataSourcesFactory {
         return $this;
     }
 
-    public function setActivePlayerId($active_player_id): DataSourcesFactory {
-        $this->active_player_id = $active_player_id;
-        return $this;
-    }
+    public function get_data(): array {
+        $data['scoring_card'] = CurrentScoringCards::create($this->decks['scoring_card'])->get();
 
-    public function getSources(): array {
-        $sources['scoring_card'] = CurrentScoringCards::create($this->decks['scoring_card']);
+        $data['wildlife'] = CurrentWildlifeTerritory::create($this->decks['wildlife'])->setPlayers($this->players)->get();
+        $data['habitats'] = CurrentHabitatTerritory::create($this->decks['habitat'])->setPlayers($this->players)->get();
 
-        $sources['wildlife'] = CurrentWildlifeTerritory::create($this->decks['wildlife']);
-        $sources['wildlife']->setPlayers($this->players);
-        $sources['habitats'] = CurrentHabitatTerritory::create($this->decks['habitat']);
-        $sources['habitats']->setPlayers($this->players);
-        // $sources['candidate_positions'] = 
+        $data['market'] = CurrentMarket::create($this->decks)->get();
 
-        $sources['market'] = CurrentMarket::create($this->decks);
-
-        return $sources;
+        return $data;
     }
 }
 ?>

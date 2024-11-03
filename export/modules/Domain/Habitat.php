@@ -9,22 +9,25 @@ namespace NieuwenhovenGames\Cascadia;
 class Habitat {
     protected array $tiles = [];
     /**
-     * Usage: candidate_positions = Habitat($tiles)->getCandidatePositionsSource()->get();
+     * Usage: candidate_positions = Habitat($tiles)->getAdjacentPositionsSource()->get();
      */
     static public function create($tiles): Habitat {
         $object = new Habitat();
         $object->tiles = $tiles;
         return $object;
     }
-    public function getCandidatePositionsSource() {
-        return CandidatePositions::create($this->tiles);
+    public function getAdjacentPositionsSource() {
+        return AdjacentPositions::create($this->tiles);
+    }
+    public function get_adjacent_positions() {
+        return AdjacentPositions::create($this->tiles)->get();
     }
 }
 
-class CandidatePositions {
+class AdjacentPositions {
     protected array $positions = [];
-    static public function create($tiles): CandidatePositions {
-        $object = new CandidatePositions();
+    static public function create($tiles): AdjacentPositions {
+        $object = new AdjacentPositions();
         $object->set_tiles($tiles);
         return $object;
     }

@@ -6,28 +6,34 @@ namespace NieuwenhovenGames\Cascadia;
  *
  */
 
+include_once(__DIR__.'/../Domain/Habitat.php');
+include_once(__DIR__.'/../Infrastructure/DataSourcesFactory.php');
+
 class GetAllDatas {
-    protected array $sources = [];
+    protected array $results = [];
     /**
      * Usage: all_data = GetAllDatas(sources from data sources factory)->get();
      */
-    static public function create($sources): GetAllDatas {
+    static public function create($decks,  $players): GetAllDatas {
         $object = new GetAllDatas();
-        $object->setSources($sources);
+        $object->set_data(DataSourcesFactory::create($decks)->setPlayers($players)->get_data());
         return $object;
     }
 
-    public function setSources($sources): GetAllDatas {
-        $this->sources = $sources;
+    public function set_data($results): GetAllDatas {
+        $this->results = $results;
+        return $this;
+    }
+
+    public function setActivePlayerId($active_player_id): GetAllDatas {
+        $this->active_player_id = $active_player_id;
         return $this;
     }
 
     public function get(): array {
-        $results = [];
-        foreach ($this->sources as $name => $source) {
-            $results[$name] = $source->get();
-        }
-        return $results;
+        $this->results['adjacent_positions'] = Habitat::create($this->results['habitats'][$this->active_player_id])->get_adjacent_positions();
+
+        return $this->results;
     }
 }
 ?>
