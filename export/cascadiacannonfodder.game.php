@@ -206,6 +206,10 @@ class CascadiaCannonFodder extends Table
     }
     
     */
+    public function place_tile($tile) {
+        // self::trace(__FUNCTION__);
+        self::trace(__FUNCTION__ . '({$tile})');
+    }
 
     
 //////////////////////////////////////////////////////////////////////////////

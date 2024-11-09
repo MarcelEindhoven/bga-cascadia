@@ -47,12 +47,14 @@
 
       // Retrieve arguments
       // Note: these arguments correspond to what has been sent through the javascript "ajaxcall" method
-      $horizontal = $this->getArg( "placed_tile_horizontal", AT_posint, true );
-      $vertical = $this->getArg( "placed_tile_vertical", AT_posint, true );
-      $placed_tile_unique_id = $this->getArg( "placed_tile_unique_id", AT_alphanum, true );
+      $placed_tile = [
+        'horizontal' => $this->getArg( "placed_tile_horizontal", AT_posint, true ),
+        'vertical' => $this->getArg( "placed_tile_vertical", AT_posint, true ),
+        'unique_id' => $this->getArg( "placed_tile_unique_id", AT_alphanum, true ), 
+      ];
 
       // Then, call the appropriate method in your game logic, like "playCard" or "myAction"
-      // $this->game->myAction( $arg1, $arg2 );
+      $this->game->place_tile($placed_tile);
 
       $this->ajaxResponse( );
     }
