@@ -25,6 +25,7 @@ include_once(__DIR__.'/modules/NewGame/NewGame.php');
 include_once(__DIR__.'/modules/NewGame/PlayerSetup.php');
 
 include_once(__DIR__.'/modules/UseCases/GetAllDatas.php');
+include_once(__DIR__.'/modules/UseCases/PlayerPlacesTile.php');
 
 class CascadiaCannonFodder extends Table
 {
@@ -209,6 +210,8 @@ class CascadiaCannonFodder extends Table
     public function place_tile($tile) {
         // self::trace(__FUNCTION__);
         self::trace(__FUNCTION__ . '({$tile})');
+        $p = new \NieuwenhovenGames\Cascadia\PlayerPlacesTile($this->gamestate);
+        $p->nextState();
     }
 
     

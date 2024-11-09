@@ -117,7 +117,7 @@ function (dojo, declare, framework, habitat_tile_class, wildlife_class, habitat_
                 break;
            */
 
-            case 'playerTurn':
+            case 'playerPlacesTile':
                 if (this.isCurrentPlayerActive())
                     this.place_tile();
                 break;
