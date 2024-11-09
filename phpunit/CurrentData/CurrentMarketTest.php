@@ -17,7 +17,6 @@ include_once(__DIR__.'/../../export/modules/BGA/FrameworkInterfaces/Deck.php');
 
 class CurrentMarketTest extends TestCase{
     protected CurrentMarket $sut;
-    protected string $deck_name = 'tile';
 
     /**
      * @dataProvider marketHabitatProvider
@@ -27,7 +26,7 @@ class CurrentMarketTest extends TestCase{
         $this->sut = new CurrentMarket();
         $this->mock_cards = $this->createMock(\NieuwenhovenGames\BGA\FrameworkInterfaces\Deck::class);
         $this->mock_cards_wildlife = $this->createMock(\NieuwenhovenGames\BGA\FrameworkInterfaces\Deck::class);
-        $this->sut->setDecks([$this->deck_name => $this->mock_cards, 'wildlife' => $this->mock_cards_wildlife]);
+        $this->sut->setDecks(['tile' => $this->mock_cards, 'wildlife' => $this->mock_cards_wildlife]);
 
         $this->mock_cards->expects($this->exactly(1))->method('getCardsInLocation')->with('market')->willReturn($retrieved_cards);
 
@@ -42,12 +41,12 @@ class CurrentMarketTest extends TestCase{
         list($card2, $expected2) = $this->createCardAndExpectedHabitat([1], [1], 3);
         list($card3, $expected3) = $this->createCardAndExpectedHabitat([1, 4, 5], [1, 5], 2);
         return [
-            [[], [$this->deck_name => [], 'wildlife' => []]],
-            [[$card1], [$this->deck_name => [$expected1], 'wildlife' => []]],
-            [[$card2], [$this->deck_name => [$expected2], 'wildlife' => []]],
-            [[$card1, $card3], [$this->deck_name => [$expected1, $expected3], 'wildlife' => []]],
+            [[], ['habitat' => [], 'wildlife' => []]],
+            [[$card1], ['habitat' => [$expected1], 'wildlife' => []]],
+            [[$card2], ['habitat' => [$expected2], 'wildlife' => []]],
+            [[$card1, $card3], ['habitat' => [$expected1, $expected3], 'wildlife' => []]],
             // Sort according to location argument
-            [[$card3, $card2, $card1], [$this->deck_name => [$expected1, $expected3, $expected2], 'wildlife' => []]],
+            [[$card3, $card2, $card1], ['habitat' => [$expected1, $expected3, $expected2], 'wildlife' => []]],
         ];
     }
 
@@ -68,7 +67,7 @@ class CurrentMarketTest extends TestCase{
         $this->sut = new CurrentMarket();
         $this->mock_cards = $this->createMock(\NieuwenhovenGames\BGA\FrameworkInterfaces\Deck::class);
         $this->mock_cards_wildlife = $this->createMock(\NieuwenhovenGames\BGA\FrameworkInterfaces\Deck::class);
-        $this->sut->setDecks([$this->deck_name => $this->mock_cards, 'wildlife' => $this->mock_cards_wildlife]);
+        $this->sut->setDecks(['tile' => $this->mock_cards, 'wildlife' => $this->mock_cards_wildlife]);
 
         $this->mock_cards_wildlife->expects($this->exactly(1))->method('getCardsInLocation')->with('market')->willReturn($retrieved_cards);
 
@@ -82,9 +81,9 @@ class CurrentMarketTest extends TestCase{
         list($card1, $expected1) = $this->createCardAndExpectedWildlife(1, 0);
         list($card2, $expected2) = $this->createCardAndExpectedWildlife(4, 3);
         return [
-            [[], [$this->deck_name => [], 'wildlife' => []]],
-            [[$card1], [$this->deck_name => [], 'wildlife' => [$expected1]]],
-            [[$card2], [$this->deck_name => [], 'wildlife' => [$expected2]]],
+            [[], ['habitat' => [], 'wildlife' => []]],
+            [[$card1], ['habitat' => [], 'wildlife' => [$expected1]]],
+            [[$card2], ['habitat' => [], 'wildlife' => [$expected2]]],
         ];
     }
 
