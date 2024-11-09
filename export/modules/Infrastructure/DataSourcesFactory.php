@@ -32,7 +32,7 @@ class DataSourcesFactory {
         $data['scoring_card'] = CurrentScoringCards::create($this->decks['scoring_card'])->get();
 
         $data['wildlife'] = CurrentWildlifeTerritory::create($this->decks['wildlife'])->setPlayers($this->players)->get();
-        $data['habitats'] = CurrentHabitatTerritory::create($this->decks['habitat'])->setPlayers($this->players)->get();
+        $data['habitats'] = CurrentHabitatTerritory::create($this->decks['tile'])->setPlayers($this->players)->get();
 
         $data['market'] = CurrentMarket::create($this->decks)->get();
 

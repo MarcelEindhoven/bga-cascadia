@@ -17,7 +17,7 @@ include_once(__DIR__.'/../../export/modules/BGA/FrameworkInterfaces/Deck.php');
 
 class CurrentMarketTest extends TestCase{
     protected CurrentMarket $sut;
-    protected string $deck_name = 'habitat';
+    protected string $deck_name = 'tile';
 
     /**
      * @dataProvider marketHabitatProvider

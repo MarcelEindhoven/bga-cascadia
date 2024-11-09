@@ -50,8 +50,8 @@ class CascadiaCannonFodder extends Table
 
         $this->decks = [];
 
-        $this->decks['habitat'] = self::getNew('module.common.deck');
-        $this->decks['habitat']->init('habitat');
+        $this->decks['tile'] = self::getNew('module.common.deck');
+        $this->decks['tile']->init('tile');
 
         $this->decks['scoring_card'] = self::getNew('module.common.deck');
         $this->decks['scoring_card']->init('scoring_card');

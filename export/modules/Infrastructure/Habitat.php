@@ -57,7 +57,7 @@ class HabitatSetup {
 }
 
 /**
- * Convert habitat database into one habitat per player
+ * Convert tile database into one habitat per player
  */
 class CurrentHabitatTerritory {
     protected array $players;

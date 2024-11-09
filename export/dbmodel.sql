@@ -35,22 +35,22 @@
 
 ALTER TABLE `player` ADD `player_coins` INT UNSIGNED NOT NULL DEFAULT '0';
 
--- Each tile is in the game is stored in the database.
+-- Each tile in the game is stored in the database.
 -- Tiles that are removed from the game at game creation are not in the database.
 -- The starter habitat tile is modelled as 3 tiles.
 -- Tiles can be in the bag, in the market or on a player board.
 -- The content of the tiles is fixed and not part of the database.
--- The card type specifies the terrains that are supported.
+-- The card type specifies the terrains that the tile contains.
 -- card_type % 6 specifies the first terrain types that this tile contains.
 -- card_type/6 specifies the second terrain type that this tile contains.
 -- 0 = no terrain, 1 = rivers, 2 = wetlands, 3 = forests, 4 = prairies, 5 = mountains
--- The card argument specifies the wildlife that is supported.
--- card_arg % 6 specifies the first wildlife that is supported, see wildlife table.
--- card_arg/6%6 specifies the second wildlife that is supported.
--- card_arg/6*6 specifies the third wildlife that is supported.
+-- The card type argument specifies the wildlife that is supported.
+-- card_type_arg % 6 specifies the first wildlife that is supported, see wildlife table.
+-- card_type_arg/6%6 specifies the second wildlife that is supported.
+-- card_type_arg/6*6 specifies the third wildlife that is supported.
 -- card_location = "", "market" or player ID
 -- card location argument = market index or horizontal location + (vertical location*100) + (rotation*10,000)
-CREATE TABLE IF NOT EXISTS `habitat` (
+CREATE TABLE IF NOT EXISTS `tile` (
   `card_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `card_type` varchar(16) NOT NULL,
   `card_type_arg` int(11) NOT NULL,

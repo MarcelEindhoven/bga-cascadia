@@ -42,7 +42,7 @@ class CurrentMarket {
     }
 
     public function setDecks($decks): CurrentMarket {
-        $this->converters['habitat'] = CurrentHabitatMarket::create($decks['habitat']);
+        $this->converters['habitat'] = CurrentHabitatMarket::create($decks['tile']);
         $this->converters['wildlife'] = CurrentWildlifeMarket::create($decks['wildlife']);
         return $this;
     }

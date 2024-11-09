@@ -106,7 +106,7 @@ include_once(__DIR__.'/../Infrastructure/Wildlife.php');
     ];
     static public function create($decks): NewGame {
         $object = new NewGame();
-        $habitat_setup = HabitatSetup::create($decks['habitat']);
+        $habitat_setup = HabitatSetup::create($decks['tile']);
         $object->setHabitatSetup($habitat_setup);
 
         $scoring_card_setup = ScoringCardSetup::create($decks['scoring_card']);

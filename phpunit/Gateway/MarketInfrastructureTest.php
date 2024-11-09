@@ -14,7 +14,7 @@ include_once(__DIR__.'/../../export/modules/Infrastructure/Market.php');
 include_once(__DIR__.'/../../export/modules/BGA/FrameworkInterfaces/Deck.php');
 
 class MarketInfrastructureTest extends TestCase{
-    protected string $deck_name = 'habitat';
+    protected string $deck_name = 'tile';
 
     protected function setUp(): void {
         $this->mock_cards = $this->createMock(\NieuwenhovenGames\BGA\FrameworkInterfaces\Deck::class);
