@@ -58,18 +58,42 @@ $machinestates = array(
         "description" => "",
         "type" => "manager",
         "action" => "stGameSetup",
-        "transitions" => array( "" => 2 )
+        "transitions" => array( "" => 10 )
     ),
     
     // Note: ID=2 => your first state
 
-    2 => array(
-    		"name" => "playerTurn",
-    		"description" => clienttranslate('${actplayer} must play a card or pass'),
-    		"descriptionmyturn" => clienttranslate('${you} must play a card or pass'),
+    10 => array(
+    		"name" => "playerPlacesTile",
+    		"description" => clienttranslate('${actplayer} must place a tile'),
+    		"descriptionmyturn" => clienttranslate('${you} must place a tile'),
     		"type" => "activeplayer",
-    		"possibleactions" => array( "playCard", "pass" ),
-    		"transitions" => array( "playCard" => 2, "pass" => 2 )
+    		"transitions" => array( "" => 15)
+    ),
+    15 => array(
+        "name" => "nextPlayer",
+        "description" => clienttranslate('Next player'),
+        "descriptionmyturn" => clienttranslate('Next player'),
+        "type" => "game",
+//        "action" => "stNextPlayer",
+        "possibleactions" => array("player_playing", "ai_playing", "finished_playing"),
+        "transitions" => array("player_playing" => 10, "ai_playing" => 16, "finished_playing" => 20)
+    ),
+    16 => array(
+        "name" => "aiPlayer",
+        "description" => clienttranslate('Robot turn'),
+        "descriptionmyturn" => clienttranslate('${you} must play'),
+        "type" => "game",
+//        "action" => "stAiPlayer",
+        "transitions" => array("" => 15)
+    ),
+    20 => array(
+        "name" => "allPlayersInspectScore",
+        "description" => clienttranslate('everyone can inspect the score'),
+        "descriptionmyturn" => clienttranslate('everyone can inspect the score'),
+        "type" => "multipleactiveplayer",
+//        "action" => "stAllPlayersInspectScore",
+        "transitions" => array( "" => 99),
     ),
     
 /*
@@ -86,8 +110,8 @@ $machinestates = array(
     
     10 => array(
         "name" => "playerTurn",
-        "description" => clienttranslate('${actplayer} must play a card or pass'),
-        "descriptionmyturn" => clienttranslate('${you} must play a card or pass'),
+        "description" => clienttranslate('${actplayer} must place a tile'),
+        "descriptionmyturn" => clienttranslate('${you} must place a tile'),
         "type" => "activeplayer",
         "possibleactions" => array( "playCard", "pass" ),
         "transitions" => array( "playCard" => 2, "pass" => 2 )
