@@ -68,7 +68,7 @@ class CurrentTerritory {
     }
 
     public function move($deck, $moved_element) {
-        $deck->moveCard($moved_element['id'], $this->player_id);
+        $deck->moveCard($moved_element['id'], $this->player_id, $moved_element['horizontal'] + $moved_element['vertical'] * 100 + $moved_element['rotation'] * 1000);
     }
 }
 
