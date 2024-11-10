@@ -16,51 +16,35 @@ include_once(__DIR__.'/../../export/modules/Infrastructure/Habitat.php');
 include_once(__DIR__.'/../../export/modules/BGA/FrameworkInterfaces/Deck.php');
 
 class PlayerPlacesTileTest extends TestCase{
-    protected string $player_id = "77";
-    protected array $tile = ['id' => 5, 'unique_id' =>'habitat_5', 'horizontal' => 0, 'vertical' => 0, 'rotation' => 0];
+    protected ?PlayerPlacesTile $sut = null;
+    protected ?\NieuwenhovenGames\BGA\FrameworkInterfaces\GameState $mock_gamestate = null;
+    protected ?\NieuwenhovenGames\BGA\FrameworkInterfaces\Deck $mock_cards = null;
+    protected ?CurrentTerritory $mock_territory = null;
+    protected array $tile =[];
 
     protected function setUp(): void {
-        $this->sut = CurrentTerritory::create($this->player_id);
+        $this->mock_gamestate = $this->createMock(\NieuwenhovenGames\BGA\FrameworkInterfaces\GameState::class);
+        $this->sut = PlayerPlacesTile::create($this->mock_gamestate);
+
+        $this->sut->set_tile($this->tile);
+
         $this->mock_cards = $this->createMock(\NieuwenhovenGames\BGA\FrameworkInterfaces\Deck::class);
+        $this->sut->set_storage($this->mock_cards);
+
+        $this->mock_territory = $this->createMock(CurrentTerritory::class);
+        $this->sut->set_territory($this->mock_territory);
     }
 
-    public function test_move_tile_then_location_equals_player_id() {
+    public function test_execute() {
         // Arrange
-        $this->mock_cards->expects($this->exactly(1))->method('moveCard')->with($this->tile['id'], $this->player_id, 0);
-        // Act
-        $this->act_default();
-        // Assert
-    }
-
-    public function test_move_tile_then_location_argument_includes_horizontal() {
-        // Arrange
-        $this->tile['horizontal'] = 2;
-        $this->mock_cards->expects($this->exactly(1))->method('moveCard')->with($this->tile['id'], $this->player_id, $this->tile['horizontal']);
-        // Act
-        $this->act_default();
-        // Assert
-    }
-
-    public function test_move_tile_then_location_argument_includes_vertical() {
-        // Arrange
-        $this->tile['vertical'] = 3;
-        $this->mock_cards->expects($this->exactly(1))->method('moveCard')->with($this->tile['id'], $this->player_id, $this->tile['vertical'] * 100);
-        // Act
-        $this->act_default();
-        // Assert
-    }
-
-    public function test_move_tile_then_location_argument_includes_rotation() {
-        // Arrange
-        $this->tile['rotation'] = 4;
-        $this->mock_cards->expects($this->exactly(1))->method('moveCard')->with($this->tile['id'], $this->player_id, $this->tile['rotation'] * 1000);
+        $this->mock_territory->expects($this->exactly(1))->method('move')->with($this->mock_cards, $this->tile);
         // Act
         $this->act_default();
         // Assert
     }
 
     protected function act_default() {
-        $this->sut->move($this->mock_cards, $this->tile);
+        $this->sut->execute();
     }
 }
 
