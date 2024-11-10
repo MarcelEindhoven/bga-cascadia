@@ -31,7 +31,7 @@ class CurrentHabitatTerritory {
     public function get(): array {
         $habitat_per_player = [];
         foreach ($this->players as $player_id => $player) {
-            $habitat_per_player[$player_id] = CurrentHabitat::unpackTypes(CurrentTerritory::unpackPositions($this->deck->getCardsInLocation($player_id)));
+            $habitat_per_player[$player_id] = TileTypes::unpackTypes(CurrentTerritory::unpackPositions($this->deck->getCardsInLocation($player_id)));
         }
         return $habitat_per_player;
     }
@@ -43,6 +43,11 @@ class CurrentHabitatTerritory {
 class CurrentTerritory {
     const X = 'horizontal';
     const Y = 'vertical';
+
+    protected string $player_id = "";
+
+    static public function create($player_id) {$object = new CurrentTerritory(); $object->player_id = $player_id; return $object;}
+
     static public function unpackPositions($cards): array {
         $unpacked_cards = [];
         foreach ($cards as & $card) {
@@ -61,6 +66,10 @@ class CurrentTerritory {
 
         return $card;
     }
+
+    public function move($deck, $moved_element) {
+        $deck->moveCard($moved_element['id'], $this->player_id);
+    }
 }
 
 /**
@@ -78,25 +87,25 @@ class CurrentMarketTiles {
     }
 
     public function get(): array {
-        return CurrentHabitat::unpackTypes(($this->deck->getCardsInLocation('market')));
+        return TileTypes::unpackTypes(($this->deck->getCardsInLocation('market')));
     }
 }
 
 /**
- * Convert database entries with type and type argument into habitat tiles
+ * Convert tile entries with type and type argument into habitat tiles
  */
-class CurrentHabitat {
+class TileTypes {
     static public function unpackTypes($cards): array {
         $unpacked_cards = [];
         foreach ($cards as $card) {
-            $unpacked_cards[] = CurrentHabitat::unpackType($card);
+            $unpacked_cards[] = TileTypes::unpackType($card);
         }
         return $unpacked_cards;
     }
 
     static protected function unpackType($card): array {
-        $card['supported_wildlife'] = CurrentHabitat::calculateTypes($card['type_arg']);
-        $card['terrain_types'] = CurrentHabitat::calculateTypes($card['type']);
+        $card['supported_wildlife'] = TileTypes::calculateTypes($card['type_arg']);
+        $card['terrain_types'] = TileTypes::calculateTypes($card['type']);
         $card['unique_id'] = 'tile' . $card['id'];
         return $card;
     }

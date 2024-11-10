@@ -50,7 +50,7 @@
       $placed_tile = [
         'horizontal' => $this->getArg( "placed_tile_horizontal", AT_posint, true ),
         'vertical' => $this->getArg( "placed_tile_vertical", AT_posint, true ),
-        'unique_id' => $this->getArg( "placed_tile_unique_id", AT_alphanum, true ), 
+        'id' => $this->getArg( "placed_tile_id", AT_alphanum, true ), 
       ];
 
       // Then, call the appropriate method in your game logic, like "playCard" or "myAction"
