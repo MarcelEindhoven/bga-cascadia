@@ -6,7 +6,7 @@ namespace NieuwenhovenGames\Cascadia;
  *
  */
 
-include_once(__DIR__.'/../Infrastructure/Habitat.php');
+include_once(__DIR__.'/../Infrastructure/HabitatSetup.php');
 include_once(__DIR__.'/../Infrastructure/Market.php');
 include_once(__DIR__.'/../Infrastructure/ScoringCard.php');
 include_once(__DIR__.'/../Infrastructure/Wildlife.php');
@@ -116,8 +116,8 @@ include_once(__DIR__.'/../Infrastructure/Wildlife.php');
         $object->setWildlifeSetup($wildlife_setup);
 
         unset($decks['scoring_card']);
-        $market = MarketInfrastructure::create($decks);
-        $object->setMarketInfrastructure($market);
+        $market = MarketSetup::create($decks);
+        $object->setMarketSetup($market);
 
         return $object;
     }
@@ -142,7 +142,7 @@ include_once(__DIR__.'/../Infrastructure/Wildlife.php');
         return $this;
     }
 
-    public function setMarketInfrastructure($market): NewGame {
+    public function setMarketSetup($market): NewGame {
         $this->market = $market;
         return $this;
     }

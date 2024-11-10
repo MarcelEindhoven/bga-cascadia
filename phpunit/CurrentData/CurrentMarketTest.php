@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 
 include_once(__DIR__.'/../../export/modules/Infrastructure/Market.php');
 
-include_once(__DIR__.'/../../export/modules/Infrastructure/Habitat.php');
+include_once(__DIR__.'/../../export/modules/Infrastructure/HabitatSetup.php');
 
 include_once(__DIR__.'/../../export/modules/BGA/FrameworkInterfaces/Deck.php');
 

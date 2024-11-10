@@ -11,8 +11,8 @@ use PHPUnit\Framework\TestCase;
 
 include_once(__DIR__.'/../../export/modules/NewGame/NewGame.php');
 
-include_once(__DIR__.'/../../export/modules/Infrastructure/Habitat.php');
-include_once(__DIR__.'/../../export/modules/Infrastructure/Market.php');
+include_once(__DIR__.'/../../export/modules/Infrastructure/HabitatSetup.php');
+include_once(__DIR__.'/../../export/modules/Infrastructure/MarketSetup.php');
 include_once(__DIR__.'/../../export/modules/Infrastructure/ScoringCard.php');
 include_once(__DIR__.'/../../export/modules/Infrastructure/Wildlife.php');
 
@@ -23,8 +23,8 @@ class NewGameTest extends TestCase{
     public function setup(): void {
         $this->sut = new NewGame();
 
-        $this->mock_market = $this->createMock(MarketInfrastructure::class);
-        $this->sut->setMarketInfrastructure($this->mock_market);
+        $this->mock_market = $this->createMock(MarketSetup::class);
+        $this->sut->setMarketSetup($this->mock_market);
 
         $this->mock_habitat_setup = $this->createMock(HabitatSetup::class);
         $this->sut->setHabitatSetup($this->mock_habitat_setup);
