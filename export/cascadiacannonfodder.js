@@ -47,9 +47,6 @@ function (dojo, declare, framework, habitat_tile_class, wildlife_class, habitat_
             this.habitat_tile_factory = {class:habitat_tile_class, dependencies: {framework: this.framework}, token_subscriptions: this.token_subscriptions, 
                 create: function(tile_specification) {tile = new this.class(this.dependencies, tile_specification); tile.subscribe_selected(this.token_subscriptions, 'token_selected'); return tile;}};
             this.habitat_factory = {class:habitat_class, dependencies: {framework: this.framework}, create: function(player_id) {return new this.class(this.dependencies, player_id);}};
-
-            this.market = new market();
-            this.market.set_token_subscriptions(this.token_subscriptions);
         },
         
         /*
@@ -82,6 +79,9 @@ function (dojo, declare, framework, habitat_tile_class, wildlife_class, habitat_
             this.setupNotifications();
     
             this.prototyping(gamedatas);
+
+            this.market = new market();
+            this.market.set_token_subscriptions(this.token_subscriptions);
     
             this.usecase_setup = new usecase_setup({framework: this.framework, market: this.market, habitat_tile_factory: this.habitat_tile_factory, wildlife_factory: this.wildlife_factory, habitat_factory: this.habitat_factory});
             this.usecase_setup.setup(gamedatas);
