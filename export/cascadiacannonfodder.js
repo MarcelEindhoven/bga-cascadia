@@ -275,7 +275,10 @@ function (dojo, declare, framework, habitat_tile_class, wildlife_class, habitat_
         setupNotifications: function()
         {
             console.log( 'notifications subscriptions setup' );
-            
+
+            dojo.subscribe( 'tile_placed', this, "notify_tile_placed" );
+            this.notifqueue.setSynchronous( 'tile_placed', 5 );
+
             // TODO: here, associate your game notifications with local methods
             
             // Example 1: standard notification handling
@@ -288,6 +291,10 @@ function (dojo, declare, framework, habitat_tile_class, wildlife_class, habitat_
             // this.notifqueue.setSynchronous( 'cardPlayed', 3000 );
             // 
         },  
+        notify_tile_placed: function(notif) {
+            console.log('notify_tile_placed');
+            this.setup(notif.args);
+        },
         
         // TODO: from this point and below, you can write your game notifications handling methods
         

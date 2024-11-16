@@ -7,7 +7,7 @@ namespace NieuwenhovenGames\Cascadia;
  */
 
 include_once(__DIR__.'/../Infrastructure/HabitatSetup.php');
-include_once(__DIR__.'/../Infrastructure/Market.php');
+include_once(__DIR__.'/../Infrastructure/MarketSetup.php');
 include_once(__DIR__.'/../Infrastructure/ScoringCard.php');
 include_once(__DIR__.'/../Infrastructure/Wildlife.php');
  
