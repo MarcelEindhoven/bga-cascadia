@@ -13,15 +13,15 @@ include_once(__DIR__.'/../../export/modules/Infrastructure/Habitat.php');
 
 include_once(__DIR__.'/../../export/modules/BGA/FrameworkInterfaces/Deck.php');
 
-class CurrentTerritoryTest extends TestCase{
-    protected ?CurrentTerritory $sut = null;
+class TerritoryUpdateTest extends TestCase{
+    protected ?TerritoryUpdate $sut = null;
     protected ?\NieuwenhovenGames\BGA\FrameworkInterfaces\Deck $mock_cards = null;
 
     protected string $player_id = "77";
     protected array $tile = ['id' => 5, 'unique_id' =>'habitat_5', 'horizontal' => 0, 'vertical' => 0, 'rotation' => 0];
 
     protected function setUp(): void {
-        $this->sut = CurrentTerritory::create($this->player_id);
+        $this->sut = TerritoryUpdate::create($this->player_id);
         $this->mock_cards = $this->createMock(\NieuwenhovenGames\BGA\FrameworkInterfaces\Deck::class);
     }
 
@@ -54,7 +54,7 @@ class CurrentTerritoryTest extends TestCase{
     public function test_move_tile_then_location_argument_includes_rotation() {
         // Arrange
         $this->tile['rotation'] = 4;
-        $this->expect_location_argument($this->tile['rotation'] * 1000);
+        $this->expect_location_argument($this->tile['rotation'] * 10000);
         // Act
         $this->act_default();
         // Assert

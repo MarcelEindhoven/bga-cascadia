@@ -19,19 +19,19 @@ class PlayerPlacesTileTest extends TestCase{
     protected ?PlayerPlacesTile $sut = null;
     protected ?\NieuwenhovenGames\BGA\FrameworkInterfaces\GameState $mock_gamestate = null;
     protected ?\NieuwenhovenGames\BGA\FrameworkInterfaces\Deck $mock_cards = null;
-    protected ?CurrentTerritory $mock_territory = null;
+    protected ?TerritoryUpdate $mock_territory = null;
     protected array $tile =[];
 
     protected function setUp(): void {
         $this->mock_gamestate = $this->createMock(\NieuwenhovenGames\BGA\FrameworkInterfaces\GameState::class);
         $this->sut = PlayerPlacesTile::create($this->mock_gamestate);
 
-        $this->sut->set_tile($this->tile);
+        $this->sut->set_moved_tile($this->tile);
 
         $this->mock_cards = $this->createMock(\NieuwenhovenGames\BGA\FrameworkInterfaces\Deck::class);
-        $this->sut->set_storage($this->mock_cards);
+        $this->sut->set_tile_deck($this->mock_cards);
 
-        $this->mock_territory = $this->createMock(CurrentTerritory::class);
+        $this->mock_territory = $this->createMock(TerritoryUpdate::class);
         $this->sut->set_territory($this->mock_territory);
     }
 

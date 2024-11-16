@@ -19,13 +19,11 @@
 
 require_once( APP_GAMEMODULE_PATH.'module/table/table.game.php' );
 
-include_once(__DIR__.'/modules/Infrastructure/DataSourcesFactory.php');
-
 include_once(__DIR__.'/modules/NewGame/NewGame.php');
 include_once(__DIR__.'/modules/NewGame/PlayerSetup.php');
 
+include_once(__DIR__.'/modules/UseCases/Actions.php');
 include_once(__DIR__.'/modules/UseCases/GetAllDatas.php');
-include_once(__DIR__.'/modules/UseCases/PlayerPlacesTile.php');
 
 class CascadiaCannonFodder extends Table
 {
@@ -210,8 +208,17 @@ class CascadiaCannonFodder extends Table
     public function place_tile($tile) {
         // self::trace(__FUNCTION__);
         self::trace(__FUNCTION__ . '({$tile})');
-        $p = new \NieuwenhovenGames\Cascadia\PlayerPlacesTile($this->gamestate);
-        $p->nextState();
+        $this->initialise();
+        $this->actions->place_tile($tile);
+    }
+
+    protected function initialise() {
+        $this->actions = new \NieuwenhovenGames\Cascadia\Actions();
+
+        $this->actions->set_gamestate($this->gamestate);
+        $this->actions->set_decks($this->decks);
+        // Note: the following statement crashes in setup stage
+        $this->actions->set_player_id(self::getCurrentPlayerId());
     }
 
     

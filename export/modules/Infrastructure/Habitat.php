@@ -44,10 +44,6 @@ class CurrentTerritory {
     const X = 'horizontal';
     const Y = 'vertical';
 
-    protected string $player_id = "";
-
-    static public function create($player_id) {$object = new CurrentTerritory(); $object->player_id = $player_id; return $object;}
-
     static public function unpackPositions($cards): array {
         $unpacked_cards = [];
         foreach ($cards as & $card) {
@@ -66,9 +62,21 @@ class CurrentTerritory {
 
         return $card;
     }
+}
+
+/**
+ * Convert rotation and habitat position into database location argument
+ */
+class TerritoryUpdate {
+    const X = 'horizontal';
+    const Y = 'vertical';
+
+    protected string $player_id = "";
+
+    static public function create($player_id) : TerritoryUpdate {$object = new TerritoryUpdate(); $object->player_id = $player_id; return $object;}
 
     public function move($deck, $moved_element) {
-        $deck->moveCard($moved_element['id'], $this->player_id, $moved_element['horizontal'] + $moved_element['vertical'] * 100 + $moved_element['rotation'] * 1000);
+        $deck->moveCard($moved_element['id'], $this->player_id, $moved_element['horizontal'] + $moved_element['vertical'] * 100 + $moved_element['rotation'] * 10000);
     }
 }
 

@@ -50,6 +50,7 @@
       $placed_tile = [
         'horizontal' => $this->getArg( "placed_tile_horizontal", AT_posint, true ),
         'vertical' => $this->getArg( "placed_tile_vertical", AT_posint, true ),
+        'rotation' => $this->getArg( "placed_tile_rotation", AT_posint, true ),
         'id' => $this->getArg( "placed_tile_id", AT_alphanum, true ), 
       ];
 

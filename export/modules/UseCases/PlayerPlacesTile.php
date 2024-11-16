@@ -14,23 +14,33 @@ class PlayerPlacesTile extends \NieuwenhovenGames\BGA\Action {
         return $object;
     }
 
+    /**
+     * territory supports move($deck, $moved_element)
+     */
     public function set_territory($territory) : PlayerPlacesTile {
         $this->territory = $territory;
         return $this;
     }
 
-    public function set_storage($storage) : PlayerPlacesTile {
-        $this->storage = $storage;
+    /**
+     * deck supports moveCard
+     */
+    public function set_tile_deck($deck) : PlayerPlacesTile {
+        $this->deck = $deck;
         return $this;
     }
 
-    public function set_tile($tile) : PlayerPlacesTile {
+    /**
+     * tile contains keys id, horizontal, vertical, rotation
+     */
+    public function set_moved_tile($tile) : PlayerPlacesTile {
         $this->tile = $tile;
         return $this;
     }
 
     public function execute(): PlayerPlacesTile {
-        $this->territory->move($this->storage, $this->tile);
+        $this->territory->move($this->deck, $this->tile);
+        // Notify players
 
         return $this;
     }
