@@ -41,4 +41,21 @@ class CurrentMarket {
         return $cards;
     }
 }
+
+class MarketUpdate {
+    static public function create($decks): MarketUpdate {
+        $object = new MarketUpdate();
+        $object->setDecks($decks);
+        return $object;
+    }
+
+    public function setDecks($decks): MarketUpdate {
+        $this->decks = $decks;
+        return $this;
+    }
+    public function select_wildlife($selected_wildlife_id) {
+        $this->decks['wildlife']->moveCard($selected_wildlife_id, 'selected');
+    }
+
+}
 ?>

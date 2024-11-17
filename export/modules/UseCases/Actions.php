@@ -9,6 +9,7 @@ namespace NieuwenhovenGames\Cascadia;
 include_once(__DIR__.'/PlayerPlacesTile.php');
 
 include_once(__DIR__.'/../Infrastructure/Habitat.php');
+include_once(__DIR__.'/../Infrastructure/Market.php');
 
 class Actions {
     static public function create(): Actions {
@@ -37,6 +38,10 @@ class Actions {
     public function place_tile($tile) {
         $territory = TerritoryUpdate::create($this->player_id);
         PlayerPlacesTile::create($this->gamestate)->set_territory($territory)->set_tile_deck($this->decks['tile'])->set_moved_tile($tile)->execute()->nextState();
+    }
+
+    public function select_wildlife($selected_wildlife_id) {
+        MarketUpdate::create($this->decks)->select_wildlife($selected_wildlife_id);
     }
 }
 ?>

@@ -210,6 +210,9 @@ class CascadiaCannonFodder extends Table
         self::trace(__FUNCTION__ . "(tile, {$selected_wildlife_id})");
         $this->initialise();
         $this->actions->place_tile($tile);
+
+        $this->actions->select_wildlife($selected_wildlife_id);
+
         $this->notifyAllPlayers('tile_placed', 'tile_placed', $this->getAllDatas());
     }
 
