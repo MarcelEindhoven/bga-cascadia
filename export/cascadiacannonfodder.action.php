@@ -53,9 +53,10 @@
         'rotation' => $this->getArg( "placed_tile_rotation", AT_posint, true ),
         'id' => $this->getArg( "placed_tile_id", AT_alphanum, true ), 
       ];
+      $selected_wildlife_id = $this->getArg( "selected_wildlife_id", AT_alphanum, true );
 
       // Then, call the appropriate method in your game logic, like "playCard" or "myAction"
-      $this->game->place_tile($placed_tile);
+      $this->game->place_tile($placed_tile, $selected_wildlife_id);
 
       $this->ajaxResponse( );
     }

@@ -9,15 +9,24 @@ define(['dojo/_base/declare'], (declare) => {
          * When again the player selects a market tile, first destroy the existing candidate tiles
          */
 
+        /**
+         * Depends on market
+         * Use case creation: u = ({market: market});
+         * Use case market tile selected (at least once): u.market_tile_selected(tile);
+         * Use case destruction: u.get_selected_wildlife(); u.terminate();
+         */
         constructor(dependencies) {
             this.overrule(this, dependencies);
-            this.market.subscribe_tile_selected(this, 'market_tile_selected');
+            this.initialise();
         },
 
         overrule(object, properties) {
             for (var property in properties) {
                 object[property] = properties[property];
             }
+        },
+        initialise() {
+            this.market.subscribe_tile_selected(this, 'market_tile_selected');
         },
         terminate() {
             this.market.unsubscribe_tile_selected(this, 'market_tile_selected');

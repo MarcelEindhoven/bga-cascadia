@@ -13,10 +13,11 @@ describe('market', function () {
         };
         sut.set_token_subscriptions(token_subscriptions);
 
-        tile = {move: sinon.spy(), id: 2, location_arg: 2, terrain_types: [1], supported_wildlife: [2], unique_id: 'tile2'};
+        tile = {move: sinon.spy(), id: 2, location_arg: 3, terrain_types: [1], supported_wildlife: [2], unique_id: 'tile2'};
         other_tile = {move: sinon.spy(), id: 22, location_arg: 1, terrain_types: [1], supported_wildlife: [2], horizontal: 50, vertical: 51};
 
         wildlife = {move: sinon.spy(), id: 2, location_arg: 3, unique_id: 'wildlife2'};
+        other_wildlife = {move: sinon.spy(), id: 1, location_arg: 1, unique_id: 'wildlife1'};
     });
     describe('Place tile', function () {
         function act_default(x) {
@@ -42,6 +43,30 @@ describe('market', function () {
             // Assert
             assert.equal(wildlife.move.getCall(0).args.length, 1);
             assert.equal(wildlife.move.getCall(0).args[0], 'wildlife_' + wildlife.location_arg);
+        });
+    });
+    describe('Get wildlife', function () {
+        function act_default(x) {
+            return sut.get_wildlife_from_combination_with(x);
+        };
+        it('matches wildlife with tile for only one tile and one wildlife', function () {
+            // Arrange
+            sut.place(tile);
+            sut.populate(wildlife);
+            // Act
+            retrieved_wildlife = act_default(tile);
+            // Assert
+            assert.equal(retrieved_wildlife, wildlife);
+        });
+        it('matches wildlife with tile for multiple wildlife', function () {
+            // Arrange
+            sut.place(tile);
+            sut.populate(other_wildlife);
+            sut.populate(wildlife);
+            // Act
+            retrieved_wildlife = act_default(tile);
+            // Assert
+            assert.equal(retrieved_wildlife, wildlife);
         });
     });
     describe('Subscribe', function () {

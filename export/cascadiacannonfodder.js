@@ -25,10 +25,11 @@ define([
     g_gamethemeurl + 'modules/javascript/token_subscriptions.js',
     g_gamethemeurl + 'modules/javascript/usecase_setup.js',
     g_gamethemeurl + 'modules/javascript/usecase_place_tile.js',
+    g_gamethemeurl + 'modules/javascript/usecase_select_wildlife.js',
     "ebg/core/gamegui",
     "ebg/counter"
 ],
-function (dojo, declare, framework, habitat_tile_class, wildlife_class, habitat_class, market, token_subscriptions, usecase_setup, usecase_place_tile) {
+function (dojo, declare, framework, habitat_tile_class, wildlife_class, habitat_class, market, token_subscriptions, usecase_setup, usecase_place_tile, usecase_select_wildlife) {
     return declare("bgagame.cascadiacannonfodder", ebg.core.gamegui, {
         constructor: function(){
             console.log('cascadiacannonfodder constructor');
@@ -128,14 +129,21 @@ function (dojo, declare, framework, habitat_tile_class, wildlife_class, habitat_
             this.usecase_place_tile.set_candidate_positions(this.gamedatas.adjacent_positions);
             this.usecase_place_tile.subscribe_tile_placed(this, 'tile_placed');
             this.market.subscribe_tile_selected(this.framework, 'control_may_be_returned_to_user');
+
+            this.usecase_select_wildlife = new usecase_select_wildlife({market: this.market});
         },
         tile_placed: function(tile) {
             console.log('tile_placed');
             console.log(tile);
+
             this.market.unsubscribe_tile_selected(this.framework, 'control_may_be_returned_to_user');
             delete this.usecase_place_tile;
+
             tile.rotation = 0;
-            this.call('place_tile', {placed_tile_horizontal: tile.horizontal, placed_tile_vertical: tile.vertical, placed_tile_rotation: tile.rotation, placed_tile_id: tile.id, });
+            this.call('place_tile', {placed_tile_horizontal: tile.horizontal, placed_tile_vertical: tile.vertical, placed_tile_rotation: tile.rotation, placed_tile_id: tile.id, selected_wildlife_id: this.usecase_select_wildlife.get_selected_wildlife().id});
+
+            this.usecase_select_wildlife.terminate();
+            delete this.usecase_select_wildlife;
         },
         call: function(action, args, handler) {
             console.log(action);
