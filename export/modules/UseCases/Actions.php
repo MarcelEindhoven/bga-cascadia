@@ -27,6 +27,11 @@ class Actions {
         return $this;
     }
 
+    public function set_notifications($notifications) : Actions {
+        $this->notifications = $notifications;
+        return $this;
+    }
+
     /**
      * Current player ID is not known during game setup
      */
@@ -37,7 +42,7 @@ class Actions {
 
     public function place_tile($tile) {
         $territory = TerritoryUpdate::create($this->player_id);
-        PlayerPlacesTile::create($this->gamestate)->set_territory($territory)->set_tile_deck($this->decks['tile'])->set_moved_tile($tile)->execute()->nextState();
+        PlayerPlacesTile::create($this->gamestate)->set_notifications($this->notifications)->set_territory($territory)->set_tile_deck($this->decks['tile'])->set_moved_tile($tile)->execute()->nextState();
     }
 
     public function select_wildlife($selected_wildlife_id) {

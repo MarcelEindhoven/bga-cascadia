@@ -68,15 +68,14 @@ class CurrentTerritory {
  * Convert rotation and habitat position into database location argument
  */
 class TerritoryUpdate {
-    const X = 'horizontal';
-    const Y = 'vertical';
-
     protected string $player_id = "";
 
     static public function create($player_id) : TerritoryUpdate {$object = new TerritoryUpdate(); $object->player_id = $player_id; return $object;}
 
     public function move($deck, $moved_element) {
         $deck->moveCard($moved_element['id'], $this->player_id, $moved_element['horizontal'] + $moved_element['vertical'] * 100 + $moved_element['rotation'] * 10000);
+    }
+    public function get_tile($deck, $moved_element) {
     }
 }
 
@@ -111,7 +110,7 @@ class TileTypes {
         return $unpacked_cards;
     }
 
-    static protected function unpackType($card): array {
+    static public function unpackType($card): array {
         $card['supported_wildlife'] = TileTypes::calculateTypes($card['type_arg']);
         $card['terrain_types'] = TileTypes::calculateTypes($card['type']);
         $card['unique_id'] = 'tile' . $card['id'];

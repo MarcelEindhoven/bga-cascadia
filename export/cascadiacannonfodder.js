@@ -301,7 +301,12 @@ function (dojo, declare, framework, habitat_tile_class, wildlife_class, habitat_
         },  
         notify_tile_placed: function(notif) {
             console.log('notify_tile_placed');
-            this.setup(notif.args);
+            console.log(notif.args);
+            tile = notif.args.tile;
+            console.log(tile);
+            this.market.remove_tile(tile);
+            this.habitat[tile.location].place(tile);
+            this.framework.control_may_be_returned_to_user();
         },
         
         // TODO: from this point and below, you can write your game notifications handling methods

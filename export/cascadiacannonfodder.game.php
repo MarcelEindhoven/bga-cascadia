@@ -212,8 +212,6 @@ class CascadiaCannonFodder extends Table
         $this->actions->place_tile($tile);
 
         $this->actions->select_wildlife($selected_wildlife_id);
-
-        $this->notifyAllPlayers('tile_placed', 'tile_placed', $this->getAllDatas());
     }
 
     protected function initialise() {
@@ -221,6 +219,7 @@ class CascadiaCannonFodder extends Table
 
         $this->actions->set_gamestate($this->gamestate);
         $this->actions->set_decks($this->decks);
+        $this->actions->set_notifications($this);
         // Note: the following statement crashes in setup stage
         $this->actions->set_player_id(self::getCurrentPlayerId());
     }

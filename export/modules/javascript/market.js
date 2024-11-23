@@ -53,5 +53,12 @@ define(['dojo/_base/declare'], (declare) => {
                 if (tile.location_arg == this.wildlifes[index].location_arg)
                     return this.wildlifes[index];
         },
+        /**
+         * Use case move tile from market, for example into territory
+         * Precondition: tile is unsubscribed from token subscriptions
+         */
+        remove_tile(tile) {
+            delete this.tiles[tile.id];
+        },
     });
 });

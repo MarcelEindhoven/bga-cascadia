@@ -18,8 +18,13 @@ class Action {
         $this->gamestate = $gamestate;
     }
 
-    public function setGameState($gamestate) : Action {
+    public function set_gamestate($gamestate) : Action {
         $this->gamestate = $gamestate;
+        return $this;
+    }
+
+    public function set_notifications($notifications) : Action {
+        $this->notifications = $notifications;
         return $this;
     }
 

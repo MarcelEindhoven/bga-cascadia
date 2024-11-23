@@ -31,16 +31,18 @@ class PlayerPlacesTile extends \NieuwenhovenGames\BGA\Action {
     }
 
     /**
-     * tile contains keys id, horizontal, vertical, rotation
+     * tile_specification contains keys id, horizontal, vertical, rotation
      */
-    public function set_moved_tile($tile) : PlayerPlacesTile {
-        $this->tile = $tile;
+    public function set_moved_tile($tile_specification) : PlayerPlacesTile {
+        $this->tile_specification = $tile_specification;
         return $this;
     }
 
     public function execute(): PlayerPlacesTile {
-        $this->territory->move($this->deck, $this->tile);
+        $this->territory->move($this->deck, $this->tile_specification);
         // Notify players
+        $tile = $this->territory->get_tile($this->deck, $this->tile_specification);
+        $this->notifications->notifyAllPlayers('tile_placed', 'tile_placed', ['tile' => $tile]);
 
         return $this;
     }

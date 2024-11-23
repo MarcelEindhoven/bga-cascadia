@@ -32,6 +32,20 @@ describe('market', function () {
             assert.equal(tile.move.getCall(0).args[0], 'habitat_' + tile.location_arg);
         });
     });
+    describe('Remove tile', function () {
+        function act_default(x) {
+            sut.remove_tile(x);
+        };
+        it('', function () {
+            // Arrange
+            sut.place(tile);
+            // Act
+            act_default(tile);
+            // Assert
+            sut.subscribe_tile_selected();
+            sinon.assert.notCalled(token_subscriptions.subscribe);
+        });
+    });
     describe('Place wildlife', function () {
         function act_default(x) {
             sut.populate(x);
