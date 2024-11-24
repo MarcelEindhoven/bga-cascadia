@@ -17,7 +17,7 @@ class MarketUpdateTest extends TestCase{
     protected ?MarketUpdate $sut = null;
     protected ?\NieuwenhovenGames\BGA\FrameworkInterfaces\Deck $mock_cards = null;
 
-    protected string $selected_wildlife_id = "77";
+    protected string $chosen_wildlife_id = "77";
     protected array $tile = ['id' => 5, 'unique_id' =>'habitat_5', 'horizontal' => 0, 'vertical' => 0, 'rotation' => 0];
 
     protected function setUp(): void {
@@ -25,16 +25,24 @@ class MarketUpdateTest extends TestCase{
         $this->sut = MarketUpdate::create(['wildlife' => $this->mock_cards]);
     }
 
-    public function test_select_wildlife_then_location_equals_selected() {
+    public function test_select_wildlife_then_location_equals_chosen() {
         // Arrange
-        $this->mock_cards->expects($this->exactly(1))->method('moveCard')->with($this->selected_wildlife_id, 'selected');
+        $this->mock_cards->expects($this->exactly(1))->method('moveCard')->with($this->chosen_wildlife_id, 'chosen');
         // Act
         $this->act_default();
         // Assert
     }
 
     protected function act_default() {
-        $this->sut->select_wildlife($this->selected_wildlife_id);
+        $this->sut->select_wildlife($this->chosen_wildlife_id);
+    }
+
+    public function test_get_wildlife_from_id() {
+        // Arrange
+        $this->mock_cards->expects($this->exactly(1))->method('getCard')->with($this->chosen_wildlife_id);
+        // Act
+        $this->sut->get_wildlife_from_id($this->chosen_wildlife_id);
+        // Assert
     }
 }
 

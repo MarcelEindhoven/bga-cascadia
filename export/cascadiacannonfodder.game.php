@@ -205,13 +205,14 @@ class CascadiaCannonFodder extends Table
     }
     
     */
-    public function place_tile($tile, $selected_wildlife_id) {
+    public function place_tile($tile, $chosen_wildlife_id) {
         // self::trace(__FUNCTION__);
-        self::trace(__FUNCTION__ . "(tile, {$selected_wildlife_id})");
+        self::trace(__FUNCTION__ . "(tile, {$chosen_wildlife_id})");
         $this->initialise();
-        $this->actions->place_tile($tile);
 
-        $this->actions->select_wildlife($selected_wildlife_id);
+        $this->actions->select_wildlife($chosen_wildlife_id);
+
+        $this->actions->place_tile($tile);
     }
 
     protected function initialise() {

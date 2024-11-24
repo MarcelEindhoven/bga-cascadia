@@ -53,8 +53,13 @@ class MarketUpdate {
         $this->decks = $decks;
         return $this;
     }
-    public function select_wildlife($selected_wildlife_id) {
-        $this->decks['wildlife']->moveCard($selected_wildlife_id, 'selected');
+
+    public function select_wildlife($chosen_wildlife_id) {
+        $this->decks['wildlife']->moveCard($chosen_wildlife_id, 'chosen');
+    }
+
+    public function get_wildlife_from_id($chosen_wildlife_id) {
+        $this->decks['wildlife']->getCard($chosen_wildlife_id);
     }
 
 }

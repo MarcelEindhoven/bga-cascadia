@@ -7,6 +7,7 @@ namespace NieuwenhovenGames\Cascadia;
  */
 
 include_once(__DIR__.'/PlayerPlacesTile.php');
+include_once(__DIR__.'/PlayerChoosesWildlife.php');
 
 include_once(__DIR__.'/../Infrastructure/Habitat.php');
 include_once(__DIR__.'/../Infrastructure/Market.php');
@@ -45,8 +46,9 @@ class Actions {
         PlayerPlacesTile::create($this->gamestate)->set_notifications($this->notifications)->set_territory($territory)->set_tile_deck($this->decks['tile'])->set_moved_tile($tile)->execute()->nextState();
     }
 
-    public function select_wildlife($selected_wildlife_id) {
-        MarketUpdate::create($this->decks)->select_wildlife($selected_wildlife_id);
+    public function select_wildlife($chosen_wildlife_id) {
+        $market = MarketUpdate::create($this->decks);
+        PlayerChoosesWildlife::create($this->gamestate)->set_notifications($this->notifications)->set_market($market)->set_chosen_wildlife($chosen_wildlife_id)->execute()->nextState();
     }
 }
 ?>
