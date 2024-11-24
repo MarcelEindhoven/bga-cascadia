@@ -131,6 +131,7 @@ function (dojo, declare, framework, habitat_tile_class, wildlife_class, habitat_
             this.market.subscribe_tile_selected(this.framework, 'control_may_be_returned_to_user');
 
             this.usecase_select_wildlife = new usecase_select_wildlife({market: this.market});
+            // this.usecase_select_wildlife.initialise(); Already done in constructor
         },
         tile_placed: function(tile) {
             console.log('tile_placed');

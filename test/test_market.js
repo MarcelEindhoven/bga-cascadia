@@ -67,6 +67,21 @@ describe('market', function () {
             assert.equal(wildlife.move.getCall(0).args[0], 'wildlife_' + wildlife.location_arg);
         });
     });
+    describe('Wildlife is selected', function () {
+        beforeEach(function() {
+            sut.populate(wildlife);
+        });
+        function act_default(x) {
+            sut.wildlife_is_selected(x);
+        };
+        it('updates the wildlife token', function () {
+            // Arrange
+            // Act
+            act_default(wildlife);
+            // Assert
+            assert.equal(wildlife.location, 'selected');
+        });
+    });
     describe('Get wildlife', function () {
         function act_default(x) {
             return sut.get_wildlife_from_combination_with(x);

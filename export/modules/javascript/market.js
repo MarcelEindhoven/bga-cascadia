@@ -45,13 +45,13 @@ define(['dojo/_base/declare'], (declare) => {
                 this.token_subscriptions.unsubscribe(tile, object, method);
             }
         },
-        /**
-         * Use case get corresponding wildlife when market tile selected
-         */
         get_wildlife_from_combination_with(tile) {
             for (index in this.wildlifes)
                 if (tile.location_arg == this.wildlifes[index].location_arg)
                     return this.wildlifes[index];
+        },
+        wildlife_is_selected(wildlife) {
+            this.wildlifes[wildlife.id].location = 'selected';
         },
         /**
          * Use case move tile from market, for example into territory

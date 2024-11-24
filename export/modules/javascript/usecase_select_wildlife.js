@@ -32,7 +32,11 @@ define(['dojo/_base/declare'], (declare) => {
             this.market.unsubscribe_tile_selected(this, 'market_tile_selected');
         },
         market_tile_selected(tile) {
+            if (this.selected_wildlife)
+                this.selected_wildlife.y = 0;
+
             this.selected_wildlife = this.market.get_wildlife_from_combination_with(tile);
+            this.selected_wildlife.y = 50;
         },
         get_selected_wildlife() {return this.selected_wildlife;},
     });

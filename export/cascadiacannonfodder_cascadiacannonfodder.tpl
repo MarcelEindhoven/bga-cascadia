@@ -46,6 +46,13 @@ form 4 combinations of 1 tile and 1 token.
             <!-- END market_element -->
         </tr>
     <!-- END market_row -->
+    <tr>
+        <td style = "width: 60px ; height: 60px">
+        <div id = "chosen" style="display: inline-block" >
+        .
+        </div>
+        </td>
+    </tr>
     </table>
 </div>
 
