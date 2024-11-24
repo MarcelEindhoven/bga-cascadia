@@ -128,10 +128,12 @@ function (dojo, declare, framework, habitat_tile_class, wildlife_class, habitat_
             this.usecase_place_tile = new usecase_place_tile({market: this.market, habitat: this.habitat[this.player_id], token_subscriptions: this.token_subscriptions, habitat_tile_factory: this.habitat_tile_factory});
             this.usecase_place_tile.set_candidate_positions(this.gamedatas.adjacent_positions);
             this.usecase_place_tile.subscribe_tile_placed(this, 'tile_placed');
-            this.market.subscribe_tile_selected(this.framework, 'control_may_be_returned_to_user');
 
             this.usecase_select_wildlife = new usecase_select_wildlife({market: this.market});
             // this.usecase_select_wildlife.initialise(); Already done in constructor
+
+            // Must be last, after the use case subscriptions to the market
+            this.market.subscribe_tile_selected(this.framework, 'control_may_be_returned_to_user');
         },
         tile_placed: function(tile) {
             console.log('tile_placed');
