@@ -76,6 +76,7 @@ class TerritoryUpdate {
         $deck->moveCard($moved_element['id'], $this->player_id, $moved_element['horizontal'] + $moved_element['vertical'] * 100 + $moved_element['rotation'] * 10000);
     }
     public function get_tile($deck, $moved_element) {
+        return CurrentTerritory::unpackPosition(TileTypes::unpackType($deck->getCard($moved_element['id'])));
     }
 }
 

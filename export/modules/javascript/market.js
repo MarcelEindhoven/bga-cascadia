@@ -57,8 +57,10 @@ define(['dojo/_base/declare'], (declare) => {
          * Use case move tile from market, for example into territory
          * Precondition: tile is unsubscribed from token subscriptions
          */
-        remove_tile(tile) {
-            delete this.tiles[tile.id];
+        remove_tile(tile_specification) {
+            removed_tile = this.tiles[tile_specification.id];
+            delete this.tiles[tile_specification.id];
+            return removed_tile;
         },
     });
 });

@@ -32,18 +32,26 @@ describe('market', function () {
             assert.equal(tile.move.getCall(0).args[0], 'habitat_' + tile.location_arg);
         });
     });
-    describe('Remove tile', function () {
+    describe('When tile is removed', function () {
         function act_default(x) {
-            sut.remove_tile(x);
+            return sut.remove_tile(x);
         };
-        it('', function () {
+        it('is no longer in the market', function () {
             // Arrange
             sut.place(tile);
             // Act
-            act_default(tile);
+            act_default({id: 2, unique_id: 'tile2'});
             // Assert
             sut.subscribe_tile_selected();
             sinon.assert.notCalled(token_subscriptions.subscribe);
+        });
+        it('returns the removed tile', function () {
+            // Arrange
+            sut.place(tile);
+            // Act
+            returned_tile = act_default({id: 2, unique_id: 'tile2'});
+            // Assert
+            assert.equal(tile, returned_tile);
         });
     });
     describe('Place wildlife', function () {
