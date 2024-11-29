@@ -62,5 +62,14 @@ define(['dojo/_base/declare'], (declare) => {
             delete this.tiles[tile_specification.id];
             return removed_tile;
         },
+        /**
+         * Use case move wildlife from market, for example into territory
+         * Precondition: wildlife is unsubscribed from token subscriptions
+         */
+        remove_wildlife(wildlife_specification) {
+            removed_wildlife = this.wildlifes[wildlife_specification.id];
+            delete this.wildlifes[wildlife_specification.id];
+            return removed_wildlife;
+        },
     });
 });

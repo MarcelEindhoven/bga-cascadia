@@ -48,7 +48,7 @@ class Actions {
 
     public function select_wildlife($chosen_wildlife_id) {
         $market = MarketUpdate::create($this->decks);
-        PlayerChoosesWildlife::create($this->gamestate)->set_notifications($this->notifications)->set_market($market)->set_chosen_wildlife($chosen_wildlife_id)->execute()->nextState();
+        PlayerChoosesWildlife::create($this->gamestate)->set_notifications($this->notifications)->set_market($market)->set_chosen_wildlife($chosen_wildlife_id)->execute();
     }
 }
 ?>
