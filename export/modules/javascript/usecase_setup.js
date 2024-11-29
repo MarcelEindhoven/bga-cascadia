@@ -17,6 +17,7 @@ define(['dojo/_base/declare'], (declare) => {
         constructor(dependencies) {
             this.clone(dependencies);
             this.habitats = {};
+            this.chosen = null;
         },
         clone(properties){
             for (var property in properties) {
@@ -28,6 +29,17 @@ define(['dojo/_base/declare'], (declare) => {
             this.populate_habitats(gamedatas.wildlife);
             this.setup_market_tiles(gamedatas.market.habitat);
             this.setup_market_wildlife(gamedatas.market.wildlife);
+            this.setup_chosen(gamedatas.chosen);
+        },
+        // Chosen wildlife
+        setup_chosen(wildlife_specification) {
+            if (wildlife_specification) {
+                this.chosen = this.wildlife_factory.create(wildlife_specification);
+                this.chosen.move('chosen');
+            }
+        },
+        get_chosen() {
+            return this.chosen;
         },
 
         // Habitats

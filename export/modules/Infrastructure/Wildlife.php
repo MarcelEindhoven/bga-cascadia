@@ -84,7 +84,7 @@ class CurrentWildlife {
         return $unpacked_cards;
     }
 
-    static protected function unpackType($card): array {
+    static public function unpackType($card): array {
         $card['unique_id'] = 'wildlife' . $card['id'];
         return $card;
     }

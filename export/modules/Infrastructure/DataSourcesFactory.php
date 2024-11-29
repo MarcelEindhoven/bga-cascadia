@@ -36,6 +36,9 @@ class DataSourcesFactory {
 
         $data['market'] = CurrentMarket::create($this->decks)->get();
 
+        foreach ($this->decks['wildlife']->getCardsInLocation('chosen') as $chosen_wildlife)
+            $data['chosen'] = CurrentWildlife::unpackType($chosen_wildlife);
+
         return $data;
     }
 }

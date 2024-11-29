@@ -4,7 +4,7 @@ var sinon = require('sinon');
 var sut_module = require('../export/modules/javascript/usecase_setup.js');
 
 class wildlife_class {
-    constructor(x, y) {wildlife_constructor (x, y);this.value_from_constructor = x;}
+    constructor(x, y) {wildlife_constructor (x, y);this.value_from_constructor = {first: x, second: y};}
 };
 
 class habitat_tile_class {
@@ -105,6 +105,38 @@ describe('Use case Setup', function () {
             assert.equal(place_tile.getCall(0).args[0].value_from_constructor, habitat_tile_factory.dependencies);
         });
     });
+    describe('Chosen wildlife', function () {
+        it('creates nothing if no wildlife is chosen', function () {
+            // Arrange
+            // Act
+            sut.setup_chosen();
+            // Assert
+            sinon.assert.callCount(wildlife_constructor, 0);
+        });
+        it('creates if wildlife is chosen', function () {
+            // Arrange
+            // Act
+            sut.setup_chosen(tile);
+            // Assert
+            sinon.assert.callCount(wildlife_constructor, 1);
+        });
+        it('returns nothing if no wildlife is chosen', function () {
+            // Arrange
+            sut.setup_chosen();
+            // Act
+            chosen = sut.get_chosen();
+            // Assert
+            assert.equal(chosen, null);
+        });
+        it('returns if wildlife is chosen', function () {
+            // Arrange
+            sut.setup_chosen(tile);
+            // Act
+            chosen = sut.get_chosen();
+            // Assert
+            assert.equal(chosen.value_from_constructor.second, tile);
+        });
+    });
     describe('Habitat wildlife', function () {
         beforeEach(function() {
             sut.setup_habitats({23: [tile], 25: [tile]});
@@ -172,7 +204,7 @@ describe('Use case Setup', function () {
             // Act
             act_default(['wildlife']);
             // Assert
-            assert.equal(market.populate.getCall(0).args[0].value_from_constructor, wildlife_factory.dependencies);
+            assert.equal(market.populate.getCall(0).args[0].value_from_constructor.first, wildlife_factory.dependencies);
         });
     });
 });
