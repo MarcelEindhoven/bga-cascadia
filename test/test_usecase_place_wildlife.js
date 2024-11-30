@@ -10,7 +10,7 @@ describe('Use case place wildlife', function () {
             unsubscribe_tile_selected_for_wildlife: sinon.spy(),
         };
 
-        wildlife = {id: 2, terrain_types: [1], supported_wildlife: [2], horizontal: 50, vertical: 50, unique_id: 'wildlife2', };
+        wildlife = {id: 2, type: 1, unique_id: 'wildlife2', };
 
         dependencies = {chosen_wildlife: wildlife, habitat: habitat};
         sut = new sut_module(dependencies);

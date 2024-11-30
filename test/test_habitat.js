@@ -11,10 +11,16 @@ describe('Habitat', function () {
             add_css_class: sinon.spy(),
             resize: sinon.spy(),
         };
-        dependencies = {framework: framework};
+        token_subscriptions = {
+            subscribe: sinon.spy(),
+            unsubscribe: sinon.spy(),
+        };
+        dependencies = {framework: framework, token_subscriptions: token_subscriptions};
 
         sut = new sut_module(dependencies, player_id);
         move_spy = sinon.spy();
+
+        wildlife = {id: 2, type: 1, unique_id: 'wildlife2', move: move_spy,};
 
         tile = {terrain_types: [1], supported_wildlife: [2], horizontal: 50, vertical: 50, unique_id: 'tile2', move: move_spy,};
         other_tile = {id: 2, terrain_types: [1], supported_wildlife: [2], horizontal: 50, vertical: 51, unique_id: 'tile22', move: sinon.spy(),};
@@ -26,6 +32,10 @@ describe('Habitat', function () {
         minimum_size = 50;
         vertical_distance = 80;
         horizontal_distance = 24;
+
+        callback_object = {
+            wildlife_placed: sinon.spy(),
+        };
     });
     describe('Place tile', function () {
         function act_default(x) {
@@ -179,6 +189,61 @@ describe('Habitat', function () {
             assert.equal(framework.resize.getCall(1).args[0], '' + player_id);
             assert.equal(framework.resize.getCall(1).args[1], minimum_size + horizontal_distance);
             assert.equal(framework.resize.getCall(1).args[2], minimum_size + vertical_distance / 2);
+        });
+    });
+    describe('Subscribe', function () {
+        function act_default(x) {
+            sut.subscribe_tile_selected_for_wildlife(callback_object, callback_object.wildlife_placed, x);
+            };
+        it('Does not bother token subscriptions when there are no tiles', function () {
+            // Arrange
+            // Act
+            act_default(wildlife);
+            // Assert
+            sinon.assert.callCount(token_subscriptions.subscribe, 0);
+        });
+        it('Does not bother token subscriptions for placed wildlife', function () {
+            // Arrange
+            sut.place(wildlife);
+            // Act
+            act_default(wildlife);
+            // Assert
+            sinon.assert.callCount(token_subscriptions.subscribe, 0);
+        });
+        it('calls token subscriptions when there is one matching tile', function () {
+            // Arrange
+            tile.supported_wildlife = [wildlife.type];
+            sut.place(tile);
+            // Act
+            act_default(wildlife);
+            // Assert
+            sinon.assert.callCount(token_subscriptions.subscribe, 1);
+            assert.equal(token_subscriptions.subscribe.getCall(0).args[0], callback_object);
+            assert.equal(token_subscriptions.subscribe.getCall(0).args[1], callback_object.wildlife_placed);
+            assert.equal(token_subscriptions.subscribe.getCall(0).args[2], tile);
+        });
+        it('calls token subscriptions once when there is one matching tile and a tile that does not match', function () {
+            // Arrange
+            tile.supported_wildlife = [wildlife.type];
+            sut.place(tile);
+            other_tile.supported_wildlife = [wildlife.type + 1];
+            sut.place(other_tile);
+            // Act
+            act_default(wildlife);
+            // Assert
+            sinon.assert.callCount(token_subscriptions.subscribe, 1);
+        });
+        it('calls token subscriptions unsubscribe once when there is one matching tile and a tile that does not match', function () {
+            // Arrange
+            tile.supported_wildlife = [wildlife.type];
+            sut.place(tile);
+            other_tile.supported_wildlife = [wildlife.type + 1];
+            sut.place(other_tile);
+            // Act
+            act_default(wildlife);
+            sut.unsubscribe_tile_selected_for_wildlife(callback_object, callback_object.wildlife_placed, wildlife);
+            // Assert
+            sinon.assert.callCount(token_subscriptions.unsubscribe, 1);
         });
     });
 });

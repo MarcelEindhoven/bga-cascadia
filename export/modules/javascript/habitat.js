@@ -1,3 +1,5 @@
+const { NUMPAD_0 } = require("dojo/keys");
+
 /**
  * Habitat html size and habitat element relative coordinates
  * Use cases place permanent/proposed tile, remove proposed tile
@@ -36,7 +38,31 @@ define(['dojo/_base/declare'], (declare) => {
         populate(wildlife) {
             this.place(wildlife);
         },
-        // tile_example = {unique_id:1, horizontal: 50, vertical: 50, move: function(this.id, x , y)}
+        /**
+         * Use case: make tiles selectable that support chosen wildlife
+         */
+        subscribe_tile_selected_for_wildlife(object, method, wildlife) {
+            for (index in this.tiles_and_wildlife) {
+                tile_or_wildlife = this.tiles_and_wildlife[index];
+                if (tile_or_wildlife.supported_wildlife)
+                    if (tile_or_wildlife.supported_wildlife.includes(wildlife.type))
+                        this.token_subscriptions.subscribe(object, method, tile_or_wildlife);
+            }
+        },
+        unsubscribe_tile_selected_for_wildlife(object, method, wildlife) {
+            for (index in this.tiles_and_wildlife) {
+                tile_or_wildlife = this.tiles_and_wildlife[index];
+                if (tile_or_wildlife.supported_wildlife)
+                    if (tile_or_wildlife.supported_wildlife.includes(wildlife.type))
+                        this.token_subscriptions.unsubscribe(object, method, tile_or_wildlife);
+            }
+        },
+        /**
+         * Use case: place permanent or temporary tile or wildlife
+         * tile_example = {unique_id:1, horizontal: 50, vertical: 50, move: function(this.id, x , y)}
+         * Postcondition: tile.move has been called
+         * Postcondition: all tiles fit within habitat
+         */
         place(tile) {
             this.resize_if_tile_outside_boundary(tile);
             this.tiles_and_wildlife[tile.unique_id] = tile;
