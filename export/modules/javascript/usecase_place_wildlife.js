@@ -8,7 +8,7 @@ define(['dojo/_base/declare'], (declare) => {
             this.overrule(this, dependencies);
         },
         subscribe_wildlife_placed(object, method) {
-            this.habitat.subscribe_tile_selected_for_wildlife(this, 'candidate_tile_selected', this.chosen_wildlife);
+            this.habitat.subscribe_tile_selected_for_wildlife(this.chosen_wildlife, this, 'candidate_tile_selected');
             this.callback_object = object;
             this.callback_method = method;
         },
@@ -23,7 +23,7 @@ define(['dojo/_base/declare'], (declare) => {
          * Use case Candidate tile selected, this ends the place wildlife use case
          */
         candidate_tile_selected(tile) {
-            this.habitat.unsubscribe_tile_selected_for_wildlife(this, 'candidate_tile_selected', this.chosen_wildlife);
+            this.habitat.unsubscribe_tile_selected_for_wildlife(this.chosen_wildlife, this, 'candidate_tile_selected', this.chosen_wildlife);
             this.callback_object[this.callback_method](tile);
         },
     });

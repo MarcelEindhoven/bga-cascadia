@@ -20,7 +20,7 @@ describe('Habitat', function () {
         sut = new sut_module(dependencies, player_id);
         move_spy = sinon.spy();
 
-        wildlife = {id: 2, type: 1, unique_id: 'wildlife2', move: move_spy,};
+        wildlife = {id: 2, type: '1', unique_id: 'wildlife2', move: move_spy,};
 
         tile = {terrain_types: [1], supported_wildlife: [2], horizontal: 50, vertical: 50, unique_id: 'tile2', move: move_spy,};
         other_tile = {id: 2, terrain_types: [1], supported_wildlife: [2], horizontal: 50, vertical: 51, unique_id: 'tile22', move: sinon.spy(),};
@@ -193,7 +193,7 @@ describe('Habitat', function () {
     });
     describe('Subscribe', function () {
         function act_default(x) {
-            sut.subscribe_tile_selected_for_wildlife(callback_object, callback_object.wildlife_placed, x);
+            sut.subscribe_tile_selected_for_wildlife(x, callback_object, callback_object.wildlife_placed);
             };
         it('Does not bother token subscriptions when there are no tiles', function () {
             // Arrange
@@ -212,21 +212,21 @@ describe('Habitat', function () {
         });
         it('calls token subscriptions when there is one matching tile', function () {
             // Arrange
-            tile.supported_wildlife = [wildlife.type];
+            tile.supported_wildlife = [Number(wildlife.type)];
             sut.place(tile);
             // Act
             act_default(wildlife);
             // Assert
             sinon.assert.callCount(token_subscriptions.subscribe, 1);
-            assert.equal(token_subscriptions.subscribe.getCall(0).args[0], callback_object);
-            assert.equal(token_subscriptions.subscribe.getCall(0).args[1], callback_object.wildlife_placed);
-            assert.equal(token_subscriptions.subscribe.getCall(0).args[2], tile);
+            assert.equal(token_subscriptions.subscribe.getCall(0).args[1], callback_object);
+            assert.equal(token_subscriptions.subscribe.getCall(0).args[2], callback_object.wildlife_placed);
+            assert.equal(token_subscriptions.subscribe.getCall(0).args[0], tile);
         });
         it('calls token subscriptions once when there is one matching tile and a tile that does not match', function () {
             // Arrange
-            tile.supported_wildlife = [wildlife.type];
+            tile.supported_wildlife = [Number(wildlife.type)];
             sut.place(tile);
-            other_tile.supported_wildlife = [wildlife.type + 1];
+            other_tile.supported_wildlife = [Number(wildlife.type) + 1];
             sut.place(other_tile);
             // Act
             act_default(wildlife);
@@ -235,13 +235,13 @@ describe('Habitat', function () {
         });
         it('calls token subscriptions unsubscribe once when there is one matching tile and a tile that does not match', function () {
             // Arrange
-            tile.supported_wildlife = [wildlife.type];
+            tile.supported_wildlife = [Number(wildlife.type)];
             sut.place(tile);
-            other_tile.supported_wildlife = [wildlife.type + 1];
+            other_tile.supported_wildlife = [Number(wildlife.type) + 1];
             sut.place(other_tile);
             // Act
             act_default(wildlife);
-            sut.unsubscribe_tile_selected_for_wildlife(callback_object, callback_object.wildlife_placed, wildlife);
+            sut.unsubscribe_tile_selected_for_wildlife(wildlife, callback_object, callback_object.wildlife_placed);
             // Assert
             sinon.assert.callCount(token_subscriptions.unsubscribe, 1);
         });

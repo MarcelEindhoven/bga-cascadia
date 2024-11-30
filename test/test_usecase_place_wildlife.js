@@ -28,9 +28,9 @@ describe('Use case place wildlife', function () {
             // Act
             act_default(tile);
             // Assert
-            assert.equal(habitat.subscribe_tile_selected_for_wildlife.getCall(0).args[0], sut);
-            assert.equal(habitat.subscribe_tile_selected_for_wildlife.getCall(0).args[1], 'candidate_tile_selected');
-            assert.equal(habitat.subscribe_tile_selected_for_wildlife.getCall(0).args[2], wildlife);
+            assert.equal(habitat.subscribe_tile_selected_for_wildlife.getCall(0).args[1], sut);
+            assert.equal(habitat.subscribe_tile_selected_for_wildlife.getCall(0).args[2], 'candidate_tile_selected');
+            assert.equal(habitat.subscribe_tile_selected_for_wildlife.getCall(0).args[0], wildlife);
         });
     });
     describe('Candidate Tile selected', function () {
@@ -52,9 +52,9 @@ describe('Use case place wildlife', function () {
             // Act
             act_default(tile);
             // Assert
-            assert.equal(habitat.unsubscribe_tile_selected_for_wildlife.getCall(0).args[0], sut);
-            assert.equal(habitat.unsubscribe_tile_selected_for_wildlife.getCall(0).args[1], 'candidate_tile_selected');
-            assert.equal(habitat.unsubscribe_tile_selected_for_wildlife.getCall(0).args[2], wildlife);
+            assert.equal(habitat.unsubscribe_tile_selected_for_wildlife.getCall(0).args[1], sut);
+            assert.equal(habitat.unsubscribe_tile_selected_for_wildlife.getCall(0).args[2], 'candidate_tile_selected');
+            assert.equal(habitat.unsubscribe_tile_selected_for_wildlife.getCall(0).args[0], wildlife);
         });
     });
 });

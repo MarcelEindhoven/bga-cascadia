@@ -41,20 +41,20 @@ define(['dojo/_base/declare'], (declare) => {
         /**
          * Use case: make tiles selectable that support chosen wildlife
          */
-        subscribe_tile_selected_for_wildlife(object, method, wildlife) {
+        subscribe_tile_selected_for_wildlife(wildlife, object, method) {
             for (index in this.tiles_and_wildlife) {
                 tile_or_wildlife = this.tiles_and_wildlife[index];
                 if (tile_or_wildlife.supported_wildlife)
-                    if (tile_or_wildlife.supported_wildlife.includes(wildlife.type))
-                        this.token_subscriptions.subscribe(object, method, tile_or_wildlife);
+                    if (tile_or_wildlife.supported_wildlife.includes(Number(wildlife.type)))
+                        this.token_subscriptions.subscribe(tile_or_wildlife, object, method);
             }
         },
-        unsubscribe_tile_selected_for_wildlife(object, method, wildlife) {
+        unsubscribe_tile_selected_for_wildlife(wildlife, object, method) {
             for (index in this.tiles_and_wildlife) {
                 tile_or_wildlife = this.tiles_and_wildlife[index];
                 if (tile_or_wildlife.supported_wildlife)
-                    if (tile_or_wildlife.supported_wildlife.includes(wildlife.type))
-                        this.token_subscriptions.unsubscribe(object, method, tile_or_wildlife);
+                    if (tile_or_wildlife.supported_wildlife.includes(Number(wildlife.type)))
+                        this.token_subscriptions.unsubscribe(tile_or_wildlife, object, method);
             }
         },
         /**

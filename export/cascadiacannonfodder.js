@@ -25,11 +25,12 @@ define([
     g_gamethemeurl + 'modules/javascript/token_subscriptions.js',
     g_gamethemeurl + 'modules/javascript/usecase_setup.js',
     g_gamethemeurl + 'modules/javascript/usecase_place_tile.js',
+    g_gamethemeurl + 'modules/javascript/usecase_place_wildlife.js',
     g_gamethemeurl + 'modules/javascript/usecase_select_wildlife.js',
     "ebg/core/gamegui",
     "ebg/counter"
 ],
-function (dojo, declare, framework, habitat_tile_class, wildlife_class, habitat_class, market, token_subscriptions, usecase_setup, usecase_place_tile, usecase_select_wildlife) {
+function (dojo, declare, framework, habitat_tile_class, wildlife_class, habitat_class, market, token_subscriptions, usecase_setup, usecase_place_tile, usecase_place_wildlife, usecase_select_wildlife) {
     return declare("bgagame.cascadiacannonfodder", ebg.core.gamegui, {
         constructor: function(){
             console.log('cascadiacannonfodder constructor');
@@ -47,7 +48,7 @@ function (dojo, declare, framework, habitat_tile_class, wildlife_class, habitat_
             this.wildlife_factory = {class:wildlife_class, dependencies: {framework: this.framework}, create: function(wildlife_specification) {return new this.class(this.dependencies, wildlife_specification);}};
             this.habitat_tile_factory = {class:habitat_tile_class, dependencies: {framework: this.framework}, token_subscriptions: this.token_subscriptions, 
                 create: function(tile_specification) {tile = new this.class(this.dependencies, tile_specification); tile.subscribe_selected(this.token_subscriptions, 'token_selected'); return tile;}};
-            this.habitat_factory = {class:habitat_class, dependencies: {framework: this.framework}, create: function(player_id) {return new this.class(this.dependencies, player_id);}};
+            this.habitat_factory = {class:habitat_class, dependencies: {framework: this.framework, token_subscriptions: this.token_subscriptions,}, create: function(player_id) {return new this.class(this.dependencies, player_id);}};
         },
         
         /*
@@ -87,7 +88,7 @@ function (dojo, declare, framework, habitat_tile_class, wildlife_class, habitat_
             this.usecase_setup = new usecase_setup({framework: this.framework, market: this.market, habitat_tile_factory: this.habitat_tile_factory, wildlife_factory: this.wildlife_factory, habitat_factory: this.habitat_factory});
             this.usecase_setup.setup(gamedatas);
             this.habitat = this.usecase_setup.get_habitats();
-            this.chosen =  this.usecase_setup.get_chosen();
+            this.chosen_wildlife =  this.usecase_setup.get_chosen();
 
             this.framework.control_may_be_returned_to_user();
 
@@ -128,6 +129,12 @@ function (dojo, declare, framework, habitat_tile_class, wildlife_class, habitat_
         },
         place_wildlife() {
             console.log('place_wildlife');
+            this.usecase_place_wildlife = new usecase_place_wildlife({habitat: this.habitat[this.player_id], chosen_wildlife: this.chosen_wildlife});
+            this.usecase_place_wildlife.subscribe_wildlife_placed(this, 'wildlife_placed');
+        },
+        wildlife_placed: function(wildlife) {
+            console.log('wildlife_placed');
+            console.log(wildlife);
         },
         place_tile() {
             this.usecase_place_tile = new usecase_place_tile({market: this.market, habitat: this.habitat[this.player_id], token_subscriptions: this.token_subscriptions, habitat_tile_factory: this.habitat_tile_factory});
@@ -317,7 +324,7 @@ function (dojo, declare, framework, habitat_tile_class, wildlife_class, habitat_
             console.log(wildlife_specification);
             wildlife = this.market.remove_wildlife(wildlife_specification);
             this.update_object_with(wildlife, wildlife_specification);
-            this.chosen = wildlife;
+            this.chosen_wildlife = wildlife;
             this.framework.control_may_be_returned_to_user();
         },  
         notify_tile_placed: function(notif) {
