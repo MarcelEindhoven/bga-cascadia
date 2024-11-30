@@ -132,9 +132,12 @@ function (dojo, declare, framework, habitat_tile_class, wildlife_class, habitat_
             this.usecase_place_wildlife = new usecase_place_wildlife({habitat: this.habitat[this.player_id], chosen_wildlife: this.chosen_wildlife});
             this.usecase_place_wildlife.subscribe_wildlife_placed(this, 'wildlife_placed');
         },
-        wildlife_placed: function(wildlife) {
+        wildlife_placed: function(tile) {
             console.log('wildlife_placed');
-            console.log(wildlife);
+            console.log(tile);
+            delete this.usecase_place_wildlife;
+
+            this.call('place_wildlife', {selected_tile_id: tile.id});
         },
         place_tile() {
             this.usecase_place_tile = new usecase_place_tile({market: this.market, habitat: this.habitat[this.player_id], token_subscriptions: this.token_subscriptions, habitat_tile_factory: this.habitat_tile_factory});

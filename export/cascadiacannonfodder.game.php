@@ -215,6 +215,14 @@ class CascadiaCannonFodder extends Table
         $this->actions->place_tile($tile);
     }
 
+    public function place_wildlife($tile) {
+        // self::trace(__FUNCTION__);
+        self::trace(__FUNCTION__ . "(tile)");
+        $this->initialise();
+
+        $this->actions->place_wildlife($tile);
+    }
+
     protected function initialise() {
         $this->actions = new \NieuwenhovenGames\Cascadia\Actions();
 

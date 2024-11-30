@@ -41,6 +41,9 @@ class Actions {
         return $this;
     }
 
+    public function place_wildlife($tile) {
+    }
+
     public function place_tile($tile) {
         $territory = TerritoryUpdate::create($this->player_id);
         PlayerPlacesTile::create($this->gamestate)->set_notifications($this->notifications)->set_territory($territory)->set_tile_deck($this->decks['tile'])->set_moved_tile($tile)->execute()->nextState();

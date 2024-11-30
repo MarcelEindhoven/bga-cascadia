@@ -39,7 +39,6 @@
       }
   	} 
   	
-  	// TODO: defines your action entry points there
 
     public function place_tile() {
       $this->setAjaxMode();     
@@ -57,6 +56,22 @@
 
       // Then, call the appropriate method in your game logic, like "playCard" or "myAction"
       $this->game->place_tile($placed_tile, $selected_wildlife_id);
+
+      $this->ajaxResponse( );
+    }
+
+    public function place_wildlife() {
+      $this->setAjaxMode();     
+      self::trace(__FUNCTION__);
+
+      // Retrieve arguments
+      // Note: these arguments correspond to what has been sent through the javascript "ajaxcall" method
+      $selected_tile = [
+        'id' => $this->getArg( "selected_tile_id", AT_alphanum, true ), 
+      ];
+
+      // Then, call the appropriate method in your game logic, like "playCard" or "myAction"
+      $this->game->place_wildlife($selected_tile);
 
       $this->ajaxResponse( );
     }
