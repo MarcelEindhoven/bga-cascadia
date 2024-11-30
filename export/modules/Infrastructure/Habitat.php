@@ -73,10 +73,14 @@ class TerritoryUpdate {
     static public function create($player_id) : TerritoryUpdate {$object = new TerritoryUpdate(); $object->player_id = $player_id; return $object;}
 
     public function move($deck, $moved_element) {
-        $deck->moveCard($moved_element['id'], $this->player_id, $moved_element['horizontal'] + $moved_element['vertical'] * 100 + $moved_element['rotation'] * 10000);
+        $rotation_argument = (array_key_exists('rotation', $moved_element)) ? $moved_element['rotation'] * 10000: 0;
+        $deck->moveCard($moved_element['id'], $this->player_id, $moved_element['horizontal'] + $moved_element['vertical'] * 100 + $rotation_argument);
     }
     public function get_tile($deck, $moved_element) {
         return CurrentTerritory::unpackPosition(TileTypes::unpackType($deck->getCard($moved_element['id'])));
+    }
+    public function get_wildlife($deck, $moved_element) {
+        return CurrentTerritory::unpackPosition($deck->getCard($moved_element['id']));
     }
 }
 

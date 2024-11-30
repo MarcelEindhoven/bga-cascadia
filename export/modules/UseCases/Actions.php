@@ -7,6 +7,7 @@ namespace NieuwenhovenGames\Cascadia;
  */
 
 include_once(__DIR__.'/PlayerPlacesTile.php');
+include_once(__DIR__.'/PlayerPlacesWildlife.php');
 include_once(__DIR__.'/PlayerChoosesWildlife.php');
 
 include_once(__DIR__.'/../Infrastructure/Habitat.php');
@@ -42,6 +43,8 @@ class Actions {
     }
 
     public function place_wildlife($tile) {
+        $territory = TerritoryUpdate::create($this->player_id);
+        PlayerPlacesWildlife::create($this->gamestate)->set_notifications($this->notifications)->set_territory($territory)->set_tile_deck($this->decks['tile'])->set_wildlife_deck($this->decks['wildlife'])->set_chosen_tile($tile)->execute()->nextState();
     }
 
     public function place_tile($tile) {
@@ -50,6 +53,8 @@ class Actions {
     }
 
     public function select_wildlife($chosen_wildlife_id) {
+        // Chronically this use case is a subset of the player places tile and chooses wildlife use case
+        // The next state function is part of the player places tile sub use case
         $market = MarketUpdate::create($this->decks);
         PlayerChoosesWildlife::create($this->gamestate)->set_notifications($this->notifications)->set_market($market)->set_chosen_wildlife($chosen_wildlife_id)->execute();
     }
