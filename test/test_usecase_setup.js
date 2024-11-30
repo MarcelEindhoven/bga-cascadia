@@ -5,6 +5,7 @@ var sut_module = require('../export/modules/javascript/usecase_setup.js');
 
 class wildlife_class {
     constructor(x, y) {wildlife_constructor (x, y);this.value_from_constructor = {first: x, second: y};}
+    move(element) {move(element);}
 };
 
 class habitat_tile_class {
@@ -30,6 +31,7 @@ describe('Use case Setup', function () {
             place: sinon.spy(),
             populate: sinon.spy(),
         };
+        move = sinon.spy();
         
         // Note that the following statement also calls constructor
         habitat_tile_factory = {class:habitat_tile_class, dependencies: 9, create: function(tile_specification) {return new this.class(this.dependencies, tile_specification);}};
@@ -119,6 +121,13 @@ describe('Use case Setup', function () {
             sut.setup_chosen(tile);
             // Assert
             sinon.assert.callCount(wildlife_constructor, 1);
+        });
+        it('moves if wildlife is chosen', function () {
+            // Arrange
+            // Act
+            sut.setup_chosen(tile);
+            // Assert
+            sinon.assert.callCount(move, 1);
         });
         it('returns nothing if no wildlife is chosen', function () {
             // Arrange
