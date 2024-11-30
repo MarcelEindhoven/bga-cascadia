@@ -18,7 +18,7 @@ class habitat_tile_class {
     }
 };
 
-describe('Use case select tile', function () {
+describe('Use case place tile', function () {
     beforeEach(function() {
         token_subscriptions = {
             subscribe: sinon.spy(),
