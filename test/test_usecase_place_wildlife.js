@@ -5,24 +5,56 @@ var sut_module = require('../export/modules/javascript/usecase_place_wildlife.js
 
 describe('Use case place wildlife', function () {
     beforeEach(function() {
-        token_subscriptions = {
-            subscribe: sinon.spy(),
-            unsubscribe: sinon.spy(),
-        };
-
         habitat = {
-            place: sinon.spy(),
-            remove: sinon.spy(),
-            populate: sinon.spy(),
+            subscribe_tile_selected_for_wildlife: sinon.spy(),
+            unsubscribe_tile_selected_for_wildlife: sinon.spy(),
         };
 
-        dependencies = {token_subscriptions: token_subscriptions, market: market, habitat: habitat};
+        wildlife = {id: 2, terrain_types: [1], supported_wildlife: [2], horizontal: 50, vertical: 50, unique_id: 'wildlife2', };
+
+        dependencies = {chosen_wildlife: wildlife, habitat: habitat};
         sut = new sut_module(dependencies);
 
         callback_object = {
             wildlife_placed: sinon.spy(),
         };
-
-        wildlife = {id: 2, terrain_types: [1], supported_wildlife: [2], horizontal: 50, vertical: 50, unique_id: 'wildlife2', };
+    });
+    describe('Subscribe', function () {
+        function act_default(tile) {
+            sut.subscribe_wildlife_placed(callback_object, 'wildlife_placed');
+        };
+        it('subscribes', function () {
+            // Arrange
+            // Act
+            act_default(tile);
+            // Assert
+            assert.equal(habitat.subscribe_tile_selected_for_wildlife.getCall(0).args[0], sut);
+            assert.equal(habitat.subscribe_tile_selected_for_wildlife.getCall(0).args[1], 'candidate_tile_selected');
+            assert.equal(habitat.subscribe_tile_selected_for_wildlife.getCall(0).args[2], wildlife);
+        });
+    });
+    describe('Candidate Tile selected', function () {
+        beforeEach(function() {
+            sut.subscribe_wildlife_placed(callback_object, 'wildlife_placed');
+        });
+        function act_default(tile) {
+            sut.candidate_tile_selected(tile);
+        };
+        it('calls the subscriber with the selected tile', function () {
+            // Arrange
+            // Act
+            act_default(tile);
+            // Assert
+            assert.equal(callback_object.wildlife_placed.getCall(0).args[0], tile);
+        });
+        it('unsubscribes', function () {
+            // Arrange
+            // Act
+            act_default(tile);
+            // Assert
+            assert.equal(habitat.unsubscribe_tile_selected_for_wildlife.getCall(0).args[0], sut);
+            assert.equal(habitat.unsubscribe_tile_selected_for_wildlife.getCall(0).args[1], 'candidate_tile_selected');
+            assert.equal(habitat.unsubscribe_tile_selected_for_wildlife.getCall(0).args[2], wildlife);
+        });
     });
 });
