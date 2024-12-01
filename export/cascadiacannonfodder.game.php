@@ -283,6 +283,13 @@ class CascadiaCannonFodder extends Table
     }    
     */
 
+    public function stNextPlayer() {
+        self::trace(__FUNCTION__);
+        $this->activeNextPlayer();
+
+        $this->actions->stNextPlayer($this->getActivePlayerId());
+    }
+
 //////////////////////////////////////////////////////////////////////////////
 //////////// Zombie
 ////////////

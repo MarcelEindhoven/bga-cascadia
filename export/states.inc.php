@@ -75,14 +75,14 @@ $machinestates = array(
         "description" => clienttranslate('${actplayer} must place wildlife'),
         "descriptionmyturn" => clienttranslate('${you} must place wildlife'),
         "type" => "activeplayer",
-        "transitions" => array( "" => 10)
-),
-15 => array(
+        "transitions" => array( "" => 15)
+    ),
+    15 => array(
         "name" => "nextPlayer",
         "description" => clienttranslate('Next player'),
         "descriptionmyturn" => clienttranslate('Next player'),
         "type" => "game",
-//        "action" => "stNextPlayer",
+        "action" => "stNextPlayer",
         "possibleactions" => array("player_playing", "ai_playing", "finished_playing"),
         "transitions" => array("player_playing" => 10, "ai_playing" => 16, "finished_playing" => 20)
     ),

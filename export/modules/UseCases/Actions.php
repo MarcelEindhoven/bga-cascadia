@@ -58,5 +58,12 @@ class Actions {
         $market = MarketUpdate::create($this->decks);
         PlayerChoosesWildlife::create($this->gamestate)->set_notifications($this->notifications)->set_market($market)->set_chosen_wildlife($chosen_wildlife_id)->execute();
     }
+
+    public function stNextPlayer($player_id) {
+        $transition_name = 'player_playing';
+        $this->gamestate->nextState($transition_name);
+        //$this->setCurrentPlayerID($player_id);
+        //NextPlayer::create($this->gamestate)->subscribePublicNotifications($this->notifications)->setAIs($this->ais)->setCurrentPlayerID($player_id)->setHome($this->getHome())->setMarket($this->getMarket())->execute()->nextState();
+    }
 }
 ?>
