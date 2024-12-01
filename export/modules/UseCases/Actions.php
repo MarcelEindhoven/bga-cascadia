@@ -6,6 +6,7 @@ namespace NieuwenhovenGames\Cascadia;
  *
  */
 
+include_once(__DIR__.'/NextPlayer.php');
 include_once(__DIR__.'/PlayerPlacesTile.php');
 include_once(__DIR__.'/PlayerPlacesWildlife.php');
 include_once(__DIR__.'/PlayerChoosesWildlife.php');
@@ -60,10 +61,8 @@ class Actions {
     }
 
     public function stNextPlayer($player_id) {
-        $transition_name = 'player_playing';
-        $this->gamestate->nextState($transition_name);
-        //$this->setCurrentPlayerID($player_id);
-        //NextPlayer::create($this->gamestate)->subscribePublicNotifications($this->notifications)->setAIs($this->ais)->setCurrentPlayerID($player_id)->setHome($this->getHome())->setMarket($this->getMarket())->execute()->nextState();
+        $market = MarketUpdate::create($this->decks);
+        NextPlayer::create($this->gamestate)->set_notifications($this->notifications)->set_market($market)->execute()->nextState();
     }
 }
 ?>

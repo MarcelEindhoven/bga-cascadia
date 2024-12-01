@@ -42,7 +42,7 @@ class CurrentMarket {
     }
 }
 
-class MarketUpdate {
+class MarketUpdate extends CurrentMarket {
     static public function create($decks): MarketUpdate {
         $object = new MarketUpdate();
         $object->setDecks($decks);
@@ -62,5 +62,8 @@ class MarketUpdate {
         return $this->decks['wildlife']->getCard($chosen_wildlife_id);
     }
 
+    public function refill($category, $position) {
+        $this->decks[$category]->pickCardForLocation(\NieuwenhovenGames\BGA\FrameworkInterfaces\Deck::STANDARD_DECK, 'market', $position);
+    }
 }
 ?>
