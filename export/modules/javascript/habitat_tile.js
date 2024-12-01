@@ -89,8 +89,8 @@ define(['dojo/_base/declare'], (declare) => {
         /**
          * Specify parameters used in paint
          */
-        move: function(element, x = 0, y = 0) {
-            this.element = element;
+        move: function(location, x = 0, y = 0) {
+            this.location = location;
             this.x = x;
             this.y = y;
         },
@@ -104,7 +104,7 @@ define(['dojo/_base/declare'], (declare) => {
             this.paint_rotation();
         },
         paint_terrain() {
-            this.framework.move(this.unique_id, this.element, this.x, this.y);
+            this.framework.move(this.unique_id, this.location, this.x, this.y);
             if (this.hasMultipleTerrainTypes()) {
                 this.framework.move(this.getSecondTerrainTypeID(), this.unique_id);
             }

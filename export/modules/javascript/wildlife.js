@@ -50,13 +50,13 @@ define(['dojo/_base/declare'], (declare) => {
         subscribe_selected(object, method) {
             this.framework.permanent_subscribe(this.unique_id, object, method);
         },
-        move: function(element, x = 0, y = 0) {
-            this.element = element;
+        move: function(location, x = 0, y = 0) {
+            this.location = location;
             this.x = x;
             this.y = y;
         },
         paint: function() {
-            this.framework.move(this.unique_id, this.element, this.x, this.y);
+            this.framework.move(this.unique_id, this.location, this.x, this.y);
         },
     });
 });

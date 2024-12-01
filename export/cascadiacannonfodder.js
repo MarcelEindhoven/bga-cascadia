@@ -142,7 +142,7 @@ function (dojo, declare, framework, habitat_tile_class, wildlife_class, habitat_
         place_tile() {
             this.usecase_place_tile = new usecase_place_tile({market: this.market, habitat: this.habitat[this.player_id], token_subscriptions: this.token_subscriptions, habitat_tile_factory: this.habitat_tile_factory});
             this.usecase_place_tile.set_candidate_positions(this.gamedatas.adjacent_positions);
-            this.usecase_place_tile.subscribe_tile_placed(this, 'tile_placed');
+            this.usecase_place_tile.subscribe_tile_placed(this, 'tile_position_chosen');
 
             this.usecase_select_wildlife = new usecase_select_wildlife({market: this.market});
             // this.usecase_select_wildlife.initialise(); Already done in constructor
@@ -150,8 +150,8 @@ function (dojo, declare, framework, habitat_tile_class, wildlife_class, habitat_
             // Must be last, after the use case subscriptions to the market
             this.market.subscribe_tile_selected(this.framework, 'control_may_be_returned_to_user');
         },
-        tile_placed: function(tile) {
-            console.log('tile_placed');
+        tile_position_chosen: function(tile) {
+            console.log('tile_position_chosen');
             console.log(tile);
 
             this.market.unsubscribe_tile_selected(this.framework, 'control_may_be_returned_to_user');
@@ -305,6 +305,9 @@ function (dojo, declare, framework, habitat_tile_class, wildlife_class, habitat_
             dojo.subscribe( 'tile_placed', this, "notify_tile_placed" );
             this.notifqueue.setSynchronous( 'tile_placed', 5 );
 
+            dojo.subscribe( 'wildlife_placed', this, "notify_wildlife_placed" );
+            this.notifqueue.setSynchronous( 'wildlife_placed', 5 );
+
             dojo.subscribe( 'wildlife_chosen', this, "notify_wildlife_chosen" );
             this.notifqueue.setSynchronous( 'wildlife_chosen', 5 );
 
@@ -322,14 +325,23 @@ function (dojo, declare, framework, habitat_tile_class, wildlife_class, habitat_
         },  
         notify_wildlife_chosen: function(notif) {
             console.log('notify_wildlife_chosen');
-            console.log(notif.args);
             wildlife_specification = notif.args.wildlife;
             console.log(wildlife_specification);
             wildlife = this.market.remove_wildlife(wildlife_specification);
             this.update_object_with(wildlife, wildlife_specification);
             this.chosen_wildlife = wildlife;
+            console.log(this.chosen_wildlife);
             this.framework.control_may_be_returned_to_user();
         },  
+        notify_wildlife_placed: function(notif) {
+            console.log('notify_wildlife_placed');
+            console.log(notif.args);
+            wildlife_specification = notif.args.wildlife;
+            this.update_object_with(this.chosen_wildlife, wildlife_specification);
+            this.habitat[wildlife_specification.location].populate(this.chosen_wildlife);
+            delete this.chosen_wildlife;
+            this.framework.control_may_be_returned_to_user();
+        },
         notify_tile_placed: function(notif) {
             console.log('notify_tile_placed');
             console.log(notif.args);
