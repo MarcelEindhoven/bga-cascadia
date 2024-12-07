@@ -314,6 +314,12 @@ function (dojo, declare, framework, habitat_tile_class, wildlife_class, habitat_
             dojo.subscribe( 'debug', this, "notify_debug" );
             this.notifqueue.setSynchronous( 'debug', 5 );
 
+            dojo.subscribe( 'market_refill_tile', this, "notify_market_refill_tile" );
+            this.notifqueue.setSynchronous( 'market_refill_tile', 5 );
+
+            dojo.subscribe( 'market_refill_wildlife', this, "notify_market_refill_wildlife" );
+            this.notifqueue.setSynchronous( 'market_refill_wildlife', 5 );
+
             // TODO: here, associate your game notifications with local methods
             
             // Example 1: standard notification handling
@@ -326,9 +332,25 @@ function (dojo, declare, framework, habitat_tile_class, wildlife_class, habitat_
             // this.notifqueue.setSynchronous( 'cardPlayed', 3000 );
             // 
         },  
+        notify_market_refill_wildlife: function(notif) {
+            console.log('notify_market_refill_wildlife');
+            console.log(notif.args);
+            wildlife_specification = notif.args;
+            console.log(wildlife_specification);
+            this.market.populate(this.wildlife_factory.create(wildlife_specification));
+            this.framework.control_may_be_returned_to_user();
+        },
+        notify_market_refill_tile: function(notif) {
+            console.log('notify_market_refill_tile');
+            console.log(notif.args);
+            tile_specification = notif.args;
+            console.log(tile_specification);
+            this.market.place(this.habitat_tile_factory.create(tile_specification));
+            this.framework.control_may_be_returned_to_user();
+        },
         notify_debug: function(notif) {
             console.log('notify_debug');
-            console.log(notif.args.info);
+            console.log(notif.args);
         },
         notify_wildlife_chosen: function(notif) {
             console.log('notify_wildlife_chosen');

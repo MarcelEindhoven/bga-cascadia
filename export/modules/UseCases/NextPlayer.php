@@ -44,11 +44,10 @@ class NextPlayer extends \NieuwenhovenGames\BGA\Action {
         return $locations;
     }
     protected function replenish($category, $market_locations) {
-        $this->notifications->notifyAllPlayers('replenish', 'replenish', []);
         $missing_locations = array_diff([0, 1, 2, 3], $market_locations);
         foreach ($missing_locations as $missing_location) {
-            $this->notifications->notifyAllPlayers('refill', 'refill', []);
             $this->market->refill($category, $missing_location);
+            $this->notifications->notifyAllPlayers('market_refill_' . $category, 'refill', $this->market->get()[$category][$missing_location]);
         }
     }
 

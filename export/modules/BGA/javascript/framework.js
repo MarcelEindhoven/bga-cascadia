@@ -7,6 +7,7 @@ define(['dojo/_base/declare'], (declare) => {
         setGameGUI(dom){this.dom = dom},
 
         createToken(category, id, type){
+            console.log ('createToken ' + category + ' id ' + id);
             block = this.dom.format_block(category, {token_id: id});
             this.toolkit.place(block, 'tokens');
             this.toolkit.addClass(id, type);
