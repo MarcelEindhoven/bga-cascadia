@@ -18,8 +18,8 @@ class TerritoryUpdateTest extends TestCase{
     protected ?\NieuwenhovenGames\BGA\FrameworkInterfaces\Deck $mock_cards = null;
 
     protected string $player_id = "77";
-    protected array $tile = ['id' => 5, 'type' => 0, 'type_arg' => 0, 'location_arg' => 0, 'unique_id' =>'habitat_5', 'horizontal' => 0, 'vertical' => 0, 'rotation' => 0];
-    protected array $wildlife = ['id' => 5, 'type' => 0, 'type_arg' => 0, 'location_arg' => 0, 'unique_id' =>'habitat_5', 'horizontal' => 0, 'vertical' => 0];
+    protected array $tile = ['id' => 5, 'type' => 0, 'type_arg' => 0, 'location_arg' => 0, 'unique_id' =>'tile_5', 'horizontal' => 0, 'vertical' => 0, 'rotation' => 0];
+    protected array $wildlife = ['id' => 5, 'type' => 0, 'type_arg' => 0, 'location_arg' => 0, 'unique_id' =>'wildlife_5', 'horizontal' => 0, 'vertical' => 0];
 
     protected function setUp(): void {
         $this->sut = TerritoryUpdate::create($this->player_id);

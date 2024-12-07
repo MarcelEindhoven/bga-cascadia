@@ -57,7 +57,7 @@ class NextPlayerTest extends TestCase{
 
     public function test_empty_market_requires_8refill() {
         // Arrange
-        $empty_market = ['habitat' => [], 'wildlife' => [], ];
+        $empty_market = ['tile' => [], 'wildlife' => [], ];
         $this->mock_market->expects($this->exactly(1))->method('get')->willReturn($empty_market);
         $this->mock_market->expects($this->exactly(8))->method('refill');
         // Act

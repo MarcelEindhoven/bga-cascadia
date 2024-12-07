@@ -41,12 +41,12 @@ class CurrentMarketTest extends TestCase{
         list($card2, $expected2) = $this->createCardAndExpectedHabitat([1], [1], 3);
         list($card3, $expected3) = $this->createCardAndExpectedHabitat([1, 4, 5], [1, 5], 2);
         return [
-            [[], ['habitat' => [], 'wildlife' => []]],
-            [[$card1], ['habitat' => [$expected1], 'wildlife' => []]],
-            [[$card2], ['habitat' => [$expected2], 'wildlife' => []]],
-            [[$card1, $card3], ['habitat' => [$expected1, $expected3], 'wildlife' => []]],
+            [[], ['tile' => [], 'wildlife' => []]],
+            [[$card1], ['tile' => [$expected1], 'wildlife' => []]],
+            [[$card2], ['tile' => [$expected2], 'wildlife' => []]],
+            [[$card1, $card3], ['tile' => [$expected1, $expected3], 'wildlife' => []]],
             // Sort according to location argument
-            [[$card3, $card2, $card1], ['habitat' => [$expected1, $expected3, $expected2], 'wildlife' => []]],
+            [[$card3, $card2, $card1], ['tile' => [$expected1, $expected3, $expected2], 'wildlife' => []]],
         ];
     }
 
@@ -81,9 +81,9 @@ class CurrentMarketTest extends TestCase{
         list($card1, $expected1) = $this->createCardAndExpectedWildlife(1, 0);
         list($card2, $expected2) = $this->createCardAndExpectedWildlife(4, 3);
         return [
-            [[], ['habitat' => [], 'wildlife' => []]],
-            [[$card1], ['habitat' => [], 'wildlife' => [$expected1]]],
-            [[$card2], ['habitat' => [], 'wildlife' => [$expected2]]],
+            [[], ['tile' => [], 'wildlife' => []]],
+            [[$card1], ['tile' => [], 'wildlife' => [$expected1]]],
+            [[$card2], ['tile' => [], 'wildlife' => [$expected2]]],
         ];
     }
 

@@ -311,6 +311,9 @@ function (dojo, declare, framework, habitat_tile_class, wildlife_class, habitat_
             dojo.subscribe( 'wildlife_chosen', this, "notify_wildlife_chosen" );
             this.notifqueue.setSynchronous( 'wildlife_chosen', 5 );
 
+            dojo.subscribe( 'debug', this, "notify_debug" );
+            this.notifqueue.setSynchronous( 'debug', 5 );
+
             // TODO: here, associate your game notifications with local methods
             
             // Example 1: standard notification handling
@@ -323,6 +326,10 @@ function (dojo, declare, framework, habitat_tile_class, wildlife_class, habitat_
             // this.notifqueue.setSynchronous( 'cardPlayed', 3000 );
             // 
         },  
+        notify_debug: function(notif) {
+            console.log('notify_debug');
+            console.log(notif.args.info);
+        },
         notify_wildlife_chosen: function(notif) {
             console.log('notify_wildlife_chosen');
             wildlife_specification = notif.args.wildlife;
@@ -332,7 +339,7 @@ function (dojo, declare, framework, habitat_tile_class, wildlife_class, habitat_
             this.chosen_wildlife = wildlife;
             console.log(this.chosen_wildlife);
             this.framework.control_may_be_returned_to_user();
-        },  
+        },
         notify_wildlife_placed: function(notif) {
             console.log('notify_wildlife_placed');
             console.log(notif.args);

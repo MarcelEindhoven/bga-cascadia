@@ -61,6 +61,7 @@ class Actions {
     }
 
     public function stNextPlayer($player_id) {
+        $this->notifications->notifyAllPlayers('debug', 'decks', ['info' =>$this->decks]);
         $market = MarketUpdate::create($this->decks);
         NextPlayer::create($this->gamestate)->set_notifications($this->notifications)->set_market($market)->execute()->nextState();
     }

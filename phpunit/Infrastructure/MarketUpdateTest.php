@@ -18,11 +18,11 @@ class MarketUpdateTest extends TestCase{
     protected ?\NieuwenhovenGames\BGA\FrameworkInterfaces\Deck $mock_deck_wildlife = null;
 
     protected string $chosen_wildlife_id = "77";
-    protected array $wildlife = ['id' => 5, 'unique_id' =>'habitat_5', 'horizontal' => 0, 'vertical' => 0, 'rotation' => 0];
+    protected array $wildlife = ['id' => 5, 'unique_id' =>'wildlife_5', 'horizontal' => 0, 'vertical' => 0, 'rotation' => 0];
 
     protected function setUp(): void {
         $this->mock_deck_wildlife = $this->createMock(\NieuwenhovenGames\BGA\FrameworkInterfaces\Deck::class);
-        $this->sut = MarketUpdate::create(['wildlife' => $this->mock_deck_wildlife]);
+        $this->sut = MarketUpdate::create(['wildlife' => $this->mock_deck_wildlife, 'tile' => $this->mock_deck_wildlife]);
     }
 
     public function test_select_wildlife_then_location_equals_chosen() {

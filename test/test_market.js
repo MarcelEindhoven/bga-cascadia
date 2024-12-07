@@ -29,7 +29,7 @@ describe('market', function () {
             act_default(tile);
             // Assert
             assert.equal(tile.move.getCall(0).args.length, 1);
-            assert.equal(tile.move.getCall(0).args[0], 'habitat_' + tile.location_arg);
+            assert.equal(tile.move.getCall(0).args[0], 'tile_' + tile.location_arg);
         });
     });
     describe('Remove tile', function () {

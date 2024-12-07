@@ -21,7 +21,7 @@ define(['dojo/_base/declare'], (declare) => {
         set_token_subscriptions(token_subscriptions){this.token_subscriptions = token_subscriptions;},
         place(tile) {
             this.tiles[tile.id] = tile;
-            tile.move('habitat_' + tile.location_arg);
+            tile.move('tile_' + tile.location_arg);
         },
         populate(wildlife) {
             this.wildlifes[wildlife.id] = wildlife;

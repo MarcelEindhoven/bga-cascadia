@@ -71,7 +71,7 @@ class view_cascadiacannonfodder_cascadiacannonfodder extends game_view
         $this->page->begin_block( "cascadiacannonfodder_cascadiacannonfodder", "market_element" );
         $this->page->begin_block( "cascadiacannonfodder_cascadiacannonfodder", "market_row" );
 
-        $this->build_market_row('habitat');
+        $this->build_market_row('tile');
         $this->build_market_row('wildlife');
     }
     function build_market_row($item_name) {

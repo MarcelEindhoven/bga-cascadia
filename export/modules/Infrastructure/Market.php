@@ -22,7 +22,7 @@ class CurrentMarket {
     }
 
     public function setDecks($decks): CurrentMarket {
-        $this->converters['habitat'] = CurrentMarketTiles::create($decks['tile']);
+        $this->converters['tile'] = CurrentMarketTiles::create($decks['tile']);
         $this->converters['wildlife'] = CurrentWildlifeMarket::create($decks['wildlife']);
         return $this;
     }
@@ -50,8 +50,8 @@ class MarketUpdate extends CurrentMarket {
     }
 
     public function setDecks($decks): MarketUpdate {
-        $this->decks = $decks;
-        return $this;
+        $this->decks = ['tile' => $decks['tile'], 'wildlife' => $decks['wildlife']];
+        return parent::setDecks($this->decks);
     }
 
     public function select_wildlife($chosen_wildlife_id) {

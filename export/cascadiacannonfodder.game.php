@@ -285,6 +285,8 @@ class CascadiaCannonFodder extends Table
 
     public function stNextPlayer() {
         self::trace(__FUNCTION__);
+        $this->initialise();
+
         $this->activeNextPlayer();
 
         $this->actions->stNextPlayer($this->getActivePlayerId());
