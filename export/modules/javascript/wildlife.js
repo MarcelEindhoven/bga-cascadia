@@ -28,11 +28,9 @@ define(['dojo/_base/declare'], (declare) => {
             this.clone(dependencies);
             this.create(wildlife);
         },
-        // wildlife_example: {terrain_types: [1], supported_wildlife: [2], unique_id: 'wildlife2', rotation: 5},
         create(wildlife){
             this.clone(wildlife);
 
-            // Note that the field token has the same id as the wildlife, which is used in the subscribe
             this.framework.createToken('wildlife', this.unique_id, 'wildlife' + this.type);
             
             this.framework.subscribe_paint(this);

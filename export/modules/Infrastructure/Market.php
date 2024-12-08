@@ -35,6 +35,10 @@ class CurrentMarket {
         return $items_per_row;
     }
 
+    public function get_specific_item($name, $location) {
+        return $this->getItemsSortedOnRowIndex($this->converters[$name])[$location];
+    }
+
     protected function getItemsSortedOnRowIndex($converter): array {
         $cards = $converter->get();
         array_multisort(array_column($cards, 'location_arg'), SORT_ASC, $cards);

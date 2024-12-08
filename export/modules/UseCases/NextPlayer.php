@@ -32,9 +32,16 @@ class NextPlayer extends \NieuwenhovenGames\BGA\Action {
 
     protected function replenishMarket() : NextPlayer {
         foreach ($this->market->get() as $category => $market_row)
-            $this->replenish($category, $this->getLocationsFromMarketRow($market_row));
+            $this->replenish($category, $market_row);
 
         return $this;
+    }
+    protected function replenish($category, $market_row) {
+        $missing_locations = array_diff([0, 1, 2, 3], $this->getLocationsFromMarketRow($market_row));
+        foreach ($missing_locations as $missing_location) {
+            $this->market->refill($category, $missing_location);
+            $this->notifications->notifyAllPlayers('market_refill_' . $category, 'refill', $this->market->get_specific_item($category, $missing_location));
+        }
     }
     protected function getLocationsFromMarketRow($market_row) {
         $locations = [];
@@ -42,13 +49,6 @@ class NextPlayer extends \NieuwenhovenGames\BGA\Action {
             $locations[] = $card['location_arg'];
         }
         return $locations;
-    }
-    protected function replenish($category, $market_locations) {
-        $missing_locations = array_diff([0, 1, 2, 3], $market_locations);
-        foreach ($missing_locations as $missing_location) {
-            $this->market->refill($category, $missing_location);
-            $this->notifications->notifyAllPlayers('market_refill_' . $category, 'refill', $this->market->get()[$category][$missing_location]);
-        }
     }
 
     protected function getEvent($category) {

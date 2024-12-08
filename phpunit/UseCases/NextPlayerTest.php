@@ -22,6 +22,8 @@ class NextPlayerTest extends TestCase{
     protected ?\NieuwenhovenGames\BGA\FrameworkInterfaces\Deck $mock_cards = null;
     protected ?\NieuwenhovenGames\BGA\FrameworkInterfaces\Notifications $mock_notifications = null;
     protected ?MarketUpdate $mock_market = null;
+    protected array $full_market = ['tile' => [['location_arg' => 0], ['location_arg' => 1], ['location_arg' => 2], ['location_arg' => 3]],
+                                    'wildlife' => [['location_arg' => 0], ['location_arg' => 1], ['location_arg' => 2], ['location_arg' => 3]]];
 
     protected function setUp(): void {
         $this->mock_gamestate = $this->createMock(\NieuwenhovenGames\BGA\FrameworkInterfaces\GameState::class);
@@ -38,7 +40,7 @@ class NextPlayerTest extends TestCase{
         // Arrange
         $full_market = ['wildlife' => [['location_arg' => 0], ['location_arg' => 1], ['location_arg' => 2], ['location_arg' => 3]]];
         $this->mock_market->expects($this->exactly(1))->method('get')->willReturn($full_market);
-        $this->mock_market->expects($this->exactly(0))->method('refill');
+        $this->arrange_expect_refills(0);
         // Act
         $this->act_default();
         // Assert
@@ -50,6 +52,7 @@ class NextPlayerTest extends TestCase{
         $almost_full_market = [$category => [['location_arg' => 0], ['location_arg' => 1], ['location_arg' => 3]]];
         $this->mock_market->expects($this->exactly(1))->method('get')->willReturn($almost_full_market);
         $this->mock_market->expects($this->exactly(1))->method('refill')->with($category, 2);
+        $this->arrange_expect_refills(1);
         // Act
         $this->act_default();
         // Assert
@@ -59,7 +62,8 @@ class NextPlayerTest extends TestCase{
         // Arrange
         $empty_market = ['tile' => [], 'wildlife' => [], ];
         $this->mock_market->expects($this->exactly(1))->method('get')->willReturn($empty_market);
-        $this->mock_market->expects($this->exactly(8))->method('refill');
+        
+        $this->arrange_expect_refills(8);
         // Act
         $this->act_default();
         // Assert
@@ -67,6 +71,10 @@ class NextPlayerTest extends TestCase{
 
     protected function act_default() {
         $this->sut->execute();
+    }
+    protected function arrange_expect_refills($amount_refills) {
+        $this->mock_market->expects($this->exactly($amount_refills))->method('refill');
+        $this->mock_market->method('get_specific_item')->willReturn(['location_arg' => 0]);
     }
 }
 
