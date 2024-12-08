@@ -60,6 +60,15 @@
       $this->ajaxResponse( );
     }
 
+    public function do_not_place_wildlife() {
+      $this->setAjaxMode();     
+      self::trace(__FUNCTION__);
+
+      $this->game->do_not_place_wildlife();
+
+      $this->ajaxResponse( );
+    }
+
     public function place_wildlife() {
       $this->setAjaxMode();     
       self::trace(__FUNCTION__);

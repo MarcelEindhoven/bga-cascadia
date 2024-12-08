@@ -8,6 +8,7 @@ namespace NieuwenhovenGames\Cascadia;
 
 include_once(__DIR__.'/NextPlayer.php');
 include_once(__DIR__.'/PlayerPlacesTile.php');
+include_once(__DIR__.'/PlayerDoesNotPlaceWildlife.php');
 include_once(__DIR__.'/PlayerPlacesWildlife.php');
 include_once(__DIR__.'/PlayerChoosesWildlife.php');
 
@@ -41,6 +42,10 @@ class Actions {
     public function set_player_id($player_id) : Actions {
         $this->player_id = $player_id;
         return $this;
+    }
+
+    public function do_not_place_wildlife() {
+        PlayerDoesNotPlaceWildlife::create($this->gamestate)->set_notifications($this->notifications)->set_wildlife_deck($this->decks['wildlife'])->execute()->nextState();
     }
 
     public function place_wildlife($tile) {

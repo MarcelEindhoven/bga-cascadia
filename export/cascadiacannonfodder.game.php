@@ -215,6 +215,14 @@ class CascadiaCannonFodder extends Table
         $this->actions->place_tile($tile);
     }
 
+    public function do_not_place_wildlife() {
+        // self::trace(__FUNCTION__);
+        self::trace(__FUNCTION__ . "()");
+        $this->initialise();
+
+        $this->actions->do_not_place_wildlife();
+    }
+
     public function place_wildlife($tile) {
         // self::trace(__FUNCTION__);
         self::trace(__FUNCTION__ . "(tile)");

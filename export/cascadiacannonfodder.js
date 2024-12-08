@@ -210,7 +210,10 @@ function (dojo, declare, framework, habitat_tile_class, wildlife_class, habitat_
             {            
                 switch( stateName )
                 {
-/*               
+                    case 'playerPlacesWildlife':
+                        this.addActionButton( 'button_1_id', _('Do not place wildlife'), 'do_not_place_wildlife' ); 
+                        break;
+    /*               
                  Example:
  
                  case 'myGameState':
@@ -224,7 +227,10 @@ function (dojo, declare, framework, habitat_tile_class, wildlife_class, habitat_
 */
                 }
             }
-        },        
+        },
+        do_not_place_wildlife: function () {
+            this.call('do_not_place_wildlife');
+        },
 
         ///////////////////////////////////////////////////
         //// Utility methods
