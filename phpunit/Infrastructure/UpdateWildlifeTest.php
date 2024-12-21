@@ -35,7 +35,7 @@ class UpdateWildlifeTest extends TestCase{
         // Assert
     }
 
-    public function test_get_unique_id() {
+    public function test_get_from_habitat_unique_id() {
         // Arrange
         $this->mock_cards->expects($this->exactly(1))->method('getCard')->with($this->wildlife['id'])->willReturn($this->wildlife);
         // Act
@@ -44,13 +44,30 @@ class UpdateWildlifeTest extends TestCase{
         $this->assertEquals('wildlife' . $this->wildlife['id'], $wildlife['unique_id']);
     }
 
-    public function test_get_tile_unique_id() {
+    public function test_get_from_habitat_tile_unique_id() {
         // Arrange
         $this->mock_cards->expects($this->exactly(1))->method('getCard')->willReturn($this->wildlife);
         // Act
         $wildlife = $this->sut->get_from_habitat($this->wildlife['id']);
         // Assert
         $this->assertEquals('tile' . $this->wildlife['location_arg'], $wildlife['tile_unique_id']);
+    }
+
+    public function test_get_chosen_tile_unique_id() {
+        // Arrange
+        $this->mock_cards->expects($this->exactly(1))->method('getCardsInLocation')->willReturn([$this->wildlife]);
+        // Act
+        $wildlife = $this->sut->get_chosen();
+        // Assert
+        $this->assertEquals('wildlife' . $this->wildlife['id'], $wildlife['unique_id']);
+    }
+
+    public function test_get_chosen_getCardsInLocation_with_chosen() {
+        // Arrange
+        $this->mock_cards->expects($this->exactly(1))->method('getCardsInLocation')->with('chosen')->willReturn([$this->wildlife]);
+        // Act
+        $wildlife = $this->sut->get_chosen();
+        // Assert
     }
 }
 

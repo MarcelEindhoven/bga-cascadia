@@ -98,6 +98,12 @@ class UpdateWildlife extends CurrentWildlife {
         $this->deck->moveCard($moved_element['id'], $player_id, $selected_tile_id);
     }
 
+    public function get_chosen() {
+        $chosen_wildlife_cards = $this->deck->getCardsInLocation('chosen');
+        $wildlife = array_pop($chosen_wildlife_cards);
+        return CurrentWildlife::unpackType($wildlife);
+    }
+
     public function get_from_habitat($id) {
         return CurrentWildlifeTerritory::unpack_tile(CurrentWildlife::unpackType($this->deck->getCard($id)));
     }

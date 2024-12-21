@@ -15,10 +15,10 @@ class PlayerPlacesWildlife extends \NieuwenhovenGames\BGA\Action {
     }
 
     /**
-     * territory supports move($deck, $moved_element)
+     * wildlife_handler supports move($deck, $moved_element)
      */
-    public function set_territory($territory) : PlayerPlacesWildlife {
-        $this->territory = $territory;
+    public function set_wildlife_handler($wildlife_handler) : PlayerPlacesWildlife {
+        $this->wildlife_handler = $wildlife_handler;
         return $this;
     }
 
@@ -47,7 +47,7 @@ class PlayerPlacesWildlife extends \NieuwenhovenGames\BGA\Action {
     }
 
     public function execute(): PlayerPlacesWildlife {
-        $tile = $this->territory->get_tile($this->tile_deck, $this->selected_tile_id);
+        $tile = $this->wildlife_handler->get_tile($this->tile_deck, $this->selected_tile_id);
 
         $chosen_wildlife_cards = $this->wildlife_deck->getCardsInLocation('chosen');
         $wildlife_specification = array_pop($chosen_wildlife_cards);
@@ -56,9 +56,9 @@ class PlayerPlacesWildlife extends \NieuwenhovenGames\BGA\Action {
         $wildlife_specification['vertical'] = $tile['vertical'];
         $wildlife_specification['rotation'] = 0;
 
-        $this->territory->move($this->wildlife_deck, $wildlife_specification);
+        $this->wildlife_handler->move($this->wildlife_deck, $wildlife_specification);
 
-        $wildlife = $this->territory->get_wildlife($this->wildlife_deck, $wildlife_specification);
+        $wildlife = $this->wildlife_handler->get_wildlife($this->wildlife_deck, $wildlife_specification);
         $this->notifications->notifyAllPlayers('wildlife_placed', 'wildlife_placed', ['wildlife' => $wildlife]);
 
         return $this;
