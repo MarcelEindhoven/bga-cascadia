@@ -20,7 +20,7 @@ describe('Habitat', function () {
         sut = new sut_module(dependencies, player_id);
         move_spy = sinon.spy();
 
-        wildlife = {id: 2, type: '1', unique_id: 'wildlife2', move: move_spy,};
+        wildlife = {id: 2, type: '1', unique_id: 'wildlife2', tile_unique_id: 'tile2', move: move_spy,};
 
         tile = {terrain_types: [1], supported_wildlife: [2], horizontal: 50, vertical: 50, unique_id: 'tile2', move: move_spy,};
         other_tile = {id: 2, terrain_types: [1], supported_wildlife: [2], horizontal: 50, vertical: 51, unique_id: 'tile22', move: sinon.spy(),};
@@ -36,6 +36,18 @@ describe('Habitat', function () {
         callback_object = {
             wildlife_placed: sinon.spy(),
         };
+    });
+    describe('Populate', function () {
+        function act_default(x) {
+            sut.populate(x);
+        };
+        it('moves to a tile', function () {
+            // Arrange
+            // Act
+            act_default(wildlife);
+            // Assert
+            assert.equal(wildlife.move.getCall(0).args[0], wildlife.tile_unique_id);
+        });
     });
     describe('Place tile', function () {
         function act_default(x) {
@@ -202,14 +214,6 @@ describe('Habitat', function () {
             // Assert
             sinon.assert.callCount(token_subscriptions.subscribe, 0);
         });
-        it('Does not bother token subscriptions for placed wildlife', function () {
-            // Arrange
-            sut.place(wildlife);
-            // Act
-            act_default(wildlife);
-            // Assert
-            sinon.assert.callCount(token_subscriptions.subscribe, 0);
-        });
         it('calls token subscriptions when there is one matching tile', function () {
             // Arrange
             tile.supported_wildlife = [Number(wildlife.type)];
@@ -218,9 +222,9 @@ describe('Habitat', function () {
             act_default(wildlife);
             // Assert
             sinon.assert.callCount(token_subscriptions.subscribe, 1);
+            assert.equal(token_subscriptions.subscribe.getCall(0).args[0], tile);
             assert.equal(token_subscriptions.subscribe.getCall(0).args[1], callback_object);
             assert.equal(token_subscriptions.subscribe.getCall(0).args[2], callback_object.wildlife_placed);
-            assert.equal(token_subscriptions.subscribe.getCall(0).args[0], tile);
         });
         it('calls token subscriptions once when there is one matching tile and a tile that does not match', function () {
             // Arrange

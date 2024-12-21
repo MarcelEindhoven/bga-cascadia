@@ -19,7 +19,7 @@ define(['dojo/_base/declare'], (declare) => {
 
             this.id = '' + id;
 
-            this.tiles_and_wildlife = [];
+            this.tiles = [],
             this.x_minimum = 5000000;
             this.x_maximum = 0;
             this.y_minimum = 5000000;
@@ -31,30 +31,30 @@ define(['dojo/_base/declare'], (declare) => {
             }
         },
 
-        remove(tile_or_wildlife) {
-            delete this.tiles_and_wildlife[tile_or_wildlife.unique_id];
+        remove(tile) {
+            delete this.tiles[tile.unique_id];
         },
 
         populate(wildlife) {
-            this.place(wildlife);
+            wildlife.move(wildlife.tile_unique_id);
         },
         /**
          * Use case: make tiles selectable that support chosen wildlife
          */
         subscribe_tile_selected_for_wildlife(wildlife, object, method) {
-            for (index in this.tiles_and_wildlife) {
-                tile_or_wildlife = this.tiles_and_wildlife[index];
-                if (tile_or_wildlife.supported_wildlife)
-                    if (tile_or_wildlife.supported_wildlife.includes(Number(wildlife.type)))
-                        this.token_subscriptions.subscribe(tile_or_wildlife, object, method);
+            for (index in this.tiles) {
+                tile = this.tiles[index];
+                if (tile.supported_wildlife)
+                    if (tile.supported_wildlife.includes(Number(wildlife.type)))
+                        this.token_subscriptions.subscribe(tile, object, method);
             }
         },
         unsubscribe_tile_selected_for_wildlife(wildlife, object, method) {
-            for (index in this.tiles_and_wildlife) {
-                tile_or_wildlife = this.tiles_and_wildlife[index];
-                if (tile_or_wildlife.supported_wildlife)
-                    if (tile_or_wildlife.supported_wildlife.includes(Number(wildlife.type)))
-                        this.token_subscriptions.unsubscribe(tile_or_wildlife, object, method);
+            for (index in this.tiles) {
+                tile = this.tiles[index];
+                if (tile.supported_wildlife)
+                    if (tile.supported_wildlife.includes(Number(wildlife.type)))
+                        this.token_subscriptions.unsubscribe(tile, object, method);
             }
         },
         /**
@@ -65,7 +65,7 @@ define(['dojo/_base/declare'], (declare) => {
          */
         place(tile) {
             this.resize_if_tile_outside_boundary(tile);
-            this.tiles_and_wildlife[tile.unique_id] = tile;
+            this.tiles[tile.unique_id] = tile;
             this.relocate(tile);
         },
         resize_if_tile_outside_boundary(tile) {
@@ -96,14 +96,14 @@ define(['dojo/_base/declare'], (declare) => {
             }
         },
         relocate_tiles() {
-            for (index in this.tiles_and_wildlife)
-                this.relocate(this.tiles_and_wildlife[index]);
+            for (index in this.tiles)
+                this.relocate(this.tiles[index]);
         },
-        relocate(tile_or_wildlife) {
+        relocate(tile) {
             const y_centre = (this.y_maximum + this.y_minimum)/2;
             const x_centre = (this.x_maximum + this.x_minimum)/2;
-            const [x, y] = this.getAbsoluteCoordinates(tile_or_wildlife.horizontal, tile_or_wildlife.vertical);
-            tile_or_wildlife.move(this.id, x - x_centre, y - y_centre);
+            const [x, y] = this.getAbsoluteCoordinates(tile.horizontal, tile.vertical);
+            tile.move(this.id, x - x_centre, y - y_centre);
         },
         getAbsoluteCoordinates(horizontal, vertical) {
             x = horizontal* this.horizontal_distance;
