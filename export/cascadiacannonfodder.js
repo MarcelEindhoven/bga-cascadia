@@ -210,10 +210,13 @@ function (dojo, declare, framework, habitat_tile_class, wildlife_class, habitat_
             {            
                 switch( stateName )
                 {
+                    case 'playerPlacesTile':
+                        this.addActionButton( 'button_1_id', _('Rotate tile'), 'rotate_tile' ); 
+                        break;
                     case 'playerPlacesWildlife':
                         this.addActionButton( 'button_1_id', _('Do not place wildlife'), 'do_not_place_wildlife' ); 
                         break;
-    /*               
+            /*               
                  Example:
  
                  case 'myGameState':
@@ -227,6 +230,9 @@ function (dojo, declare, framework, habitat_tile_class, wildlife_class, habitat_
 */
                 }
             }
+        },
+        rotate_tile: function () {
+            this.usecase_place_tile.rotate_tile();
         },
         do_not_place_wildlife: function () {
             this.usecase_place_wildlife.do_not_place_wildlife();
