@@ -54,7 +54,7 @@ class CurrentWildlifeTest extends TestCase{
         $location_argument = $rotation * 10000 + $y*100 + $x;
         return [
             ['id' => 5, 'type' => $type, 'location' => CurrentWildlifeTest::DEFAULT_PLAYER_ID, 'location_arg' => $location_argument],
-            ['id' => 5, 'type' => $type, 'location' => CurrentWildlifeTest::DEFAULT_PLAYER_ID, 'location_arg' => $location_argument, CurrentTerritory::X => $x, CurrentTerritory::Y => $y, 'rotation' => $rotation, 'unique_id' => 'wildlife' . 5],
+            ['id' => 5, 'type' => $type, 'location' => CurrentWildlifeTest::DEFAULT_PLAYER_ID, 'location_arg' => $location_argument, 'tile_unique_id' => 'tile' . $location_argument, 'unique_id' => 'wildlife' . 5],
         ];
     }
 }

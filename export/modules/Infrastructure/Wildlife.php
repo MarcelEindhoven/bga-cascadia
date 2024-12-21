@@ -7,7 +7,10 @@ namespace NieuwenhovenGames\Cascadia;
  */
 include_once(__DIR__.'/../BGA/FrameworkInterfaces/Deck.php');
 
-class WildlifeSetup {
+/**
+ * Initialise type and reset type_arg
+ */
+class WildlifeSetup extends CurrentWildlife {
     protected array $definitions = [];
 
     static public function create($deck): WildlifeSetup {
@@ -16,10 +19,6 @@ class WildlifeSetup {
         return $object;
     }
 
-    public function setDeck($deck): WildlifeSetup {
-        $this->deck = $deck;
-        return $this;
-    }
     public function add($animal_type) {
         $this->definitions[] = array( 'type' => $animal_type, 'type_arg' => 0, 'nbr' => 1);
     }
@@ -30,18 +29,17 @@ class WildlifeSetup {
     }
 }
 
-class CurrentWildlifeTerritory {
+/**
+ * Convert location_arg into tile_unique_id
+ * One tile array per player
+ */
+class CurrentWildlifeTerritory extends CurrentWildlife {
     protected array $players;
 
     static public function create($deck): CurrentWildlifeTerritory {
         $object = new CurrentWildlifeTerritory();
         $object->setDeck($deck);
         return $object;
-    }
-
-    public function setDeck($deck): CurrentWildlifeTerritory {
-        $this->deck = $deck;
-        return $this;
     }
 
     public function setPlayers($players): CurrentWildlifeTerritory {
@@ -52,22 +50,33 @@ class CurrentWildlifeTerritory {
     public function get(): array {
         $wildlife_per_player = [];
         foreach ($this->players as $player_id => $player) {
-            $wildlife_per_player[$player_id] = CurrentWildlife::unpackTypes(CurrentTerritory::unpackPositions($this->deck->getCardsInLocation($player_id)));
+            $wildlife_per_player[$player_id] = CurrentWildlifeTerritory::unpack_tiles(CurrentWildlife::unpackTypes($this->deck->getCardsInLocation($player_id)));
         }
         return $wildlife_per_player;
     }
+
+    static protected function unpack_tiles($cards): array {
+        $unpacked_cards = [];
+        foreach ($cards as $card) {
+            $unpacked_cards[] = CurrentWildlifeTerritory::unpack_tile($card);
+        }
+        return $unpacked_cards;
+    }
+
+    static public function unpack_tile($card): array {
+        $card['tile_unique_id'] = 'tile' . $card['location_arg'];
+        return $card;
+    }
 }
 
-class CurrentWildlifeMarket {
+/**
+ * No conversion needed for location argument
+ */
+class CurrentWildlifeMarket extends CurrentWildlife {
     static public function create($deck): CurrentWildlifeMarket {
         $object = new CurrentWildlifeMarket();
         $object->setDeck($deck);
         return $object;
-    }
-
-    public function setDeck($deck): CurrentWildlifeMarket {
-        $this->deck = $deck;
-        return $this;
     }
 
     public function get(): array {
@@ -75,7 +84,34 @@ class CurrentWildlifeMarket {
     }
 }
 
+/**
+ * 
+ */
+class UpdateWildlife extends CurrentWildlife {
+    static public function create($deck): UpdateWildlife {
+        $object = new UpdateWildlife();
+        $object->setDeck($deck);
+        return $object;
+    }
+
+    public function move_to_habitat_tile($moved_element, $player_id, $selected_tile_id) {
+        $this->deck->moveCard($moved_element['id'], $player_id, $selected_tile_id);
+    }
+
+    public function get_from_habitat($id) {
+        return CurrentWildlifeTerritory::unpack_tile(CurrentWildlife::unpackType($this->deck->getCard($id)));
+    }
+}
+
+/**
+ * Convert id into unique_id
+ */
 class CurrentWildlife {
+    public function setDeck($deck): CurrentWildlife {
+        $this->deck = $deck;
+        return $this;
+    }
+
     static public function unpackTypes($cards): array {
         $unpacked_cards = [];
         foreach ($cards as $card) {

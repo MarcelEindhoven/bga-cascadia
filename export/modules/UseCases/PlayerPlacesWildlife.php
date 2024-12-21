@@ -31,10 +31,10 @@ class PlayerPlacesWildlife extends \NieuwenhovenGames\BGA\Action {
     }
 
     /**
-     * tile_specification contains keys id
+     * selected_tile_id contains keys id
      */
-    public function set_chosen_tile($tile_specification) : PlayerPlacesWildlife {
-        $this->tile_specification = $tile_specification;
+    public function set_chosen_tile($selected_tile_id) : PlayerPlacesWildlife {
+        $this->selected_tile_id = $selected_tile_id;
         return $this;
     }
 
@@ -47,7 +47,7 @@ class PlayerPlacesWildlife extends \NieuwenhovenGames\BGA\Action {
     }
 
     public function execute(): PlayerPlacesWildlife {
-        $tile = $this->territory->get_tile($this->tile_deck, $this->tile_specification);
+        $tile = $this->territory->get_tile($this->tile_deck, $this->selected_tile_id);
 
         $chosen_wildlife_cards = $this->wildlife_deck->getCardsInLocation('chosen');
         $wildlife_specification = array_pop($chosen_wildlife_cards);

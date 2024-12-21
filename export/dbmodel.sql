@@ -48,7 +48,7 @@ ALTER TABLE `player` ADD `player_coins` INT UNSIGNED NOT NULL DEFAULT '0';
 -- card_type_arg % 6 specifies the first wildlife that is supported, see wildlife table.
 -- card_type_arg/6%6 specifies the second wildlife that is supported.
 -- card_type_arg/6*6 specifies the third wildlife that is supported.
--- card_location = "", "market" or player ID
+-- card_location = "deck", "market" or player ID
 -- card location argument = market index or horizontal location + (vertical location*100) + (rotation*10,000)
 CREATE TABLE IF NOT EXISTS `tile` (
   `card_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -71,7 +71,8 @@ CREATE TABLE IF NOT EXISTS `scoring_card` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- type: 0 = no wildlife, 1 = bear, 2 = elk, 3 = salmon, 4 = hawk, 5 = fox
--- location and location argument: see tile table
+-- location: "deck", "market" or "chosen" or player ID
+-- location argument: market index or tile ID
 CREATE TABLE IF NOT EXISTS `wildlife` (
   `card_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `card_type` varchar(16) NOT NULL,

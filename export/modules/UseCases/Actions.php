@@ -48,9 +48,9 @@ class Actions {
         PlayerDoesNotPlaceWildlife::create($this->gamestate)->set_notifications($this->notifications)->set_wildlife_deck($this->decks['wildlife'])->execute()->nextState();
     }
 
-    public function place_wildlife($tile) {
+    public function place_wildlife($selected_tile_id) {
         $territory = TerritoryUpdate::create($this->player_id);
-        PlayerPlacesWildlife::create($this->gamestate)->set_notifications($this->notifications)->set_territory($territory)->set_tile_deck($this->decks['tile'])->set_wildlife_deck($this->decks['wildlife'])->set_chosen_tile($tile)->execute()->nextState();
+        PlayerPlacesWildlife::create($this->gamestate)->set_notifications($this->notifications)->set_territory($territory)->set_tile_deck($this->decks['tile'])->set_wildlife_deck($this->decks['wildlife'])->set_chosen_tile($selected_tile_id)->execute()->nextState();
     }
 
     public function place_tile($tile) {

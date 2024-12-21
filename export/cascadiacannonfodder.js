@@ -309,7 +309,7 @@ function (dojo, declare, framework, habitat_tile_class, wildlife_class, habitat_
             console.log( 'notifications subscriptions setup' );
 
             dojo.subscribe( 'tile_placed', this, "notify_tile_placed" );
-            this.notifqueue.setSynchronous( 'tile_placed', 5 );
+            this.notifqueue.setSynchronous( 'tile_placed', 500 );
 
             dojo.subscribe( 'wildlife_placed', this, "notify_wildlife_placed" );
             this.notifqueue.setSynchronous( 'wildlife_placed', 5 );

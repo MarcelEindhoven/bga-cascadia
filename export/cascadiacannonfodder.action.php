@@ -75,12 +75,10 @@
 
       // Retrieve arguments
       // Note: these arguments correspond to what has been sent through the javascript "ajaxcall" method
-      $selected_tile = [
-        'id' => $this->getArg( "selected_tile_id", AT_alphanum, true ), 
-      ];
+      $selected_tile_id = $this->getArg( "selected_tile_id", AT_alphanum, true );
 
       // Then, call the appropriate method in your game logic, like "playCard" or "myAction"
-      $this->game->place_wildlife($selected_tile);
+      $this->game->place_wildlife($selected_tile_id);
 
       $this->ajaxResponse( );
     }
