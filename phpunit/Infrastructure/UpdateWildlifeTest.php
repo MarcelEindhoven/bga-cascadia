@@ -53,7 +53,7 @@ class UpdateWildlifeTest extends TestCase{
         $this->assertEquals('tile' . $this->wildlife['location_arg'], $wildlife['tile_unique_id']);
     }
 
-    public function test_get_chosen_tile_unique_id() {
+    public function test_get_chosen_unique_id() {
         // Arrange
         $this->mock_cards->expects($this->exactly(1))->method('getCardsInLocation')->willReturn([$this->wildlife]);
         // Act

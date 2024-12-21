@@ -32,10 +32,12 @@ class PlayerPlacesWildlifeTest extends TestCase{
 
         $this->sut->set_chosen_tile($this->tile_specification['id']);
 
+        $this->sut->set_player_id($this->player_id);
+
         $this->mock_notifications = $this->createMock(\NieuwenhovenGames\BGA\FrameworkInterfaces\Notifications::class);
         $this->sut->set_notifications($this->mock_notifications);
 
-        $this->mock_wildlife_handler = $this->createMock(TerritoryUpdate::class);
+        $this->mock_wildlife_handler = $this->createMock(UpdateWildlife::class);
         $this->sut->set_wildlife_handler($this->mock_wildlife_handler);
     }
 
@@ -43,19 +45,18 @@ class PlayerPlacesWildlifeTest extends TestCase{
         // Arrange
         $this->arrange_default();
 
-        $expected_wildlife_specification = ['id' => $this->wildlife_card['id'], 'horizontal' => 2, 'vertical' => 3, 'rotation' => 0 ];
-        $this->mock_wildlife_handler->expects($this->exactly(1))->method('move_to_habitat_tile')->with($this->mock_wildlifes, $expected_wildlife_specification);
+        $this->mock_wildlife_handler->expects($this->exactly(1))->method('move_to_habitat_tile')->with($this->wildlife_card, $this->player_id, $this->tile_specification['id']);
         // Act
         $this->act_default();
         // Assert
     }
 
-    public function test_execute_triggers_notifyAllPlayers_with_tile() {
+    public function test_execute_triggers_notifyAllPlayers_with_wildlife() {
         // Arrange
         $this->arrange_default();
 
-        $wildlife = ['id' => $this->wildlife_card['id'], 'horizontal' => 2, 'vertical' => 3, 'rotation' => 4 ];
-        $this->mock_wildlife_handler->expects($this->exactly(1))->method('get_wildlife')->willReturn($wildlife);
+        $wildlife = ['id' => $this->wildlife_card['id'], 'tile_unique_id' => 'tile2'];
+        $this->mock_wildlife_handler->expects($this->exactly(1))->method('get_from_habitat')->willReturn($wildlife);
 
         $expected_message = 'wildlife_placed';
         $this->mock_notifications->expects($this->exactly(1))->method('notifyAllPlayers')->with('wildlife_placed', $expected_message, ['wildlife' => $wildlife]);
@@ -64,11 +65,19 @@ class PlayerPlacesWildlifeTest extends TestCase{
         // Assert
     }
 
-    protected function arrange_default() {
-        $tile = ['id' => $this->tile_specification['id'], 'horizontal' => 2, 'vertical' => 3, 'rotation' => 4 ];
-        $this->mock_wildlife_handler->expects($this->exactly(1))->method('get_tile')->with($this->mock_tiles, $this->tile_specification)->willReturn($tile);
+    public function test_execute_get_from_habitat_for_notifyAllPlayers_with_wildlife_id() {
+        // Arrange
+        $this->arrange_default();
 
-        $this->mock_wildlifes->expects($this->exactly(1))->method('getCardsInLocation')->with('chosen')->willReturn([$this->wildlife_card]);
+        $this->mock_wildlife_handler->expects($this->exactly(1))->method('get_from_habitat')->with($this->wildlife_card['id']);
+ 
+        // Act
+        $this->act_default();
+        // Assert
+    }
+
+    protected function arrange_default() {
+        $this->mock_wildlife_handler->expects($this->exactly(1))->method('get_chosen')->willReturn($this->wildlife_card);
     }
 
     protected function act_default() {
