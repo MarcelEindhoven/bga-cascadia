@@ -14,8 +14,11 @@ include_once(__DIR__.'/PlayerChoosesWildlife.php');
 
 include_once(__DIR__.'/../Infrastructure/Habitat.php');
 include_once(__DIR__.'/../Infrastructure/Market.php');
+include_once(__DIR__.'/../Infrastructure/Wildlife.php');
 
 class Actions {
+    protected array $decks = [];
+
     static public function create(): Actions {
         $object = new Actions();
         return $object;
@@ -49,8 +52,7 @@ class Actions {
     }
 
     public function place_wildlife($selected_tile_id) {
-        $territory = TerritoryUpdate::create($this->player_id);
-        PlayerPlacesWildlife::create($this->gamestate)->set_notifications($this->notifications)->set_territory($territory)->set_tile_deck($this->decks['tile'])->set_wildlife_deck($this->decks['wildlife'])->set_chosen_tile($selected_tile_id)->execute()->nextState();
+        PlayerPlacesWildlife::create($this->gamestate)->set_notifications($this->notifications)->set_player_id($this->player_id)->set_wildlife_handler(UpdateWildlife::create($this->decks['wildlife']))->set_chosen_tile($selected_tile_id)->execute()->nextState();
     }
 
     public function place_tile($tile) {
