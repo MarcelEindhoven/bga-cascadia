@@ -57,4 +57,21 @@ describe('Use case place wildlife', function () {
             assert.equal(habitat.unsubscribe_tile_selected_for_wildlife.getCall(0).args[0], wildlife);
         });
     });
+    describe('Candidate Tile not selected', function () {
+        beforeEach(function() {
+            sut.subscribe_wildlife_placed(callback_object, 'wildlife_placed');
+        });
+        function act_default() {
+            sut.do_not_place_wildlife();
+        };
+        it('unsubscribes', function () {
+            // Arrange
+            // Act
+            act_default();
+            // Assert
+            assert.equal(habitat.unsubscribe_tile_selected_for_wildlife.getCall(0).args[1], sut);
+            assert.equal(habitat.unsubscribe_tile_selected_for_wildlife.getCall(0).args[2], 'candidate_tile_selected');
+            assert.equal(habitat.unsubscribe_tile_selected_for_wildlife.getCall(0).args[0], wildlife);
+        });
+    });
 });

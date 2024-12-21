@@ -229,6 +229,8 @@ function (dojo, declare, framework, habitat_tile_class, wildlife_class, habitat_
             }
         },
         do_not_place_wildlife: function () {
+            this.usecase_place_wildlife.do_not_place_wildlife();
+            delete this.usecase_place_wildlife;
             this.call('do_not_place_wildlife');
         },
 
