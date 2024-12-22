@@ -31,7 +31,7 @@ define(['dojo/_base/declare'], (declare) => {
         constructor(dependencies, tile_specification) {
             this.overrule(dependencies);
             this.create_from(tile_specification);
-            this.rotation_number = this.rotation;
+            this.rotation_number = this.rotation ? this.rotation : 0;
         },
         // tile_specification_example: {terrain_types: [1], supported_wildlife: [2], unique_id: 'tile_specification2', rotation: 5},
         create_from(tile_specification){
