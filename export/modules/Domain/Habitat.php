@@ -11,9 +11,10 @@ class Habitat {
     /**
      * Usage: candidate_positions = Habitat($tiles)->getAdjacentPositionsSource()->get();
      */
-    static public function create($tiles): Habitat {
+    static public function create($tiles, $wildlifes): Habitat {
         $object = new Habitat();
         $object->tiles = $tiles;
+        $object->wildlifes = $wildlifes;
         return $object;
     }
     public function getAdjacentPositionsSource() {
@@ -21,6 +22,9 @@ class Habitat {
     }
     public function get_adjacent_positions() {
         return AdjacentPositions::create($this->tiles)->get();
+    }
+    public function get_candidate_tiles_for_chosen_wildlife($wildlife) {
+        return [];
     }
 }
 
