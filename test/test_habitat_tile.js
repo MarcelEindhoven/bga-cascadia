@@ -349,5 +349,37 @@ describe('Habitat tile', function () {
             assert.equal(framework.remove_css_class.getCall(0).args[0], sut.getSecondTerrainTypeID());
             assert.equal(framework.remove_css_class.getCall(0).args[1], 'rotate5');
         });
+        it('Rotate function adds 1', function () {
+            // Arrange
+            tile.rotation = 3;
+            tile.terrain_types = [2, 3];
+            arrange_default(tile);
+            // Act
+            sut.rotate();
+            // Assert
+            sut.paint();
+            assert.equal(framework.add_css_class.getCall(0).args[1], 'rotate4');
+        });
+        it('Rotate function wraps around', function () {
+            // Arrange
+            tile.rotation = 5;
+            tile.terrain_types = [2, 3];
+            arrange_default(tile);
+            // Act
+            sut.rotate();
+            // Assert
+            sut.paint();
+            assert.equal(framework.add_css_class.getCall(0).args[1], 'rotate0');
+        });
+        it('Rotate function adds rotation field if needed', function () {
+            // Arrange
+            tile.terrain_types = [2, 3];
+            arrange_default(tile);
+            // Act
+            sut.rotate();
+            // Assert
+            sut.paint();
+            assert.equal(framework.add_css_class.getCall(0).args[1], 'rotate1');
+        });
     });
 });

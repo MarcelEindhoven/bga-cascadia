@@ -39,13 +39,18 @@ define(['dojo/_base/declare'], (declare) => {
             return false;
         },
         token_selected(event) {
+            console.log('token_selected');
+            console.log(event);
             id_selected_token = event.currentTarget.id;
             // Copy array to allow unsubscribe from callback
             subscriptions = Array.from(this.subscriptions);
             for (index in subscriptions) {
                 subscription = subscriptions[index];
+                console.log(subscription);
                 if (id_selected_token == subscription.token.unique_id) {
-                    subscription.object[subscription.method](subscription.token);
+                    console.log('subscription selected');
+                    console.log(subscription);
+                            subscription.object[subscription.method](subscription.token);
                 }
             }
         },

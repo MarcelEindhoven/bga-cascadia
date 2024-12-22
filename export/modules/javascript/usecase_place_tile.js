@@ -74,11 +74,21 @@ define(['dojo/_base/declare'], (declare) => {
          * Use case Candidate tile selected, this ends the place tile use case
          */
         candidate_tile_selected(tile) {
+            console.log('candidate_tile_selected');
+            console.log(tile);
             this.market.unsubscribe_tile_selected(this, 'market_tile_selected');
 
             this.destroy_candidate_tiles();
 
             this.callback_object[this.callback_method](tile);
+        },
+
+        /**
+         * Use case rotation button pressed
+         */
+        rotate() {
+            for (index in this.candidate_tiles)
+                this.candidate_tiles[index].rotate();
         },
 
         /**

@@ -16,6 +16,9 @@ class habitat_tile_class {
     destroy() {
         habitat_tile_destroy();
     }
+    rotate() {
+        habitat_tile_rotate();
+    }
 };
 
 describe('Use case place tile', function () {
@@ -36,6 +39,7 @@ describe('Use case place tile', function () {
             unsubscribe_tile_selected: sinon.spy(),
         };
         habitat_tile_constructor = sinon.spy();
+        habitat_tile_rotate = sinon.spy();
         habitat_tile_destroy = sinon.spy();
 
         habitat_tile_factory = {class:habitat_tile_class, dependencies: 9, create: function(tile_specification) {return new this.class(this.dependencies, tile_specification);}};
@@ -108,6 +112,29 @@ describe('Use case place tile', function () {
             act_default(tile);
             // Assert
             sinon.assert.callCount(token_subscriptions.unsubscribe, 2);
+        });
+    });
+    describe('Rotation', function () {
+        beforeEach(function() {
+            sut.set_candidate_positions([{horizontal: 50, vertical: 51}, {horizontal: 50, vertical: 52}]);
+            sut.subscribe_tile_placed(callback_object, 'tile_placed');
+        });
+        function arrange_default() {
+            sut.market_tile_selected(tile);
+        };
+        it('is okay if no market tile has yet been selected', function () {
+            // Arrange
+            // Act
+            sut.rotate();
+            // Assert
+        });
+        it('rotates the candidate tiles', function () {
+            // Arrange
+            arrange_default();
+            // Act
+            sut.rotate();
+            // Assert
+            sinon.assert.callCount(habitat_tile_rotate, 2);
         });
     });
     describe('Market Tile selected', function () {

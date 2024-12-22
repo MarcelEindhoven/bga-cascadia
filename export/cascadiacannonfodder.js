@@ -158,7 +158,7 @@ function (dojo, declare, framework, habitat_tile_class, wildlife_class, habitat_
             delete this.usecase_place_tile;
 
             tile.rotation = 0;
-            this.call('place_tile', {placed_tile_horizontal: tile.horizontal, placed_tile_vertical: tile.vertical, placed_tile_rotation: tile.rotation, placed_tile_id: tile.id, selected_wildlife_id: this.usecase_select_wildlife.get_selected_wildlife().id});
+            this.call('place_tile', {placed_tile_horizontal: tile.horizontal, placed_tile_vertical: tile.vertical, placed_tile_rotation: tile.rotation_number, placed_tile_id: tile.id, selected_wildlife_id: this.usecase_select_wildlife.get_selected_wildlife().id});
 
             this.usecase_select_wildlife.terminate();
             delete this.usecase_select_wildlife;
@@ -232,7 +232,8 @@ function (dojo, declare, framework, habitat_tile_class, wildlife_class, habitat_
             }
         },
         rotate_tile: function () {
-            this.usecase_place_tile.rotate_tile();
+            this.usecase_place_tile.rotate();
+            this.framework.control_may_be_returned_to_user();
         },
         do_not_place_wildlife: function () {
             this.usecase_place_wildlife.do_not_place_wildlife();
@@ -401,6 +402,9 @@ function (dojo, declare, framework, habitat_tile_class, wildlife_class, habitat_
             console.log(tile_specification);
             tile = this.market.remove_tile(tile_specification);
             this.update_object_with(tile, tile_specification);
+            // hack
+            tile.rotation_number = tile.rotation;
+
             this.habitat[tile.location].place(tile);
             this.framework.control_may_be_returned_to_user();
         },

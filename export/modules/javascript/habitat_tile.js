@@ -31,6 +31,7 @@ define(['dojo/_base/declare'], (declare) => {
         constructor(dependencies, tile_specification) {
             this.overrule(dependencies);
             this.create_from(tile_specification);
+            this.rotation_number = this.rotation;
         },
         // tile_specification_example: {terrain_types: [1], supported_wildlife: [2], unique_id: 'tile_specification2', rotation: 5},
         create_from(tile_specification){
@@ -94,6 +95,13 @@ define(['dojo/_base/declare'], (declare) => {
             this.x = x;
             this.y = y;
         },
+        rotate: function() {
+            if (this.rotation_number == undefined)
+                this.rotation_number = 0;
+            this.rotation_number = this.rotation_number + 1;
+            if (this.rotation_number > 5)
+                this.rotation_number = 0;
+        },
 
         /**
          * Put tile on the board (required first time and after any layout change)
@@ -124,11 +132,11 @@ define(['dojo/_base/declare'], (declare) => {
             }
         },
         paint_rotation() {
-            if (this.hasMultipleTerrainTypes() && (this.rotation != undefined) && (this.class_rotation != 'rotate' + this.rotation)) {
+            if (this.hasMultipleTerrainTypes() && (this.rotation_number != undefined) && (this.class_rotation != 'rotate' + this.rotation_number)) {
                 if (this.class_rotation != undefined) {
                     this.framework.remove_css_class(this.getSecondTerrainTypeID(), this.class_rotation);
                 }
-                this.class_rotation = 'rotate' + this.rotation;
+                this.class_rotation = 'rotate' + this.rotation_number;
                 this.framework.add_css_class(this.getSecondTerrainTypeID(), this.class_rotation);
             }
         },
