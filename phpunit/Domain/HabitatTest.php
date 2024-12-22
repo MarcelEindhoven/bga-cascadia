@@ -64,21 +64,18 @@ class HabitatTest extends TestCase{
         
     }
     public function provider_get_candidate_tiles_for_chosen_wildlife(): array {
-        $tile33 = ['horizontal' => 3, 'vertical' => 3];
-        $tile54 = ['horizontal' => 5, 'vertical' => 4];
-        $tile34 = ['horizontal' => 3, 'vertical' => 4];
-        $tile22 = ['horizontal' => 2, 'vertical' => 2];
-        $tile23 = ['horizontal' => 2, 'vertical' => 3];
-        $tile24 = ['horizontal' => 2, 'vertical' => 4];
-        $tile43 = ['horizontal' => 4, 'vertical' => 3];
-        $tile14 = ['horizontal' => 1, 'vertical' => 4];
+        $tile_supports_single_type = ['supported_wildlife' => [3], 'unique_id' => 'tile3'];
+        $tile_supports_multiple = ['supported_wildlife' => [3, 5], 'unique_id' => 5];
+        $tile__does_not_support_wildlife = ['supported_wildlife' => [1, 2, 4], 'unique_id' => 4];
 
-        $tile13 = ['horizontal' => 1, 'vertical' => 3];
-        $tile44 = ['horizontal' => 4, 'vertical' => 4];
-        $tile03 = ['horizontal' => 0, 'vertical' => 3];
+        $wildlife_on_tile3 = ['unique_id' => 5, 'tile_unique_id' => 'tile3'];
 
         return [
             [[], [], []],
+            [[$tile_supports_single_type], [], [$tile_supports_single_type]],
+            [[$tile__does_not_support_wildlife], [], []],
+            [[$tile_supports_single_type], [$wildlife_on_tile3], []],
+            [[$tile_supports_single_type, $tile__does_not_support_wildlife, $tile_supports_multiple], [$wildlife_on_tile3], [$tile_supports_multiple]],
         ];
     }
 

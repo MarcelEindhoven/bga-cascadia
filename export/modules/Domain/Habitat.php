@@ -8,6 +8,8 @@ namespace NieuwenhovenGames\Cascadia;
 
 class Habitat {
     protected array $tiles = [];
+    protected array $wildlifes = [];
+
     /**
      * Usage: candidate_positions = Habitat($tiles)->getAdjacentPositionsSource()->get();
      */
@@ -17,14 +19,28 @@ class Habitat {
         $object->wildlifes = $wildlifes;
         return $object;
     }
-    public function getAdjacentPositionsSource() {
-        return AdjacentPositions::create($this->tiles);
-    }
+
     public function get_adjacent_positions() {
         return AdjacentPositions::create($this->tiles)->get();
     }
+
     public function get_candidate_tiles_for_chosen_wildlife($wildlife) {
-        return [];
+        $tiles = [];
+        foreach ($this->tiles as $tile)
+            if ($this->is_supported($wildlife, $tile))
+                if (!$this->is_occupied($tile))
+                    array_push($tiles, $tile);
+        return $tiles;
+    }
+    protected function is_occupied($tile) {
+        $tile_unique_id = $tile['unique_id'];
+        foreach ($this->wildlifes as $wildlife)
+            if ($wildlife['tile_unique_id'] == $tile_unique_id)
+                return true;
+        return false;
+    }
+    protected function is_supported($wildlife, $tile) {
+        return in_array($wildlife['type'], $tile['supported_wildlife']);
     }
 }
 

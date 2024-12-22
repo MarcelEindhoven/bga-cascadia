@@ -36,7 +36,10 @@ class GetAllDatas {
     }
 
     public function get(): array {
-        $this->results['adjacent_positions'] = Habitat::create($this->results['habitats'][$this->current_player_id])->get_adjacent_positions();
+        $habitat = Habitat::create($this->results['habitats'][$this->current_player_id], $this->results['wildlife'][$this->current_player_id]);
+        $this->results['adjacent_positions'] = $habitat->get_adjacent_positions();
+        if (array_key_exists('chosen', $this->results) && ($this->current_player_id == $this->active_player_id))
+            $this->results['candidate_tiles_for_chosen_wildlife'] = $habitat->get_candidate_tiles_for_chosen_wildlife($this->results['chosen']);
 
         return $this->results;
     }
