@@ -326,6 +326,9 @@ function (dojo, declare, framework, habitat_tile_class, wildlife_class, habitat_
             dojo.subscribe( 'wildlife_not_placed', this, "notify_wildlife_not_placed" );
             this.notifqueue.setSynchronous( 'wildlife_not_placed', 5 );
 
+            dojo.subscribe( 'candidate_tiles_for_chosen_wildlife', this, "notify_candidate_tiles_for_chosen_wildlife" );
+            this.notifqueue.setSynchronous( 'candidate_tiles_for_chosen_wildlife', 5 );
+
             dojo.subscribe( 'wildlife_chosen', this, "notify_wildlife_chosen" );
             this.notifqueue.setSynchronous( 'wildlife_chosen', 5 );
 
@@ -379,6 +382,11 @@ function (dojo, declare, framework, habitat_tile_class, wildlife_class, habitat_
             this.chosen_wildlife = wildlife;
             console.log(this.chosen_wildlife);
             this.framework.control_may_be_returned_to_user();
+        },
+        notify_candidate_tiles_for_chosen_wildlife: function(notif) {
+            console.log('notify_candidate_tiles_for_chosen_wildlife');
+            console.log(notif.args);
+            this.candidate_tiles_for_chosen_wildlife = notif.args.candidate_tiles_for_chosen_wildlife;
         },
         notify_wildlife_not_placed: function(notif) {
             console.log('notify_wildlife_not_placed');
