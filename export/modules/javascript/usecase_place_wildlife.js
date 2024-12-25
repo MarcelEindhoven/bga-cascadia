@@ -8,7 +8,7 @@ define(['dojo/_base/declare'], (declare) => {
             this.overrule(this, dependencies);
         },
         subscribe_wildlife_placed(object, method) {
-            this.habitat.subscribe_tile_selected_for_wildlife(this.chosen_wildlife, this, 'candidate_tile_selected');
+            this.habitat.subscribe_tile_selected_for_wildlife(this.chosen_wildlife, this, 'candidate_tile_selected', this.candidate_tiles_for_chosen_wildlife);
             this.callback_object = object;
             this.callback_method = method;
         },
@@ -30,7 +30,7 @@ define(['dojo/_base/declare'], (declare) => {
             this.end_use_case();
         },
         end_use_case() {
-            this.habitat.unsubscribe_tile_selected_for_wildlife(this.chosen_wildlife, this, 'candidate_tile_selected', this.chosen_wildlife);
+            this.habitat.unsubscribe_tile_selected_for_wildlife(this.chosen_wildlife, this, 'candidate_tile_selected', this.chosen_wildlife, this.candidate_tiles_for_chosen_wildlife);
         },
     });
 });

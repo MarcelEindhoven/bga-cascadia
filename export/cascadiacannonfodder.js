@@ -129,7 +129,7 @@ function (dojo, declare, framework, habitat_tile_class, wildlife_class, habitat_
         },
         place_wildlife() {
             console.log('place_wildlife');
-            this.usecase_place_wildlife = new usecase_place_wildlife({habitat: this.habitat[this.player_id], chosen_wildlife: this.chosen_wildlife});
+            this.usecase_place_wildlife = new usecase_place_wildlife({habitat: this.habitat[this.player_id], chosen_wildlife: this.chosen_wildlife, candidate_tiles_for_chosen_wildlife: this.candidate_tiles_for_chosen_wildlife});
             this.usecase_place_wildlife.subscribe_wildlife_placed(this, 'wildlife_placed');
         },
         wildlife_placed: function(tile) {
