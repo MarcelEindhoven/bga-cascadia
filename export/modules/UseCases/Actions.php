@@ -76,7 +76,8 @@ class Actions {
         // Chronically this use case is a subset of the player places tile and chooses wildlife use case
         // The next state function is part of the player places tile sub use case
         $market = MarketUpdate::create($this->decks);
-        PlayerChoosesWildlife::create($this->gamestate)->set_notifications($this->notifications)->set_market($market)->set_chosen_wildlife($chosen_wildlife_id)->execute();
+        $latest_data = GetAllDatas::create($this->decks, $this->database);
+        PlayerChoosesWildlife::create($this->gamestate)->set_notifications($this->notifications)->set_player_id($this->player_id)->set_market($market)->set_latest_data($latest_data)->set_chosen_wildlife($chosen_wildlife_id)->execute();
     }
 
     public function stNextPlayer($player_id) {
