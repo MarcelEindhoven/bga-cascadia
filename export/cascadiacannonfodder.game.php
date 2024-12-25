@@ -19,13 +19,16 @@
 
 require_once( APP_GAMEMODULE_PATH.'module/table/table.game.php' );
 
+include_once(__DIR__.'/modules/BGA/FrameworkInterfaces/Database.php');
+include_once(__DIR__.'/modules/BGA/FrameworkInterfaces/Debugging.php');
+
 include_once(__DIR__.'/modules/NewGame/NewGame.php');
 include_once(__DIR__.'/modules/NewGame/PlayerSetup.php');
 
 include_once(__DIR__.'/modules/UseCases/Actions.php');
 include_once(__DIR__.'/modules/UseCases/GetAllDatas.php');
 
-class CascadiaCannonFodder extends Table
+class CascadiaCannonFodder extends Table implements NieuwenhovenGames\BGA\FrameworkInterfaces\Database, NieuwenhovenGames\BGA\FrameworkInterfaces\Debugging
 {
     protected array $decks = [];
 
@@ -46,8 +49,6 @@ class CascadiaCannonFodder extends Table
                 "game_variant" => 101,
         ) );
 
-        $this->decks = [];
-
         $this->decks['tile'] = self::getNew('module.common.deck');
         $this->decks['tile']->init('tile');
 
@@ -57,7 +58,26 @@ class CascadiaCannonFodder extends Table
         $this->decks['wildlife'] = self::getNew('module.common.deck');
         $this->decks['wildlife']->init('wildlife');
 	}
+
+    // NieuwenhovenGames\BGA\Database
+    public function query(string $query) : void  {
+        self::DbQuery($query);
+    }
 	
+    public function getObject(string $query) : array {
+        self::trace("getObject {$query}");
+        return self::getObjectFromDB($query);
+    }
+
+    public function getObjectList(string $query) : array {
+        return self::getObjectListFromDB($query);
+    }
+
+    public function getCollection(string $query) : array {
+        return self::getCollectionFromDb($query);
+    }
+
+
     protected function getGameName( )
     {
 		// Used for translations and stuff. Please do not modify.
@@ -126,21 +146,7 @@ class CascadiaCannonFodder extends Table
     */
     protected function getAllDatas()
     {
-        $current_player_id = $this->getCurrentPlayerId();    // !! We must only return informations visible by this player !!
-    
-        // Get information about players
-        // Note: you can retrieve some extra field you added for "player" table in "dbmodel.sql" if you need it.
-        $sql = "SELECT player_id id, player_score score, player_coins coins FROM player ";
-        $players = $this->getCollectionFromDb( $sql );
-
-        $result = \NieuwenhovenGames\Cascadia\GetAllDatas::create($this->decks, $players)->set_active_player_id($this->getActivePlayerId())->set_current_player_id($this->getCurrentPlayerId())->get();
-        $this->gamestate->isPlayerActive($current_player_id);
-    
-        $result['players'] = $players;
-  
-        // TODO: Gather all information about current game situation (visible by player $current_player_id).
-  
-        return $result;
+        return \NieuwenhovenGames\Cascadia\GetAllDatas::create($this->decks, $this)->set_active_player_id($this->getActivePlayerId())->set_current_player_id($this->getCurrentPlayerId())->get();
     }
 
     /*
@@ -236,9 +242,16 @@ class CascadiaCannonFodder extends Table
 
         $this->actions->set_gamestate($this->gamestate);
         $this->actions->set_decks($this->decks);
+
         $this->actions->set_notifications($this);
+        $this->actions->set_database($this);
+
         // Note: the following statement crashes in setup stage
         $this->actions->set_player_id(self::getCurrentPlayerId());
+
+        $sql = "SELECT player_id id, player_score score, player_coins coins FROM player ";
+        $players = $this->getCollectionFromDb( $sql );
+        $this->actions->set_players($this->players);
     }
 
     

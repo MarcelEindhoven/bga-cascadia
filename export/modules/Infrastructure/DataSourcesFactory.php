@@ -12,27 +12,33 @@ include_once(__DIR__.'/ScoringCard.php');
 include_once(__DIR__.'/Wildlife.php');
  
 class DataSourcesFactory {
+    protected array $decks = [];
+
     static public function create($decks): DataSourcesFactory {
         $object = new DataSourcesFactory();
-        $object->setDecks($decks);
+        $object->set_decks($decks);
         return $object;
     }
 
-    public function setDecks($decks): DataSourcesFactory {
+    public function set_database($database) : DataSourcesFactory {
+        $this->database = $database;
+        return $this;
+    }
+
+    public function set_decks($decks): DataSourcesFactory {
         $this->decks = $decks;
         return $this;
     }
 
-    public function setPlayers($players): DataSourcesFactory {
-        $this->players = $players;
-        return $this;
-    }
-
     public function get_data(): array {
+        $sql = "SELECT player_id id, player_score score, player_coins coins FROM player ";
+        $players = $this->database->getCollectionFromDb( $sql );
+        $data['players'] = $players;
+
         $data['scoring_card'] = CurrentScoringCards::create($this->decks['scoring_card'])->get();
 
-        $data['wildlife'] = CurrentWildlifeTerritory::create($this->decks['wildlife'])->setPlayers($this->players)->get();
-        $data['habitats'] = CurrentHabitatTerritory::create($this->decks['tile'])->setPlayers($this->players)->get();
+        $data['wildlife'] = CurrentWildlifeTerritory::create($this->decks['wildlife'])->setPlayers($players)->get();
+        $data['habitats'] = CurrentHabitatTerritory::create($this->decks['tile'])->setPlayers($players)->get();
 
         $data['market'] = CurrentMarket::create($this->decks)->get();
 

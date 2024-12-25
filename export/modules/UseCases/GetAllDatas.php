@@ -10,18 +10,23 @@ include_once(__DIR__.'/../Domain/Habitat.php');
 include_once(__DIR__.'/../Infrastructure/DataSourcesFactory.php');
 
 class GetAllDatas {
-    protected array $results = [];
+    protected array $decks = [];
     /**
-     * Usage: all_data = GetAllDatas(sources from data sources factory)->get();
+     * 
      */
-    static public function create($decks,  $players): GetAllDatas {
+    static public function create($decks,  $database): GetAllDatas {
         $object = new GetAllDatas();
-        $object->set_data(DataSourcesFactory::create($decks)->setPlayers($players)->get_data());
+        $object->set_decks($decks)->set_database($database);
         return $object;
     }
 
-    public function set_data($results): GetAllDatas {
-        $this->results = $results;
+    public function set_database($database) : GetAllDatas {
+        $this->database = $database;
+        return $this;
+    }
+
+    public function set_decks($decks): GetAllDatas {
+        $this->decks = $decks;
         return $this;
     }
 
@@ -35,13 +40,24 @@ class GetAllDatas {
         return $this;
     }
 
+    /**
+     * Combine results from database with calculated results from domain
+     */
     public function get(): array {
-        $habitat = Habitat::create($this->results['habitats'][$this->current_player_id], $this->results['wildlife'][$this->current_player_id]);
-        $this->results['adjacent_positions'] = $habitat->get_adjacent_positions();
-        if (array_key_exists('chosen', $this->results) && ($this->current_player_id == $this->active_player_id))
-            $this->results['candidate_tiles_for_chosen_wildlife'] = $habitat->get_candidate_tiles_for_chosen_wildlife($this->results['chosen']);
+        $results = $this->get_results_from_database();
 
-        return $this->results;
+        $habitat = Habitat::create($results['habitats'][$this->current_player_id], $results['wildlife'][$this->current_player_id]);
+
+        $results['adjacent_positions'] = $habitat->get_adjacent_positions();
+
+        if (array_key_exists('chosen', $results) && ($this->current_player_id == $this->active_player_id))
+            $results['candidate_tiles_for_chosen_wildlife'] = $habitat->get_candidate_tiles_for_chosen_wildlife($results['chosen']);
+
+        return $results;
+    }
+
+    protected function get_results_from_database(): array {
+        return DataSourcesFactory::create($this->decks)->set_database($this->database)->get_data();
     }
 }
 ?>

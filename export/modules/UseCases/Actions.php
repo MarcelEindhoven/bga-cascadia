@@ -12,6 +12,8 @@ include_once(__DIR__.'/PlayerDoesNotPlaceWildlife.php');
 include_once(__DIR__.'/PlayerPlacesWildlife.php');
 include_once(__DIR__.'/PlayerChoosesWildlife.php');
 
+include_once(__DIR__.'/GetAllDatas.php');
+
 include_once(__DIR__.'/../Infrastructure/Habitat.php');
 include_once(__DIR__.'/../Infrastructure/Market.php');
 include_once(__DIR__.'/../Infrastructure/Wildlife.php');
@@ -34,8 +36,18 @@ class Actions {
         return $this;
     }
 
+    public function set_players($players) : Actions {
+        $this->players = $players;
+        return $this;
+    }
+
     public function set_notifications($notifications) : Actions {
         $this->notifications = $notifications;
+        return $this;
+    }
+
+    public function set_database($database) : Actions {
+        $this->database = $database;
         return $this;
     }
 

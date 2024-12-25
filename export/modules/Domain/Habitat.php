@@ -11,13 +11,21 @@ class Habitat {
     protected array $wildlifes = [];
 
     /**
-     * Usage: candidate_positions = Habitat($tiles)->getAdjacentPositionsSource()->get();
+     * Usage: 
      */
     static public function create($tiles, $wildlifes): Habitat {
         $object = new Habitat();
         $object->tiles = $tiles;
         $object->wildlifes = $wildlifes;
         return $object;
+    }
+    public function set_tiles($tiles) : Habitat {
+        $this->tiles = $tiles;
+        return $this;
+    }
+    public function set_wildlifes($wildlifes) : Habitat {
+        $this->wildlifes = $wildlifes;
+        return $this;
     }
 
     public function get_adjacent_positions() {
