@@ -333,21 +333,21 @@ describe('Habitat tile', function () {
         });
         it('Remove CSS class after change in rotation', function () {
             // Arrange
-            tile.rotation = 5;
+            tile.rotation = 1;
             tile.terrain_types = [2, 3];
             arrange_default(tile);
             // Act
             act_default();
-            sut.rotation = 0;
+            sut.rotate();
             sut.paint();
             // Assert
             sinon.assert.callCount(framework.add_css_class, 2);
             assert.equal(framework.add_css_class.getCall(1).args[0], sut.getSecondTerrainTypeID());
-            assert.equal(framework.add_css_class.getCall(1).args[1], 'rotate0');
+            assert.equal(framework.add_css_class.getCall(1).args[1], 'rotate2');
             sinon.assert.callCount(framework.remove_css_class, 1);
             assert.equal(framework.remove_css_class.getCall(0).args.length, 2);
             assert.equal(framework.remove_css_class.getCall(0).args[0], sut.getSecondTerrainTypeID());
-            assert.equal(framework.remove_css_class.getCall(0).args[1], 'rotate5');
+            assert.equal(framework.remove_css_class.getCall(0).args[1], 'rotate1');
         });
         it('Rotate function adds 1', function () {
             // Arrange
