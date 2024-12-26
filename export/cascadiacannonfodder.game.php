@@ -216,9 +216,7 @@ class CascadiaCannonFodder extends Table implements NieuwenhovenGames\BGA\Framew
         self::trace(__FUNCTION__ . "(tile, {$chosen_wildlife_id})");
         $this->initialise();
 
-        $this->actions->select_wildlife($chosen_wildlife_id);
-
-        $this->actions->place_tile($tile);
+        $this->actions->choose_wildlife_and_place_tile($chosen_wildlife_id, $tile);
     }
 
     public function do_not_place_wildlife() {

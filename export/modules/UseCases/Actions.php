@@ -67,17 +67,14 @@ class Actions {
         PlayerPlacesWildlife::create($this->gamestate)->set_notifications($this->notifications)->set_player_id($this->player_id)->set_wildlife_handler(UpdateWildlife::create($this->decks['wildlife']))->set_chosen_tile($selected_tile_id)->execute()->nextState();
     }
 
-    public function place_tile($tile) {
+    public function choose_wildlife_and_place_tile($chosen_wildlife_id, $tile) {
         $territory = TerritoryUpdate::create($this->player_id);
-        PlayerPlacesTile::create($this->gamestate)->set_notifications($this->notifications)->set_territory($territory)->set_tile_deck($this->decks['tile'])->set_moved_tile($tile)->execute()->nextState();
-    }
+        PlayerPlacesTile::create($this->gamestate)->set_notifications($this->notifications)->set_territory($territory)->set_tile_deck($this->decks['tile'])->set_moved_tile($tile)->execute();
 
-    public function select_wildlife($chosen_wildlife_id) {
-        // Chronically this use case is a subset of the player places tile and chooses wildlife use case
-        // The next state function is part of the player places tile sub use case
+        // PlayerChoosesWildlife after PlayerPlacesTile because of calculation candidate tiles for chosen wildlife
         $market = MarketUpdate::create($this->decks);
         $latest_data = GetAllDatas::create($this->decks, $this->database)->set_current_player_id($this->player_id)->set_active_player_id($this->player_id);
-        PlayerChoosesWildlife::create($this->gamestate)->set_notifications($this->notifications)->set_player_id($this->player_id)->set_market($market)->set_latest_data($latest_data)->set_chosen_wildlife($chosen_wildlife_id)->execute();
+        PlayerChoosesWildlife::create($this->gamestate)->set_notifications($this->notifications)->set_player_id($this->player_id)->set_market($market)->set_latest_data($latest_data)->set_chosen_wildlife($chosen_wildlife_id)->execute()->nextState();
     }
 
     public function stNextPlayer($player_id) {
