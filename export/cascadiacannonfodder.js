@@ -90,6 +90,8 @@ function (dojo, declare, framework, habitat_tile_class, wildlife_class, habitat_
             this.habitat = this.usecase_setup.get_habitats();
             this.chosen_wildlife =  this.usecase_setup.get_chosen();
 
+            this.candidate_tiles_specification = gamedatas.candidate_tiles_for_chosen_wildlife;
+
             this.framework.control_may_be_returned_to_user();
 
             console.log( "Ending game setup" );
@@ -129,13 +131,14 @@ function (dojo, declare, framework, habitat_tile_class, wildlife_class, habitat_
         },
         place_wildlife() {
             console.log('place_wildlife');
-            this.usecase_place_wildlife = new usecase_place_wildlife({habitat: this.habitat[this.player_id], chosen_wildlife: this.chosen_wildlife, candidate_tiles_for_chosen_wildlife: this.candidate_tiles_for_chosen_wildlife});
+            this.usecase_place_wildlife = new usecase_place_wildlife({habitat: this.habitat[this.player_id], chosen_wildlife: this.chosen_wildlife, candidate_tiles_specification: this.candidate_tiles_specification});
             this.usecase_place_wildlife.subscribe_wildlife_placed(this, 'wildlife_placed');
         },
         wildlife_placed: function(tile) {
             console.log('wildlife_placed');
             console.log(tile);
             delete this.usecase_place_wildlife;
+            delete this.candidate_tiles_specification;
 
             this.call('place_wildlife', {selected_tile_id: tile.id});
         },
@@ -386,7 +389,7 @@ function (dojo, declare, framework, habitat_tile_class, wildlife_class, habitat_
         notify_candidate_tiles_for_chosen_wildlife: function(notif) {
             console.log('notify_candidate_tiles_for_chosen_wildlife');
             console.log(notif.args);
-            this.candidate_tiles_for_chosen_wildlife = notif.args.candidate_tiles_for_chosen_wildlife;
+            this.candidate_tiles_specification = notif.args.candidate_tiles_for_chosen_wildlife;
         },
         notify_wildlife_not_placed: function(notif) {
             console.log('notify_wildlife_not_placed');

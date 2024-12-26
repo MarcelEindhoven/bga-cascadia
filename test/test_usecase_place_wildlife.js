@@ -10,10 +10,10 @@ describe('Use case place wildlife', function () {
             unsubscribe_tile_selected_for_wildlife: sinon.spy(),
         };
 
-        candidate_tiles_for_chosen_wildlife = ['test'];
+        candidate_tiles_specification = ['test'];
         wildlife = {id: 2, type: 1, unique_id: 'wildlife2'};
 
-        dependencies = {chosen_wildlife: wildlife, habitat: habitat, 'candidate_tiles_for_chosen_wildlife': candidate_tiles_for_chosen_wildlife};
+        dependencies = {chosen_wildlife: wildlife, habitat: habitat, 'candidate_tiles_specification': candidate_tiles_specification};
         sut = new sut_module(dependencies);
 
         callback_object = {
@@ -29,10 +29,9 @@ describe('Use case place wildlife', function () {
             // Act
             act_default(tile);
             // Assert
-            assert.equal(habitat.subscribe_tile_selected_for_wildlife.getCall(0).args[0], wildlife);
+            assert.equal(habitat.subscribe_tile_selected_for_wildlife.getCall(0).args[0], candidate_tiles_specification);
             assert.equal(habitat.subscribe_tile_selected_for_wildlife.getCall(0).args[1], sut);
             assert.equal(habitat.subscribe_tile_selected_for_wildlife.getCall(0).args[2], 'candidate_tile_selected');
-            assert.equal(habitat.subscribe_tile_selected_for_wildlife.getCall(0).args[3], candidate_tiles_for_chosen_wildlife);
         });
     });
     describe('Candidate Tile selected', function () {
@@ -54,10 +53,10 @@ describe('Use case place wildlife', function () {
             // Act
             act_default(tile);
             // Assert
-            assert.equal(habitat.unsubscribe_tile_selected_for_wildlife.getCall(0).args[0], wildlife);
+            assert.equal(habitat.unsubscribe_tile_selected_for_wildlife.getCall(0).args[0], candidate_tiles_specification);
             assert.equal(habitat.unsubscribe_tile_selected_for_wildlife.getCall(0).args[1], sut);
             assert.equal(habitat.unsubscribe_tile_selected_for_wildlife.getCall(0).args[2], 'candidate_tile_selected');
-            assert.equal(habitat.subscribe_tile_selected_for_wildlife.getCall(0).args[3], candidate_tiles_for_chosen_wildlife);
+            assert.equal(habitat.subscribe_tile_selected_for_wildlife.getCall(0).args[0], candidate_tiles_specification);
         });
     });
     describe('Candidate Tile not selected', function () {
@@ -72,9 +71,9 @@ describe('Use case place wildlife', function () {
             // Act
             act_default();
             // Assert
+            assert.equal(habitat.unsubscribe_tile_selected_for_wildlife.getCall(0).args[0], candidate_tiles_specification);
             assert.equal(habitat.unsubscribe_tile_selected_for_wildlife.getCall(0).args[1], sut);
             assert.equal(habitat.unsubscribe_tile_selected_for_wildlife.getCall(0).args[2], 'candidate_tile_selected');
-            assert.equal(habitat.unsubscribe_tile_selected_for_wildlife.getCall(0).args[0], wildlife);
         });
     });
 });
