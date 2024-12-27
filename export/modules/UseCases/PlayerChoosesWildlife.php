@@ -22,11 +22,6 @@ class PlayerChoosesWildlife extends \NieuwenhovenGames\BGA\Action {
         return $this;
     }
 
-    public function set_latest_data($latest_data) : PlayerChoosesWildlife {
-        $this->latest_data = $latest_data;
-        return $this;
-    }
-
     public function set_player_id($player_id) : PlayerChoosesWildlife {
         $this->player_id = $player_id;
         return $this;
@@ -46,7 +41,7 @@ class PlayerChoosesWildlife extends \NieuwenhovenGames\BGA\Action {
         $wildlife = $this->market->get_wildlife_from_id($this->wildlife_id);
         $this->notifications->notifyAllPlayers('wildlife_chosen', 'wildlife_chosen', ['wildlife' => $wildlife]);
 
-        $candidate_tiles_for_chosen_wildlife = $this->latest_data->get()['candidate_tiles_for_chosen_wildlife'];
+        $candidate_tiles_for_chosen_wildlife = $this->get_current_data->get()['candidate_tiles_for_chosen_wildlife'];
         $this->notifications->notifyPlayer($this->player_id, 'candidate_tiles_for_chosen_wildlife', 'candidate_tiles_for_chosen_wildlife', ['candidate_tiles_for_chosen_wildlife' => $candidate_tiles_for_chosen_wildlife]);
 
         return $this;

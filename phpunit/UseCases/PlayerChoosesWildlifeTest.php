@@ -24,7 +24,7 @@ class PlayerChoosesWildlifeTest extends TestCase{
     protected ?\NieuwenhovenGames\BGA\FrameworkInterfaces\Deck $mock_cards = null;
     protected ?\NieuwenhovenGames\BGA\FrameworkInterfaces\Notifications $mock_notifications = null;
     protected ?MarketUpdate $mock_market = null;
-    protected ?GetAllDatas $mock_latest_data = null;
+    protected ?GetAllDatas $mock_get_current_data = null;
     protected array $wildlife_specification = ['id'=>5];
     protected array $expected_wildlife = ['id' => 5, 'unique_id' => 5];
     protected array $candidate_tiles_for_chosen_wildlife = ['test'];
@@ -44,14 +44,14 @@ class PlayerChoosesWildlifeTest extends TestCase{
         $this->mock_market = $this->createMock(MarketUpdate::class);
         $this->sut->set_market($this->mock_market);
 
-        $this->mock_latest_data = $this->createMock(GetAllDatas::class);
-        $this->sut->set_latest_data($this->mock_latest_data);
+        $this->mock_get_current_data = $this->createMock(GetAllDatas::class);
+        $this->sut->set_get_current_data($this->mock_get_current_data);
     }
 
     public function test_execute_triggers_select_wildlife() {
         // Arrange
         $this->mock_market->expects($this->exactly(1))->method('select_wildlife')->with($this->wildlife_specification['id']);
-        $this->mock_latest_data->expects($this->exactly(1))->method('get')->willReturn(['candidate_tiles_for_chosen_wildlife' => $this->candidate_tiles_for_chosen_wildlife]);
+        $this->mock_get_current_data->expects($this->exactly(1))->method('get')->willReturn(['candidate_tiles_for_chosen_wildlife' => $this->candidate_tiles_for_chosen_wildlife]);
         // Act
         $this->act_default();
         // Assert
@@ -60,7 +60,7 @@ class PlayerChoosesWildlifeTest extends TestCase{
     public function test_execute_triggers_notifyAllPlayers() {
         // Arrange
         $this->mock_market->expects($this->exactly(1))->method('get_wildlife_from_id')->willReturn($this->expected_wildlife);
-        $this->mock_latest_data->expects($this->exactly(1))->method('get')->willReturn(['candidate_tiles_for_chosen_wildlife' => $this->candidate_tiles_for_chosen_wildlife]);
+        $this->mock_get_current_data->expects($this->exactly(1))->method('get')->willReturn(['candidate_tiles_for_chosen_wildlife' => $this->candidate_tiles_for_chosen_wildlife]);
 
         $this->mock_notifications->expects($this->exactly(1))->method('notifyAllPlayers')->with('wildlife_chosen', 'wildlife_chosen', ['wildlife' => $this->expected_wildlife]);
         // Act
@@ -72,7 +72,7 @@ class PlayerChoosesWildlifeTest extends TestCase{
         // Arrange
         $this->mock_market->expects($this->exactly(1))->method('get_wildlife_from_id')->willReturn($this->expected_wildlife);
 
-        $this->mock_latest_data->expects($this->exactly(1))->method('get')->willReturn(['candidate_tiles_for_chosen_wildlife' => $this->candidate_tiles_for_chosen_wildlife]);
+        $this->mock_get_current_data->expects($this->exactly(1))->method('get')->willReturn(['candidate_tiles_for_chosen_wildlife' => $this->candidate_tiles_for_chosen_wildlife]);
 
         $this->mock_notifications->expects($this->exactly(1))->method('notifyPlayer')->with($this->player_id, 'candidate_tiles_for_chosen_wildlife', 'candidate_tiles_for_chosen_wildlife', ['candidate_tiles_for_chosen_wildlife' => $this->candidate_tiles_for_chosen_wildlife]);
         // Act

@@ -21,7 +21,11 @@ class NextPlayerTest extends TestCase{
     protected ?\NieuwenhovenGames\BGA\FrameworkInterfaces\GameState $mock_gamestate = null;
     protected ?\NieuwenhovenGames\BGA\FrameworkInterfaces\Deck $mock_cards = null;
     protected ?\NieuwenhovenGames\BGA\FrameworkInterfaces\Notifications $mock_notifications = null;
+    protected ?GetAllDatas $mock_get_current_data = null;
     protected ?MarketUpdate $mock_market = null;
+    protected int $player_id = 77;
+    protected int $ai_id = 55;
+    protected array $players = [77 =>['name' => 'player_test'], 55 =>['name' => 'AI_1']];
     protected array $full_market = ['tile' => [['location_arg' => 0], ['location_arg' => 1], ['location_arg' => 2], ['location_arg' => 3]],
                                     'wildlife' => [['location_arg' => 0], ['location_arg' => 1], ['location_arg' => 2], ['location_arg' => 3]]];
 
@@ -31,6 +35,9 @@ class NextPlayerTest extends TestCase{
 
         $this->mock_notifications = $this->createMock(\NieuwenhovenGames\BGA\FrameworkInterfaces\Notifications::class);
         $this->sut->set_notifications($this->mock_notifications);
+
+        $this->mock_get_current_data = $this->createMock(GetAllDatas::class);
+        $this->sut->set_get_current_data($this->mock_get_current_data);
 
         $this->mock_cards = $this->createMock(\NieuwenhovenGames\BGA\FrameworkInterfaces\Deck::class);
         $this->sut->set_tile_deck($this->mock_cards);
@@ -83,10 +90,23 @@ class NextPlayerTest extends TestCase{
     public function test_nextState_player_playing() {
         // Arrange
         $this->mock_cards->expects($this->exactly(1))->method('countCardInLocation')->willReturn(1);
+        $this->mock_get_current_data->expects($this->exactly(1))->method('get')->willReturn(['players' => $this->players]);
+        $this->sut->set_player_id($this->player_id);
         // Act
         $name = $this->sut->getTransitionName();
         // Assert
         $this->assertEquals('player_playing', $name);
+    }
+
+    public function test_nextState_ai_playing() {
+        // Arrange
+        $this->mock_cards->expects($this->exactly(1))->method('countCardInLocation')->willReturn(1);
+        $this->mock_get_current_data->expects($this->exactly(1))->method('get')->willReturn(['players' => $this->players]);
+        $this->sut->set_player_id($this->ai_id);
+        // Act
+        $name = $this->sut->getTransitionName();
+        // Assert
+        $this->assertEquals('ai_playing', $name);
     }
 
     public function test_nextState_finished_playing() {

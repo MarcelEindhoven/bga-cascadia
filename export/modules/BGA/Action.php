@@ -28,6 +28,11 @@ class Action {
         return $this;
     }
 
+    public function set_get_current_data($get_current_data) : Action {
+        $this->get_current_data = $get_current_data;
+        return $this;
+    }
+
     public function nextState() {
         $transition_name = method_exists($this, 'getTransitionName') ? $this->getTransitionName() : Action::DEFAULT_TRANSITION_NAME;
 

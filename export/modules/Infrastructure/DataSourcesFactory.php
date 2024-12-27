@@ -31,7 +31,7 @@ class DataSourcesFactory {
     }
 
     public function get_data(): array {
-        $sql = "SELECT player_id id, player_score score, player_coins coins FROM player ";
+        $sql = "SELECT player_id id, player_name name, player_score score, player_coins coins FROM player ";
         $players = $this->database->getCollectionFromDb( $sql );
         $data['players'] = $players;
 

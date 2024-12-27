@@ -74,18 +74,19 @@ class Actions {
 
         // PlayerChoosesWildlife after PlayerPlacesTile because of calculation candidate tiles for chosen wildlife
         $market = MarketUpdate::create($this->decks);
-        $latest_data = GetAllDatas::create($this->decks, $this->database)->set_current_player_id($this->player_id)->set_active_player_id($this->player_id);
-        PlayerChoosesWildlife::create($this->gamestate)->set_notifications($this->notifications)->set_player_id($this->player_id)->set_market($market)->set_latest_data($latest_data)->set_chosen_wildlife($chosen_wildlife_id)->execute()->nextState();
+        $get_current_data = GetAllDatas::create($this->decks, $this->database)->set_current_player_id($this->player_id)->set_active_player_id($this->player_id);
+        PlayerChoosesWildlife::create($this->gamestate)->set_notifications($this->notifications)->set_player_id($this->player_id)->set_market($market)->set_get_current_data($get_current_data)->set_chosen_wildlife($chosen_wildlife_id)->execute()->nextState();
     }
 
     public function stNextPlayer($player_id) {
         $this->notifications->notifyAllPlayers('debug', 'decks', ['info' =>$this->decks]);
+        $get_current_data = GetAllDatas::create($this->decks, $this->database)->set_current_player_id($this->player_id)->set_active_player_id($this->player_id);
         $market = MarketUpdate::create($this->decks);
-        NextPlayer::create($this->gamestate)->set_notifications($this->notifications)->set_market($market)->execute()->nextState();
+        NextPlayer::create($this->gamestate)->set_notifications($this->notifications)->set_market($market)->set_player_id($this->player_id)->set_tile_deck($this->decks['tile'])->set_get_current_data($get_current_data)->execute()->nextState();
     }
 
     public function stAiPlayer() {
-        AITurn::create($this->gamestate)->set_notifications($this->notifications)->set_tile_deck($this->decks['tile'])->execute()->nextState();
+        AITurn::create($this->gamestate)->set_notifications($this->notifications)->execute()->nextState();
     }
 
     public function stAllPlayersInspectScore() {

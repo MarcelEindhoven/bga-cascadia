@@ -29,8 +29,13 @@ class NextPlayer extends \NieuwenhovenGames\BGA\Action {
         return $this;
     }
 
+    public function set_player_id($player_id) : NextPlayer {
+        $this->player_id = $player_id;
+        return $this;
+    }
+
     public function execute() : NextPlayer {
-        $this->notifications->notifyAllPlayers('execute', 'execute', []);
+        $this->notifications->notifyAllPlayers('debug', 'replenishMarket', []);
         $this->replenishMarket();
         return $this;
     }
@@ -59,6 +64,8 @@ class NextPlayer extends \NieuwenhovenGames\BGA\Action {
     public function getTransitionName() : string {
         if (0 == $this->deck->countCardInLocation(\NieuwenhovenGames\BGA\FrameworkInterfaces\Deck::STANDARD_DECK))
             return 'finished_playing';
+        if (substr($this->get_current_data->get()['players'][$this->player_id]['name'], 0, 3) === 'AI_')
+            return 'ai_playing';
         return 'player_playing';
     }
 }
