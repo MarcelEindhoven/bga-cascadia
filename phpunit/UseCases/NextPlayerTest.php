@@ -32,6 +32,9 @@ class NextPlayerTest extends TestCase{
         $this->mock_notifications = $this->createMock(\NieuwenhovenGames\BGA\FrameworkInterfaces\Notifications::class);
         $this->sut->set_notifications($this->mock_notifications);
 
+        $this->mock_cards = $this->createMock(\NieuwenhovenGames\BGA\FrameworkInterfaces\Deck::class);
+        $this->sut->set_tile_deck($this->mock_cards);
+
         $this->mock_market = $this->createMock(MarketUpdate::class);
         $this->sut->set_market($this->mock_market);
     }
@@ -75,6 +78,24 @@ class NextPlayerTest extends TestCase{
     protected function arrange_expect_refills($amount_refills) {
         $this->mock_market->expects($this->exactly($amount_refills))->method('refill');
         $this->mock_market->method('get_specific_item')->willReturn(['location_arg' => 0]);
+    }
+
+    public function test_nextState_player_playing() {
+        // Arrange
+        $this->mock_cards->expects($this->exactly(1))->method('countCardInLocation')->willReturn(1);
+        // Act
+        $name = $this->sut->getTransitionName();
+        // Assert
+        $this->assertEquals('player_playing', $name);
+    }
+
+    public function test_nextState_finished_playing() {
+        // Arrange
+        $this->mock_cards->expects($this->exactly(1))->method('countCardInLocation')->with('deck')->willReturn(0);
+        // Act
+        $name = $this->sut->getTransitionName();
+        // Assert
+        $this->assertEquals('finished_playing', $name);
     }
 }
 

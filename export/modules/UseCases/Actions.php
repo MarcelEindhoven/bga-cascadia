@@ -6,6 +6,7 @@ namespace NieuwenhovenGames\Cascadia;
  *
  */
 
+include_once(__DIR__.'/AITurn.php');
 include_once(__DIR__.'/NextPlayer.php');
 include_once(__DIR__.'/PlayerPlacesTile.php');
 include_once(__DIR__.'/PlayerDoesNotPlaceWildlife.php');
@@ -81,6 +82,13 @@ class Actions {
         $this->notifications->notifyAllPlayers('debug', 'decks', ['info' =>$this->decks]);
         $market = MarketUpdate::create($this->decks);
         NextPlayer::create($this->gamestate)->set_notifications($this->notifications)->set_market($market)->execute()->nextState();
+    }
+
+    public function stAiPlayer() {
+        AITurn::create($this->gamestate)->set_notifications($this->notifications)->set_tile_deck($this->decks['tile'])->execute()->nextState();
+    }
+
+    public function stAllPlayersInspectScore() {
     }
 }
 ?>

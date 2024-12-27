@@ -24,6 +24,11 @@ class NextPlayer extends \NieuwenhovenGames\BGA\Action {
         return $this;
     }
 
+    public function set_tile_deck($deck) : NextPlayer {
+        $this->deck = $deck;
+        return $this;
+    }
+
     public function execute() : NextPlayer {
         $this->notifications->notifyAllPlayers('execute', 'execute', []);
         $this->replenishMarket();
@@ -51,17 +56,10 @@ class NextPlayer extends \NieuwenhovenGames\BGA\Action {
         return $locations;
     }
 
-    protected function getEvent($category) {
-        if ($category == Constants::ITEM_NAME) {
-            return NextPlayer::EVENT_NEW_ITEM;
-        } else {
-            return PlayerPlacesInitialPlant::EVENT_NEW_STOCK_CONTENT;
-        }
-    }
-
     public function getTransitionName() : string {
+        if (0 == $this->deck->countCardInLocation(\NieuwenhovenGames\BGA\FrameworkInterfaces\Deck::STANDARD_DECK))
+            return 'finished_playing';
         return 'player_playing';
     }
 }
 ?>
-
