@@ -246,10 +246,6 @@ class CascadiaCannonFodder extends Table implements NieuwenhovenGames\BGA\Framew
 
         // Note: the following statement crashes in setup stage
         $this->actions->set_player_id(self::getCurrentPlayerId());
-
-        $sql = "SELECT player_id id, player_score score, player_coins coins FROM player ";
-        $players = $this->getCollectionFromDb( $sql );
-        $this->actions->set_players($this->players);
     }
 
     
@@ -304,11 +300,12 @@ class CascadiaCannonFodder extends Table implements NieuwenhovenGames\BGA\Framew
 
     public function stNextPlayer() {
         self::trace(__FUNCTION__);
-        $this->initialise();
 
         $this->activeNextPlayer();
 
-        $this->actions->stNextPlayer($this->getActivePlayerId());
+        $this->initialise();
+
+        $this->actions->stNextPlayer();
     }
 
     public function stAiPlayer() {

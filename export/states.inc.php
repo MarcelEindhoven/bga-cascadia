@@ -91,7 +91,7 @@ $machinestates = array(
         "description" => clienttranslate('Robot turn'),
         "descriptionmyturn" => clienttranslate('${you} must play'),
         "type" => "game",
-//        "action" => "stAiPlayer",
+        "action" => "stAiPlayer",
         "transitions" => array("" => 15)
     ),
     20 => array(
@@ -99,7 +99,7 @@ $machinestates = array(
         "description" => clienttranslate('everyone can inspect the score'),
         "descriptionmyturn" => clienttranslate('everyone can inspect the score'),
         "type" => "multipleactiveplayer",
-//        "action" => "stAllPlayersInspectScore",
+        "action" => "stAllPlayersInspectScore",
         "transitions" => array( "" => 99),
     ),
     

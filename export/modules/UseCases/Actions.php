@@ -37,11 +37,6 @@ class Actions {
         return $this;
     }
 
-    public function set_players($players) : Actions {
-        $this->players = $players;
-        return $this;
-    }
-
     public function set_notifications($notifications) : Actions {
         $this->notifications = $notifications;
         return $this;
@@ -78,7 +73,7 @@ class Actions {
         PlayerChoosesWildlife::create($this->gamestate)->set_notifications($this->notifications)->set_player_id($this->player_id)->set_market($market)->set_get_current_data($get_current_data)->set_chosen_wildlife($chosen_wildlife_id)->execute()->nextState();
     }
 
-    public function stNextPlayer($player_id) {
+    public function stNextPlayer() {
         $this->notifications->notifyAllPlayers('debug', 'decks', ['info' =>$this->decks]);
         $get_current_data = GetAllDatas::create($this->decks, $this->database)->set_current_player_id($this->player_id)->set_active_player_id($this->player_id);
         $market = MarketUpdate::create($this->decks);
