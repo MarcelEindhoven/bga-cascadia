@@ -73,14 +73,18 @@ class Actions {
         PlayerChoosesWildlife::create($this->gamestate)->set_notifications($this->notifications)->set_player_id($this->player_id)->set_market($market)->set_get_current_data($get_current_data)->set_chosen_wildlife($chosen_wildlife_id)->execute()->nextState();
     }
 
-    public function stNextPlayer() {
+    public function stNextPlayer($active_player_id) {
         $this->notifications->notifyAllPlayers('debug', 'decks', ['info' =>$this->decks]);
-        $get_current_data = GetAllDatas::create($this->decks, $this->database)->set_current_player_id($this->player_id)->set_active_player_id($this->player_id);
+        $get_current_data = GetAllDatas::create($this->decks, $this->database)->set_current_player_id($this->player_id)->set_active_player_id($active_player_id);
         $market = MarketUpdate::create($this->decks);
-        NextPlayer::create($this->gamestate)->set_notifications($this->notifications)->set_market($market)->set_player_id($this->player_id)->set_tile_deck($this->decks['tile'])->set_get_current_data($get_current_data)->execute()->nextState();
+        NextPlayer::create($this->gamestate)->set_notifications($this->notifications)->set_market($market)->set_player_id($active_player_id)->set_tile_deck($this->decks['tile'])->set_get_current_data($get_current_data)->execute()->nextState();
     }
 
-    public function stAiPlayer() {
+    public function stAiPlacesTile() {
+        AITurn::create($this->gamestate)->set_notifications($this->notifications)->execute()->nextState();
+    }
+
+    public function stAiPlacesWildlife() {
         AITurn::create($this->gamestate)->set_notifications($this->notifications)->execute()->nextState();
     }
 

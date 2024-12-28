@@ -305,12 +305,17 @@ class CascadiaCannonFodder extends Table implements NieuwenhovenGames\BGA\Framew
 
         $this->initialise();
 
-        $this->actions->stNextPlayer();
+        $this->actions->stNextPlayer($this->getActivePlayerId());
     }
 
-    public function stAiPlayer() {
+    public function stAiPlacesTile() {
         self::trace(__FUNCTION__);
-        $this->actions->stAiPlayer();
+        $this->actions->stAiPlacesTile();
+    }
+
+    public function stAiPlacesWildlife() {
+        self::trace(__FUNCTION__);
+        $this->actions->stAiPlacesWildlife();
     }
 
     public function stAllPlayersInspectScore() {

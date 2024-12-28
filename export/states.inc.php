@@ -64,11 +64,11 @@ $machinestates = array(
     // Note: ID=2 => your first state
 
     10 => array(
-    		"name" => "playerPlacesTile",
-    		"description" => clienttranslate('${actplayer} must place a tile'),
-    		"descriptionmyturn" => clienttranslate('${you} must place a tile'),
-    		"type" => "activeplayer",
-    		"transitions" => array( "" => 12)
+        "name" => "playerPlacesTile",
+        "description" => clienttranslate('${actplayer} must place a tile'),
+        "descriptionmyturn" => clienttranslate('${you} must place a tile'),
+        "type" => "activeplayer",
+        "transitions" => array( "" => 12)
     ),
     12 => array(
         "name" => "playerPlacesWildlife",
@@ -87,12 +87,20 @@ $machinestates = array(
         "transitions" => array("player_playing" => 10, "ai_playing" => 16, "finished_playing" => 20)
     ),
     16 => array(
-        "name" => "aiPlayer",
-        "description" => clienttranslate('Robot turn'),
-        "descriptionmyturn" => clienttranslate('${you} must play'),
+        "name" => "aiPlacesTile",
+        "description" => clienttranslate('${actplayer} must place a tile'),
+        "descriptionmyturn" => clienttranslate('${you} must place a tile'),
         "type" => "game",
-        "action" => "stAiPlayer",
-        "transitions" => array("" => 15)
+        "action" => "stAiPlacesTile",
+        "transitions" => array( "" => 18)
+    ),
+    18 => array(
+        "name" => "aiPlacesWildlife",
+        "description" => clienttranslate('${actplayer} must place wildlife'),
+        "descriptionmyturn" => clienttranslate('${you} must place wildlife'),
+        "type" => "game",
+        "action" => "stAiPlacesWildlife",
+        "transitions" => array( "" => 15)
     ),
     20 => array(
         "name" => "allPlayersInspectScore",
