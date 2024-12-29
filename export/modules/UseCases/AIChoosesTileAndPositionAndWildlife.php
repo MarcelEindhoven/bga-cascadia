@@ -33,8 +33,11 @@ class AIChoosesTileAndPositionAndWildlife extends \NieuwenhovenGames\BGA\Action 
 
     public function get_placed_tile() {
         $tile = $this->current_data['market']['tile'][$this->market_index];
-        $tile['horizontal'] = $this->current_data['adjacent_positions'][$this->adjacent_positions_index]['horizontal'];
-        $tile['vertical'] = $this->current_data['adjacent_positions'][$this->adjacent_positions_index]['vertical'];
+        $adjacent_positions = $this->current_data['adjacent_positions'];
+        $adjacent_positions_keys = array_keys($adjacent_positions);
+        $position = $adjacent_positions[$adjacent_positions_keys[$this->adjacent_positions_index]];
+        $tile['horizontal'] = $position['horizontal'];
+        $tile['vertical'] = $position['vertical'];
         $tile['rotation'] = 0;
         return $tile;
     }

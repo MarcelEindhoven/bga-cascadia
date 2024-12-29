@@ -76,7 +76,7 @@ class Actions {
     public function stNextPlayer($active_player_id) {
         $this->player_id = $active_player_id;
 
-        $this->notifications->notifyAllPlayers('debug', 'decks', ['info' =>$this->decks]);
+        // $this->notifications->notifyAllPlayers('debug', 'decks', ['info' =>$this->decks]);
 
         $get_current_data = GetAllDatas::create($this->decks, $this->database)->set_current_player_id($this->player_id)->set_active_player_id($active_player_id);
         $market = MarketUpdate::create($this->decks);
@@ -90,9 +90,7 @@ class Actions {
     }
 
     public function stAiPlacesWildlife() {
-        $get_current_data = GetAllDatas::create($this->decks, $this->database)->set_current_player_id($this->player_id)->set_active_player_id($this->player_id);
-        $choices = AIChoosesTileAndPositionAndWildlife::create($this->gamestate)->set_notifications($this->notifications)->set_get_current_data($get_current_data)->execute();
-        $this->choose_wildlife_and_place_tile($choices->get_chosen_wildlife_id(), $choices->get_placed_tile());
+        $this->do_not_place_wildlife();
     }
 
     public function stAllPlayersInspectScore() {

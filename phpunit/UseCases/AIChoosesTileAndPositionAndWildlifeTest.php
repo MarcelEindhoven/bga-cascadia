@@ -37,7 +37,7 @@ class AIChoosesTileAndPositionAndWildlifeTest extends TestCase{
     protected array $other_tile = ['id' => 6, 'unique_id' => 'other'];
     protected array $market = [];
     protected array $adjacent_positions = [0 => ['horizontal' => 52, 'vertical' => 50]
-                                        , 1 => ['horizontal' => 53, 'vertical' => 51]];
+                                        , 999 => ['horizontal' => 53, 'vertical' => 51]];
     protected int $player_id = 77;
     protected array $all_data = [];
 
@@ -53,7 +53,7 @@ class AIChoosesTileAndPositionAndWildlifeTest extends TestCase{
         $this->all_data = ['market' => $this->market, 'adjacent_positions' => $this->adjacent_positions];
 
         $this->sut->test_market_index = 1;
-        $this->sut->test_adjacent_positions_index = 1;
+        $this->sut->test_adjacent_positions_index = 0;
     }
 
     public function test_get_chosen_wildlife_id_default() {
@@ -100,8 +100,8 @@ class AIChoosesTileAndPositionAndWildlifeTest extends TestCase{
         // Assert
         $placed_tile = $this->sut->get_placed_tile();
         $this->assertEquals($this->other_tile['id'], $placed_tile['id']);
-        $this->assertEquals($this->adjacent_positions[$this->sut->test_adjacent_positions_index]['horizontal'], $placed_tile['horizontal']);
-        $this->assertEquals($this->adjacent_positions[$this->sut->test_adjacent_positions_index]['vertical'], $placed_tile['vertical']);
+        $this->assertEquals($this->adjacent_positions[999]['horizontal'], $placed_tile['horizontal']);
+        $this->assertEquals($this->adjacent_positions[999]['vertical'], $placed_tile['vertical']);
         $this->assertEquals(0, $placed_tile['rotation']);
     }
 }
