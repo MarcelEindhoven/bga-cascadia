@@ -6,7 +6,7 @@ namespace NieuwenhovenGames\Cascadia;
  *
  */
 
-include_once(__DIR__.'/AITurn.php');
+include_once(__DIR__.'/AIChoosesTileAndPositionAndWildlife.php');
 include_once(__DIR__.'/NextPlayer.php');
 include_once(__DIR__.'/PlayerPlacesTile.php');
 include_once(__DIR__.'/PlayerDoesNotPlaceWildlife.php');
@@ -74,18 +74,25 @@ class Actions {
     }
 
     public function stNextPlayer($active_player_id) {
+        $this->player_id = $active_player_id;
+
         $this->notifications->notifyAllPlayers('debug', 'decks', ['info' =>$this->decks]);
+
         $get_current_data = GetAllDatas::create($this->decks, $this->database)->set_current_player_id($this->player_id)->set_active_player_id($active_player_id);
         $market = MarketUpdate::create($this->decks);
         NextPlayer::create($this->gamestate)->set_notifications($this->notifications)->set_market($market)->set_player_id($active_player_id)->set_tile_deck($this->decks['tile'])->set_get_current_data($get_current_data)->execute()->nextState();
     }
 
     public function stAiPlacesTile() {
-        AITurn::create($this->gamestate)->set_notifications($this->notifications)->execute()->nextState();
+        $get_current_data = GetAllDatas::create($this->decks, $this->database)->set_current_player_id($this->player_id)->set_active_player_id($this->player_id);
+        $choices = AIChoosesTileAndPositionAndWildlife::create($this->gamestate)->set_notifications($this->notifications)->set_get_current_data($get_current_data)->execute();
+        $this->choose_wildlife_and_place_tile($choices->get_chosen_wildlife_id(), $choices->get_placed_tile());
     }
 
     public function stAiPlacesWildlife() {
-        AITurn::create($this->gamestate)->set_notifications($this->notifications)->execute()->nextState();
+        $get_current_data = GetAllDatas::create($this->decks, $this->database)->set_current_player_id($this->player_id)->set_active_player_id($this->player_id);
+        $choices = AIChoosesTileAndPositionAndWildlife::create($this->gamestate)->set_notifications($this->notifications)->set_get_current_data($get_current_data)->execute();
+        $this->choose_wildlife_and_place_tile($choices->get_chosen_wildlife_id(), $choices->get_placed_tile());
     }
 
     public function stAllPlayersInspectScore() {
